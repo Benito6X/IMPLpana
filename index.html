@@ -88,7 +88,9 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: var(--orange);
+    background: linear-gradient(135deg, #F56500, #0A4EFF);
+    box-shadow: 0 0 20px rgba(245,101,0,0.4);
+    transform: translateY(-3px) scale(1.03);
     color: var(--white);
     font-family: var(--font-accent);
     font-size: 15px;
@@ -104,14 +106,35 @@
     position: relative;
     overflow: hidden;
   }
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+
+/* 🔥 EFECTO PRESIÓN (MÓVIL PRO) */
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+  /* 🔥 brillo que se mueve */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(6, 102, 228, 0.822),
+    transparent
+  );
+  transform: skewX(-20deg);
+}
+
+/* animación */
+.btn-primary:hover::after {
+  left: 130%;
+  transition: 0.8s;
+}
   .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,101,0,0.4); }
   .btn-primary:hover::before { opacity: 1; }
   .btn-secondary {
@@ -133,6 +156,40 @@
     cursor: pointer;
   }
   .btn-secondary:hover { background: var(--blue); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(10,78,255,0.3); }
+
+
+  .btn-diagnostico {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-diagnostico::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.5),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+}
+
+.btn-diagnostico:hover::after {
+  left: 130%;
+  transition: 0.8s;
+}
+
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 10px rgba(10,78,255,0.3); }
+  50% { box-shadow: 0 0 20px rgba(10,78,255,0.6); }
+}
 
   /* ───── NAV ───── */
   nav {
@@ -378,21 +435,53 @@
   height: 100%;
 }
   
-  .hero-visual-ring {
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    border: 1px solid rgba(10, 79, 255, 0.815);
-    animation: rotate 20s linear infinite;
-  }
-  .hero-visual-ring:nth-child(2) {
-    width: 320px;
-    height: 320px;
-    border-color: rgba(245, 102, 0, 0.842);
-    animation-direction: reverse;
-    animation-duration: 15s;
-  }
+.hero-visual-ring {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  border: 1px solid rgba(10, 79, 255, 0.6);
+  
+  /* glow */
+  box-shadow:
+    0 0 20px rgba(10,78,255,0.4),
+    inset 0 0 20px rgba(10,78,255,0.2);
+
+  animation: rotate 20s linear infinite;
+}
+
+.hero-visual-ring::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+
+  /* doble glow */
+  box-shadow:
+    0 0 20px rgba(10, 78, 255, 0.35),
+    0 0 40px rgba(245, 101, 0, 0.15),
+    inset 0 0 10px rgba(255,255,255,0.06);
+
+  /* rotación más lenta para contraste */
+  animation: rotate 30s linear infinite;
+
+  opacity: 0.9;
+}
+
+.hero-visual-ring:nth-child(2) {
+  width: 320px;
+  height: 320px;
+  border-color: rgba(245, 102, 0, 0.6);
+
+  box-shadow:
+    0 0 20px rgba(245,101,0,0.4),
+    inset 0 0 20px rgba(245,101,0,0.2);
+
+  animation-direction: reverse;
+  animation-duration: 15s;
+}
   @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   .hero-logo-main {
   width: 340px; /* más grande */
@@ -799,6 +888,32 @@
     top: 20px;
     right: 20px;
   }
+
+  .especialidad-img-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 10px;
+}
+
+.especialidad-img-wrap img {
+  width: 100%;
+  max-width: 500px;
+
+  /* estilo premium */
+  border-radius: 10px;
+  opacity: 0.95;
+
+  filter:
+    drop-shadow(0 0 25px rgba(10,78,255,0.4))
+    drop-shadow(0 0 35px rgba(245,101,0,0.25));
+
+  transition: 0.4s ease;
+}
+
+.especialidad-img-wrap img:hover {
+  transform: scale(1.05);
+}
   .adv-icon {
     width: 56px;
     height: 56px;
@@ -1046,7 +1161,11 @@
     .hero-description { margin: 0 auto 40px; }
     .hero-cta-group { justify-content: center; }
     .hero-stats { justify-content: center; }
-    .hero-visual { display: none; }
+    .hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;}
     .services-grid { grid-template-columns: repeat(2, 1fr); }
     .service-featured { grid-column: span 2; grid-template-columns: 1fr; }
     .service-featured-right { grid-template-columns: repeat(3, 1fr); }
@@ -1055,6 +1174,19 @@
     .testi-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 768px) {
+    .hero-logo-main {
+  width: 220px;
+}
+
+.hero-visual-ring {
+  width: 260px;
+  height: 260px;
+}
+
+.hero-visual-ring:nth-child(2) {
+  width: 200px;
+  height: 200px;
+}
     .nav-links { display: none; }
     .menu-toggle { display: flex; flex-direction: column; gap: 5px; }
     .menu-toggle span { width: 24px; height: 2px; background: var(--white); transition: all 0.3s; display: block; }
@@ -1344,7 +1476,8 @@
           <div class="about-card-accent"></div>
           <div class="about-card-title">Nuestra Especialidad</div>
           <!-- Workshop SVG illustration -->
-          <svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px">
+          <div class="especialidad-img-wrap">
+  <img src="especialidad.png" alt="Especialidad IMPEL"></div> 
             <defs>
               <linearGradient id="floor" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style="stop-color:#162234"/>
@@ -1415,12 +1548,11 @@
         </div>
       </div>
       <div class="about-text fade-in">
-        <div class="section-label">Sobre IMPEL</div>
-        <h2 class="section-title">Técnica, <span>Precisión</span> y Confianza</h2>
+        <div class="section-label">Sobre Nosotros</div>
+        <h2 class="section-title">Expertos en <span>Electromecánica</span> Automotriz</h2>
         <div class="divider"></div>
-        <p>IMPEL Electromecánica nació con una misión clara: <strong>elevar el estándar del diagnóstico eléctrico automotriz en Panamá</strong>. No somos un taller convencional; somos especialistas en los sistemas que hacen funcionar tu vehículo.</p>
-        <p>Con más de una década de experiencia atendiendo desde vehículos particulares hasta flotas comerciales, hemos desarrollado un método de trabajo que combina <strong>tecnología de diagnóstico avanzada</strong> con el conocimiento profundo de nuestros técnicos certificados.</p>
-        <p>Cada vehículo que llega a nuestro taller recibe un tratamiento profesional e individualizado. <strong>Transparencia total</strong> en cada diagnóstico y reparación.</p>
+        <p>En <strong>IMPEL Electromecánica</strong> contamos con más de 12 años de experiencia en diagnóstico y reparación de sistemas eléctricos automotrices en Panamá. Nuestro equipo de técnicos certificados trabaja con las herramientas más avanzadas del mercado.</p>
+        <p>Atendemos todo tipo de vehículos: sedanes, SUVs, camionetas, vans y flotas empresariales. Desde una batería descargada hasta complejos fallos electrónicos, ofrecemos soluciones completas y confiables.</p>
         <div class="pillar-grid">
           <div class="pillar">
             <div class="pillar-title">Diagnóstico Preciso</div>
@@ -1439,9 +1571,173 @@
             <div class="pillar-text">Te explicamos cada paso del proceso.</div>
           </div>
         </div>
-      </div>
+      <style>
+.btn-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.95); }
+  50%       { opacity: 1;   transform: scale(1.05); }
+}
+
+/* Shimmer en idle y hover */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 70%; height: 100%;
+  background: linear-gradient(105deg,
+    transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  pointer-events: none;
+  animation: shimmerIdle 4s ease-in-out infinite;
+}
+
+@keyframes shimmerIdle {
+  0%, 60%, 100% { left: -120%; opacity: 0; }
+  62%            { opacity: 1; }
+  80%            { left: 160%; opacity: 0; }
+}
+
+.btn-primary:hover::after {
+  animation: shimmerHover 0.55s ease forwards;
+}
+
+@keyframes shimmerHover {
+  0%   { left: -120%; opacity: 1; }
+  100% { left: 160%;  opacity: 0; }
+}
+
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.975);
+  transition-duration: 0.1s;
+}
+
+/* Icono */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  animation: iconWiggle 5s ease-in-out infinite;
+}
+
+@keyframes iconWiggle {
+  0%, 85%, 100% { transform: rotate(0deg); }
+  90%           { transform: rotate(12deg) scale(1.1); }
+  95%           { transform: rotate(-5deg); }
+}
+
+.btn-primary:hover .btn-icon {
+  transform: rotate(16deg) scale(1.18);
+  animation: none;
+}
+
+/* Texto */
+.btn-presupuesto {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), letter-spacing 0.3s ease;
+}
+
+.btn-primary:hover .btn-presupuesto {
+  transform: translateX(2px);
+  letter-spacing: 0.5px;
+}
+
+.btn-presupuesto {
+  margin-top: 40px;
+}
+
+/* Flecha que aparece en hover */
+.arrow-ping {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.btn-primary:hover .arrow-ping { opacity: 1; transform: translateX(0); }
+
+/* Partículas flotantes */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.p { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.7); opacity: 0; bottom: 0; }
+.p1 { left: 20%; animation: floatUp 3.5s 0.4s ease-in-out infinite; }
+.p2 { left: 40%; animation: floatUp 3.5s 1.2s ease-in-out infinite; }
+.p3 { left: 60%; animation: floatUp 3.5s 0.8s ease-in-out infinite; }
+.p4 { left: 78%; animation: floatUp 3.5s 2.0s ease-in-out infinite; }
+.p5 { left: 90%; animation: floatUp 3.5s 0.2s ease-in-out infinite; }
+
+@keyframes floatUp {
+  0%   { opacity: 0;   transform: translateY(0); }
+  20%  { opacity: 0.7; transform: translateY(-8px); }
+  100% { opacity: 0;   transform: translateY(-30px) scale(0.4); }
+}
+
+/* Badge flotante */
+.badge-wrap {
+  position: absolute;
+  top: -32px; right: -8px;
+  animation: badgeBounce 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes badgeBounce {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%       { transform: translateY(-5px) rotate(2deg); }
+}
+
+.badge {
+  background: #fff; color: #166534;
+  font-size: 11px; font-weight: 600;
+  padding: 4px 9px; border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  display: flex; align-items: center; gap: 4px;
+}
+
+.badge-dot {
+  width: 6px; height: 6px; background: #22c55e; border-radius: 50%;
+  animation: dotBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes dotBlink {
+  0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+}
+</style>
+
+<div class="btn-wrap">
+  <div class="btn-glow"></div>
+
+  <div class="badge-wrap">
+    <div class="badge">
+      <div class="badge-dot"></div>
+      Respuesta Inmediata
     </div>
   </div>
+
+  <a href="#contacto" class="btn-primary">
+    <div class="particles">
+      <div class="p p1"></div><div class="p p2"></div>
+      <div class="p p3"></div><div class="p p4"></div><div class="p p5"></div>
+    </div>
+    <span class="btn-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .93h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+      </svg>
+
+    </span>
+    <span class="btn-presupuesto">Solicitar Presupuesto</span>
+    <span class="arrow-ping">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" background="#00913f">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </span>
+  </a>
+</div>
+    </div>
 </section>
 
 <!-- SERVICES -->
