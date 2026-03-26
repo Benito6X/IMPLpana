@@ -1246,10 +1246,29 @@
   /* ===== CLIENTES LOGOS ===== */
 
 .client-logo-item img {
-  height:42x;
-  opacity: 0.5;
-  filter: grayscale(100%) brightness(0.8);
+  height: 50px;
+  max-width: 140px;
+  object-fit: contain;
+
+  opacity: 0.75;
+
+  filter:
+    grayscale(100%)
+    brightness(1.2)
+    contrast(1.1);
+
   transition: all 0.4s ease;
+}
+
+.client-logo-item:hover img {
+  opacity: 1;
+  transform: scale(1.15);
+
+  filter:
+    grayscale(0%)
+    brightness(1.2)
+    drop-shadow(0 0 12px rgba(10,78,255,0.5))
+    drop-shadow(0 0 20px rgba(245,101,0,0.4));
 }
 
 /* hover premium */
@@ -2867,12 +2886,25 @@
 <!-- TESTIMONIALS -->
 <div class="section-divider"></div>
 <section id="testimonios">
-  <div class="container">
-    <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto;">
-      <div class="section-label" style="justify-content:center;">Experiencias Reales</div>
-      <h2 class="section-title">Lo Que Dicen Nuestros <span>Clientes</span></h2>
-      <div class="divider" style="margin:20px auto;"></div>
-    </div>
+  <div class="container" style="text-align:center;">
+
+    <div class="section-label">TRANSPARENCIA REAL</div>
+    <h2 class="section-title">
+      Opiniones <span>verificadas</span>
+    </h2>
+    <div class="divider" style="margin:auto;"></div>
+
+    <p style="color: var(--gray); max-width:500px; margin:20px auto;">
+      Estamos recopilando experiencias reales de nuestros clientes.
+      Muy pronto podrás ver opiniones 100% verificadas.
+    </p>
+
+    <a href="https://www.google.com/search?q=importadora+de+partes+electromec%C3%A1nicas+panam%C3%A1&rlz=1C1CHBD_esPA905PA905&oq=IMPO&gs_lcrp=EgZjaHJvbWUqCAgAEEUYJxg7MggIABBFGCcYOzIGCAEQRRg5MgwIAhAAGEMYgAQYigUyDwgDEAAYQxjJAxiABBiKBTINCAQQABiSAxiABBiKBTIGCAUQRRg8MgYIBhBFGDwyBggHEEUYPNIBCDIwNjlqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8#lrd=0x8faca9acf1195055:0x875d777315a0b932,3,,,," target="_blank" class="btn-primary">
+      Dejar reseña en Google
+    </a>
+
+  </div>
+</section>
 
     <!-- CAROUSEL TESTIMONIALS -->
     <div class="testi-new-wrapper fade-in">
@@ -2954,7 +2986,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#F56500"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#F56500"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
-        <p class="testi-text">Mi Toyota llevaba semanas fallando. Fui a varios talleres y nadie identificaba el problema. En IMPEL hicieron el diagnóstico en menos de una hora y al día siguiente ya tenía mi carro listo. Trabajo impecable.</p>
+        <p class="testi-text">Después de mucho buscar un electromecánico serio,honrado y responsable , encontré este tesoro escondido. El electromecánico es un as y la sra que vende los repuestos con esa amabilidad hacen que a uno se le olvide el mal rato por estar varado.</p>
         <div class="testi-author">
           <div class="testi-avatar">JR</div>
           <div>
