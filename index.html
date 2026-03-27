@@ -2215,50 +2215,7 @@
   </div>
 </section>
 
-<!-- ADVANTAGES -->
-<section id="ventajas">
-  <div class="container">
-    <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto 0;">
-      <div class="section-label" style="justify-content:center;">Por Qué Elegirnos</div>
-      <h2 class="section-title">Ventajas <span>Competitivas</span></h2>
-      <div class="divider" style="margin:20px auto 0;"></div>
-    </div>
-    <div class="adv-grid fade-in">
-      <div class="adv-card">
-        <div class="adv-num">01</div>
-        <div class="adv-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0A4EFF" stroke-width="1.8" stroke-linecap="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
-        </div>
-        <div class="adv-title">Diagnóstico Profesional</div>
-        <div class="adv-text">Equipos de diagnóstico de última generación para identificar fallas con precisión milimétrica antes de intervenir.</div>
-      </div>
-      <div class="adv-card">
-        <div class="adv-num">02</div>
-        <div class="adv-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0A4EFF" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <div class="adv-title">Garantía Total</div>
-        <div class="adv-text">Todos nuestros trabajos incluyen garantía. Si la falla regresa dentro del período, la reparamos sin costo adicional.</div>
-      </div>
-      <div class="adv-card">
-        <div class="adv-num">03</div>
-        <div class="adv-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0A4EFF" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        </div>
-        <div class="adv-title">Entrega Rápida</div>
-        <div class="adv-text">Respetamos tu tiempo. La mayoría de reparaciones se completan el mismo día, minimizando el tiempo sin tu vehículo.</div>
-      </div>
-      <div class="adv-card">
-        <div class="adv-num">04</div>
-        <div class="adv-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0A4EFF" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
-        <div class="adv-title">Técnicos Certificados</div>
-        <div class="adv-text">Nuestro equipo cuenta con certificaciones técnicas y capacitación continua en sistemas eléctricos automotrices modernos.</div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ADVANTAGES SECTION REMOVED -->
 
 <!-- GALLERY -->
 <section id="galeria">
@@ -3265,12 +3222,7 @@
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch(e) {}
   }
 
-  const defaultTestimonios = [
-    { name: 'Laura Ramírez', vehicle: 'Kia Sportage 2021', rating: 5, text: 'Excelente servicio. El diagnóstico fue rápido y acertado. Recomiendo totalmente a IMPEL para cualquier problema eléctrico de su vehículo.' },
-    { name: 'Ernesto Sánchez', vehicle: 'Toyota Hilux 2018', rating: 5, text: 'El equipo de IMPEL es muy profesional. Resolvieron el problema de mi motor de arranque el mismo día. Precios justos y honestidad total.' },
-    { name: 'Patricia Mora', vehicle: 'Honda CR-V 2020', rating: 5, text: 'Llegaron a atender mi emergencia en carretera muy rápido. Equipo muy capacitado y amable. ¡Definitivamente los llamo la próxima vez!' },
-    { name: 'Rodrigo Castillo', vehicle: 'Flota Hyundai — 4 unidades', rating: 5, text: 'Trabajo con IMPEL para mantener mi flota en óptimas condiciones. Son confiables, puntuales y con precios competitivos. Mi socio de confianza.' },
-  ];
+  const defaultTestimonios = [];
 
   let allTestimonios = [...defaultTestimonios, ...getTestimonios()];
   let testiPage = 0;
@@ -3291,6 +3243,11 @@
     const dotsEl = document.getElementById('testiDots');
     if (!carousel || !dotsEl) return;
     const total = allTestimonios.length;
+    if (total === 0) {
+      carousel.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);font-family:var(--font-accent);letter-spacing:1px;font-size:14px;">Sé el primero en dejar tu opinión ↓</div>';
+      dotsEl.innerHTML = '';
+      return;
+    }
     const pageCount = Math.ceil(total / PER_PAGE);
     testiPage = Math.min(testiPage, pageCount - 1);
     const startIdx = testiPage * PER_PAGE;
