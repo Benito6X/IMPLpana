@@ -3,1405 +3,1664 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMPEL — Panel de Administración</title>
-<link rel="icon" href="https://impelpanama.com/icono.png">
+<title>IMPEL CRM — Admin</title>
+<link rel="icon" href="icono.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ── TOKENS ─────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════════════════ */
 :root {
-  --orange:    #F56500;
-  --orange-hi: #FF8C35;
-  --orange-lo: rgba(245,101,0,.12);
-  --blue:      #1A6AFF;
-  --blue-lo:   rgba(26,106,255,.1);
-  --green:     #22C55E;
-  --red:       #EF4444;
-  --bg:        #070A10;
-  --bg2:       #0C1220;
-  --bg3:       #111827;
-  --bg4:       #18243A;
-  --bg5:       #1E2D44;
-  --border:    rgba(255,255,255,.07);
-  --border-hi: rgba(245,101,0,.3);
-  --text:      #E2E8F4;
-  --muted:     #6B7FA3;
-  --muted-hi:  #8FA0C0;
-  --radius:    8px;
-  --font-d:    'Chakra Petch', sans-serif;
-  --font-b:    'Figtree', sans-serif;
-  --font-m:    'JetBrains Mono', monospace;
-  --sidebar-w: 260px;
+  --og:      #F56500;
+  --og-hi:   #FF8C35;
+  --og-lo:   rgba(245,101,0,.12);
+  --og-glow: rgba(245,101,0,.35);
+  --bl:      #1A6AFF;
+  --bl-lo:   rgba(26,106,255,.1);
+  --gn:      #22C55E;
+  --gn-lo:   rgba(34,197,94,.1);
+  --rd:      #EF4444;
+  --rd-lo:   rgba(239,68,68,.1);
+  --yw:      #F59E0B;
+  --yw-lo:   rgba(245,158,11,.1);
+  --pu:      #A78BFA;
+  --bg:      #06090F;
+  --bg2:     #0A1020;
+  --bg3:     #0F1828;
+  --bg4:     #162035;
+  --bg5:     #1C2A42;
+  --bdr:     rgba(255,255,255,.06);
+  --bdr-hi:  rgba(245,101,0,.28);
+  --txt:     #E2E8F4;
+  --mut:     #64758B;
+  --mut-hi:  #8FA0C0;
+  --nav-w:   260px;
+  --r:       8px;
+  --r-lg:    14px;
+  --fd:      'Chakra Petch', sans-serif;
+  --fb:      'Figtree', sans-serif;
+  --fm:      'JetBrains Mono', monospace;
 }
+
+/* ══════════════════════════════════════════════════════════
+   RESET
+══════════════════════════════════════════════════════════ */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
 html { font-size:16px; }
-body { font-family:var(--font-b); background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+body { font-family:var(--fb); background:var(--bg); color:var(--txt); min-height:100vh; overflow-x:hidden; }
 a { text-decoration:none; color:inherit; }
-button { cursor:pointer; font-family:inherit; }
+button { cursor:pointer; font-family:inherit; border:none; background:none; }
 img { max-width:100%; display:block; }
-input, textarea, select { font-family:inherit; }
-::-webkit-scrollbar { width:4px; height:4px; }
+input, textarea, select { font-family:inherit; color:var(--txt); }
+::-webkit-scrollbar { width:3px; height:3px; }
 ::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:rgba(245,101,0,.4); border-radius:2px; }
+::-webkit-scrollbar-thumb { background:var(--og); border-radius:2px; }
 
-/* ── NOISE ──────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   NOISE TEXTURE
+══════════════════════════════════════════════════════════ */
 body::before {
-  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  background-size:200px 200px;
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:180px;
 }
 
-/* ── LOGIN SCREEN ───────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════════════════════ */
 #login-screen {
-  position:fixed; inset:0; z-index:9999;
+  position:fixed; inset:0; z-index:9000;
   display:flex; align-items:center; justify-content:center;
-  background:var(--bg);
-  padding:20px;
+  background:var(--bg); padding:20px;
 }
-.login-card {
-  background:var(--bg3); border:1px solid var(--border-hi); border-radius:20px;
-  padding:48px 44px; max-width:420px; width:100%;
-  box-shadow:0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(245,101,0,.08);
+#login-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 50%, rgba(245,101,0,.05), transparent 70%),
+    radial-gradient(ellipse 500px 400px at 80% 50%, rgba(26,106,255,.04), transparent 70%);
+}
+.lc {
+  background:var(--bg3); border:1px solid var(--bdr-hi);
+  border-radius:20px; padding:0; max-width:420px; width:100%;
   position:relative; overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(245,101,0,.06);
+  animation:lc-in .5s cubic-bezier(.34,1.56,.64,1) both;
 }
-.login-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background:linear-gradient(90deg,var(--orange),var(--blue));
+@keyframes lc-in { from{opacity:0;transform:translateY(24px) scale(.97)} to{opacity:1;transform:none} }
+.lc-stripe {
+  height:3px;
+  background:linear-gradient(90deg, var(--og), var(--bl), var(--og));
+  background-size:200%;
+  animation:stripe-scroll 3s linear infinite;
 }
-.login-logo {
-  display:flex; align-items:center; gap:14px; margin-bottom:32px; justify-content:center;
+@keyframes stripe-scroll { from{background-position:0%} to{background-position:200%} }
+.lc-body { padding:36px 40px 44px; }
+.lc-logo {
+  display:flex; align-items:center; gap:14px; margin-bottom:28px;
 }
-.login-logo img { height:52px; }
-.login-brand { font-family:var(--font-d); font-size:26px; font-weight:700; letter-spacing:.04em; }
-.login-brand span { color:var(--orange); }
-.login-sub { font-family:var(--font-m); font-size:10px; letter-spacing:.15em; color:var(--orange); text-transform:uppercase; text-align:center; margin-bottom:36px; }
-.login-field { margin-bottom:16px; }
-.login-label { display:block; font-family:var(--font-m); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-.login-input {
-  width:100%; background:var(--bg4); border:1px solid var(--border); color:var(--text);
-  font-family:var(--font-b); font-size:14px; padding:13px 16px; border-radius:var(--radius);
-  outline:none; transition:border-color .2s;
-}
-.login-input:focus { border-color:rgba(245,101,0,.45); }
-.login-btn {
-  width:100%; background:linear-gradient(135deg,var(--orange),#D45A00); border:none; color:#fff;
-  font-family:var(--font-d); font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-  padding:15px; border-radius:var(--radius); margin-top:8px;
-  transition:opacity .2s, transform .2s;
-  box-shadow:0 4px 20px rgba(245,101,0,.4);
-}
-.login-btn:hover { opacity:.9; transform:translateY(-1px); }
-.login-btn:active { transform:scale(.98); }
-.login-err {
-  background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.2); color:#f87171;
-  font-family:var(--font-m); font-size:11px; letter-spacing:.04em;
-  padding:10px 14px; border-radius:var(--radius); margin-bottom:12px; display:none;
-}
-.login-err.show { display:block; }
+.lc-logo-img { height:52px; width:auto; filter:drop-shadow(0 0 12px rgba(245,101,0,.4)); }
+.lc-logo-text .brand { font-family:var(--fd); font-size:28px; font-weight:700; color:#fff; letter-spacing:.04em; }
+.lc-logo-text .sub { font-family:var(--fm); font-size:9px; color:var(--og); letter-spacing:.18em; text-transform:uppercase; margin-top:3px; }
+.lc-title { font-family:var(--fd); font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--mut-hi); margin-bottom:28px; display:flex; align-items:center; gap:10px; }
+.lc-title::after { content:''; flex:1; height:1px; background:var(--bdr); }
 
-/* ── MAIN LAYOUT ────────────────────────── */
+.lf { margin-bottom:18px; }
+.lf label { display:block; font-family:var(--fm); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut); margin-bottom:8px; }
+.lf-wrap { position:relative; }
+.lf-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--mut); pointer-events:none; }
+.lf input {
+  width:100%; background:var(--bg4); border:1px solid var(--bdr);
+  color:var(--txt); font-family:var(--fb); font-size:14px;
+  padding:13px 14px 13px 44px; border-radius:var(--r);
+  outline:none; transition:border-color .2s, box-shadow .2s;
+}
+.lf input:focus { border-color:rgba(245,101,0,.5); box-shadow:0 0 0 3px rgba(245,101,0,.08); }
+.lf-eye { position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--mut); padding:4px; transition:color .2s; }
+.lf-eye:hover { color:var(--txt); }
+
+.l-btn {
+  width:100%; padding:14px;
+  background:linear-gradient(135deg, var(--og) 0%, #D45500 100%);
+  color:#fff; font-family:var(--fd); font-size:13px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; border-radius:var(--r);
+  transition:opacity .2s, transform .15s, box-shadow .2s;
+  box-shadow:0 4px 24px rgba(245,101,0,.4);
+  margin-top:8px; display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.l-btn:hover { opacity:.92; transform:translateY(-1px); box-shadow:0 8px 32px rgba(245,101,0,.5); }
+.l-btn:active { transform:scale(.98); opacity:1; }
+.l-btn:disabled { opacity:.5; transform:none; cursor:not-allowed; }
+
+.l-err {
+  background:var(--rd-lo); border:1px solid rgba(239,68,68,.25); color:#fca5a5;
+  font-family:var(--fm); font-size:11px; letter-spacing:.04em;
+  padding:11px 14px; border-radius:var(--r); margin-bottom:16px;
+  display:none; align-items:center; gap:8px;
+}
+.l-err.show { display:flex; }
+
+.lc-hint {
+  margin-top:20px; padding-top:20px; border-top:1px solid var(--bdr);
+  font-family:var(--fm); font-size:10px; letter-spacing:.06em; color:var(--mut);
+  display:flex; align-items:center; gap:8px;
+}
+.lc-hint span { color:var(--og); }
+
+/* ══════════════════════════════════════════════════════════
+   APP SHELL (oculto hasta login)
+══════════════════════════════════════════════════════════ */
 #app { display:none; min-height:100vh; }
 
-/* ── SIDEBAR ────────────────────────────── */
-.sidebar {
-  position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); z-index:100;
-  background:var(--bg2); border-right:1px solid var(--border);
-  display:flex; flex-direction:column; overflow-y:auto;
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════════════════════ */
+.sb {
+  position:fixed; top:0; left:0; bottom:0; width:var(--nav-w);
+  background:var(--bg2); border-right:1px solid var(--bdr);
+  display:flex; flex-direction:column; z-index:200; overflow-y:auto;
+  transition:transform .3s;
 }
-.sidebar-logo {
-  padding:24px 20px 20px; display:flex; align-items:center; gap:12px;
-  border-bottom:1px solid var(--border);
+.sb-top {
+  padding:22px 20px 18px;
+  border-bottom:1px solid var(--bdr);
+  display:flex; align-items:center; gap:12px;
 }
-.sidebar-logo img { height:40px; }
-.sidebar-logo-text .brand { font-family:var(--font-d); font-size:18px; font-weight:700; color:#fff; letter-spacing:.04em; }
-.sidebar-logo-text .sub { font-family:var(--font-m); font-size:8px; color:var(--orange); letter-spacing:.12em; text-transform:uppercase; margin-top:2px; }
-.sidebar-section { padding:8px 12px; }
-.sidebar-label { font-family:var(--font-m); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding:8px 8px 6px; }
-.sidebar-item {
-  display:flex; align-items:center; gap:10px;
-  padding:10px 12px; border-radius:var(--radius);
-  font-family:var(--font-d); font-size:12px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
-  color:var(--muted); cursor:pointer; transition:all .2s; border:none; background:none; width:100%; text-align:left;
+.sb-top img { height:38px; filter:drop-shadow(0 0 8px rgba(245,101,0,.3)); }
+.sb-brand { font-family:var(--fd); font-size:17px; font-weight:700; letter-spacing:.04em; }
+.sb-brand span { color:var(--og); }
+.sb-sub { font-family:var(--fm); font-size:8px; color:var(--og); letter-spacing:.15em; text-transform:uppercase; margin-top:2px; }
+
+.sb-live {
+  margin:12px 16px; padding:9px 14px;
+  background:rgba(34,197,94,.07); border:1px solid rgba(34,197,94,.15);
+  border-radius:8px; display:flex; align-items:center; gap:10px;
 }
-.sidebar-item:hover { color:var(--text); background:rgba(255,255,255,.05); }
-.sidebar-item.active { color:var(--orange); background:var(--orange-lo); }
-.sidebar-item svg { flex-shrink:0; opacity:.7; }
-.sidebar-item.active svg { opacity:1; }
-.sidebar-badge {
-  margin-left:auto; background:var(--orange); color:#fff;
-  font-family:var(--font-m); font-size:9px; padding:2px 7px; border-radius:100px; font-weight:600;
+.sb-live-dot { width:7px; height:7px; border-radius:50%; background:var(--gn); flex-shrink:0; animation:live-pulse 1.5s ease-in-out infinite; }
+@keyframes live-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)} 50%{box-shadow:0 0 0 5px rgba(34,197,94,0)} }
+.sb-live-text { font-family:var(--fm); font-size:10px; letter-spacing:.08em; color:var(--gn); text-transform:uppercase; }
+
+.sb-section { padding:6px 8px; }
+.sb-lbl { font-family:var(--fm); font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--mut); padding:8px 10px 5px; }
+.sb-item {
+  display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+  padding:10px 12px; border-radius:var(--r);
+  font-family:var(--fd); font-size:11.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--mut); transition:all .18s; position:relative;
 }
-.sidebar-footer {
-  margin-top:auto; padding:16px 20px; border-top:1px solid var(--border);
-  font-family:var(--font-m); font-size:10px; color:var(--muted); letter-spacing:.04em;
+.sb-item:hover { color:var(--txt); background:rgba(255,255,255,.04); }
+.sb-item.active { color:var(--og); background:var(--og-lo); }
+.sb-item.active::before { content:''; position:absolute; left:0; top:4px; bottom:4px; width:2px; background:var(--og); border-radius:0 2px 2px 0; box-shadow:0 0 8px var(--og-glow); }
+.sb-badge {
+  margin-left:auto; background:var(--og); color:#fff;
+  font-family:var(--fm); font-size:9px; font-weight:600;
+  padding:2px 7px; border-radius:100px; min-width:20px; text-align:center;
+  transition:transform .3s;
 }
-.sidebar-user { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-.sidebar-av {
-  width:36px; height:36px; border-radius:50%; flex-shrink:0;
-  background:linear-gradient(135deg,var(--orange),var(--blue));
+.sb-badge.flash { animation:badge-flash .6s ease; }
+@keyframes badge-flash { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4); background:var(--bl); } }
+
+.sb-user {
+  margin-top:auto; padding:14px 16px 16px;
+  border-top:1px solid var(--bdr);
+}
+.sb-user-row { display:flex; align-items:center; gap:11px; margin-bottom:12px; }
+.sb-av {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg, var(--og), var(--bl));
   display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-d); font-size:13px; font-weight:700; color:#fff;
+  font-family:var(--fd); font-size:14px; font-weight:700; color:#fff;
 }
-.sidebar-logout {
-  width:100%; background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.15); color:#f87171;
-  font-family:var(--font-m); font-size:10px; letter-spacing:.08em; text-transform:uppercase;
-  padding:9px; border-radius:var(--radius); transition:all .2s;
+.sb-user-name { font-family:var(--fd); font-size:13px; font-weight:600; color:var(--txt); }
+.sb-user-role { font-family:var(--fm); font-size:9px; color:var(--og); letter-spacing:.1em; text-transform:uppercase; margin-top:2px; }
+.sb-logout {
+  width:100%; padding:9px 12px;
+  background:var(--rd-lo); border:1px solid rgba(239,68,68,.2); color:#fca5a5;
+  font-family:var(--fm); font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+  border-radius:var(--r); display:flex; align-items:center; justify-content:center; gap:8px;
+  transition:all .2s;
 }
-.sidebar-logout:hover { background:rgba(239,68,68,.15); }
+.sb-logout:hover { background:rgba(239,68,68,.18); }
 
-/* ── MAIN CONTENT ───────────────────────── */
-.main {
-  margin-left:var(--sidebar-w);
-  padding:32px;
-  min-height:100vh;
-  position:relative;
-  z-index:1;
-}
+/* ══════════════════════════════════════════════════════════
+   MAIN AREA
+══════════════════════════════════════════════════════════ */
+.main { margin-left:var(--nav-w); padding:32px; min-height:100vh; position:relative; z-index:1; }
 
-/* ── TOPBAR ─────────────────────────────── */
-.topbar {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:32px; flex-wrap:wrap; gap:16px;
-}
-.topbar-title { font-family:var(--font-d); font-size:28px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; }
-.topbar-title span { color:var(--orange); }
-.topbar-right { display:flex; align-items:center; gap:12px; }
-.btn { display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:var(--radius); border:none; font-family:var(--font-m); font-size:11px; letter-spacing:.07em; text-transform:uppercase; transition:all .2s; cursor:pointer; }
-.btn-primary { background:var(--orange); color:#fff; box-shadow:0 2px 12px rgba(245,101,0,.3); }
-.btn-primary:hover { background:var(--orange-hi); }
-.btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--border); }
-.btn-ghost:hover { color:var(--text); border-color:rgba(255,255,255,.15); }
-.btn-blue { background:var(--blue); color:#fff; }
-.btn-blue:hover { background:#2D7AFF; }
-.btn-red { background:rgba(239,68,68,.1); color:#f87171; border:1px solid rgba(239,68,68,.2); }
-.btn-red:hover { background:rgba(239,68,68,.18); }
-.btn-green { background:rgba(34,197,94,.1); color:#4ade80; border:1px solid rgba(34,197,94,.2); }
-.btn-green:hover { background:rgba(34,197,94,.18); }
+/* Topbar */
+.topbar { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:16px; }
+.topbar-title { font-family:var(--fd); font-size:26px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; }
+.topbar-title span { color:var(--og); }
+.topbar-sub { font-family:var(--fm); font-size:11px; color:var(--mut); letter-spacing:.06em; margin-top:4px; }
+.topbar-right { display:flex; gap:10px; align-items:center; flex-shrink:0; }
 
-/* ── PANES ──────────────────────────────── */
-.pane { display:none; }
+/* Panes */
+.pane { display:none; animation:pane-in .3s ease; }
 .pane.active { display:block; }
+@keyframes pane-in { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 
-/* ── STAT CARDS ─────────────────────────── */
-.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:28px; }
-.stat-card {
-  background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:24px 22px;
-  position:relative; overflow:hidden; transition:border-color .25s, transform .25s;
-}
-.stat-card:hover { border-color:var(--border-hi); transform:translateY(-2px); }
-.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
-.stat-card.orange::before { background:linear-gradient(90deg,var(--orange),transparent); }
-.stat-card.blue::before { background:linear-gradient(90deg,var(--blue),transparent); }
-.stat-card.green::before { background:linear-gradient(90deg,var(--green),transparent); }
-.stat-card.red::before { background:linear-gradient(90deg,var(--red),transparent); }
-.stat-card.purple::before { background:linear-gradient(90deg,#A78BFA,transparent); }
-.stat-n { font-family:var(--font-d); font-size:46px; font-weight:700; line-height:1; }
-.stat-n.orange { color:var(--orange); }
-.stat-n.blue { color:var(--blue); }
-.stat-n.green { color:var(--green); }
-.stat-n.red { color:var(--red); }
-.stat-n.purple { color:#A78BFA; }
-.stat-l { font-family:var(--font-m); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:8px; }
-.stat-icon { position:absolute; bottom:16px; right:16px; opacity:.08; }
+/* ══════════════════════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════════════════════ */
+.btn { display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:var(--r); font-family:var(--fm); font-size:11px; letter-spacing:.07em; text-transform:uppercase; transition:all .18s; cursor:pointer; white-space:nowrap; border:none; }
+.btn-primary { background:var(--og); color:#fff; box-shadow:0 2px 12px rgba(245,101,0,.3); }
+.btn-primary:hover { background:var(--og-hi); box-shadow:0 4px 20px rgba(245,101,0,.45); }
+.btn-ghost { background:transparent; color:var(--mut); border:1px solid var(--bdr); }
+.btn-ghost:hover { color:var(--txt); border-color:rgba(255,255,255,.14); background:rgba(255,255,255,.03); }
+.btn-blue { background:var(--bl); color:#fff; }
+.btn-blue:hover { background:#2D7AFF; }
+.btn-green { background:var(--gn-lo); color:#4ade80; border:1px solid rgba(34,197,94,.2); }
+.btn-green:hover { background:rgba(34,197,94,.18); }
+.btn-red { background:var(--rd-lo); color:#fca5a5; border:1px solid rgba(239,68,68,.2); }
+.btn-red:hover { background:rgba(239,68,68,.18); }
+.btn-sm { padding:6px 12px; font-size:10px; }
 
-/* ── CARD ───────────────────────────────── */
-.card {
-  background:var(--bg3); border:1px solid var(--border); border-radius:12px;
-  margin-bottom:18px; overflow:hidden;
+/* ══════════════════════════════════════════════════════════
+   STAT CARDS
+══════════════════════════════════════════════════════════ */
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px; margin-bottom:24px; }
+.sc {
+  background:var(--bg3); border:1px solid var(--bdr); border-radius:var(--r-lg);
+  padding:22px 20px; position:relative; overflow:hidden;
+  transition:transform .25s, border-color .25s;
 }
-.card-header {
-  padding:18px 22px; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
-}
-.card-title { font-family:var(--font-d); font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
-.card-body { padding:22px; }
-.card-body-sm { padding:16px 22px; }
+.sc:hover { transform:translateY(-3px); border-color:var(--bdr-hi); }
+.sc::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+.sc.og::before { background:linear-gradient(90deg,var(--og),transparent); }
+.sc.bl::before { background:linear-gradient(90deg,var(--bl),transparent); }
+.sc.gn::before { background:linear-gradient(90deg,var(--gn),transparent); }
+.sc.rd::before { background:linear-gradient(90deg,var(--rd),transparent); }
+.sc.pu::before { background:linear-gradient(90deg,var(--pu),transparent); }
+.sc.yw::before { background:linear-gradient(90deg,var(--yw),transparent); }
+.sc-icon { position:absolute; right:16px; top:16px; opacity:.1; }
+.sc-n { font-family:var(--fd); font-size:40px; font-weight:700; line-height:1; margin-bottom:6px; }
+.sc.og .sc-n { color:var(--og); }
+.sc.bl .sc-n { color:var(--bl); }
+.sc.gn .sc-n { color:var(--gn); }
+.sc.rd .sc-n { color:var(--rd); }
+.sc.pu .sc-n { color:var(--pu); }
+.sc.yw .sc-n { color:var(--yw); }
+.sc-l { font-family:var(--fm); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut); }
+.sc-trend { font-family:var(--fm); font-size:10px; margin-top:8px; }
 
-/* ── SEARCH BAR ─────────────────────────── */
-.search-wrap {
-  display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;
-}
-.search-input {
-  flex:1; min-width:220px; background:var(--bg4); border:1px solid var(--border); color:var(--text);
-  font-family:var(--font-b); font-size:13px; padding:12px 16px; border-radius:var(--radius);
-  outline:none; transition:border-color .2s;
-}
-.search-input:focus { border-color:rgba(245,101,0,.4); }
-.search-input::placeholder { color:var(--muted); }
-.search-select {
-  background:var(--bg4); border:1px solid var(--border); color:var(--text);
-  font-family:var(--font-b); font-size:13px; padding:12px 14px; border-radius:var(--radius);
-  outline:none; transition:border-color .2s;
-}
-.search-select:focus { border-color:rgba(245,101,0,.4); }
+/* ══════════════════════════════════════════════════════════
+   CARDS / PANELS
+══════════════════════════════════════════════════════════ */
+.card { background:var(--bg3); border:1px solid var(--bdr); border-radius:var(--r-lg); overflow:hidden; margin-bottom:16px; }
+.card-hd { padding:16px 20px; border-bottom:1px solid var(--bdr); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.card-title { font-family:var(--fd); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; display:flex; align-items:center; gap:9px; }
+.card-title svg { color:var(--og); flex-shrink:0; }
+.card-body { padding:20px; }
+.card-body-sm { padding:14px 20px; }
 
-/* ── TABLE ──────────────────────────────── */
-.table-wrap { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; }
-th {
-  font-family:var(--font-m); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--muted); padding:12px 16px; text-align:left; border-bottom:1px solid var(--border);
-  white-space:nowrap;
-}
-td { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-size:13px; vertical-align:middle; }
-tr:last-child td { border-bottom:none; }
-tr:hover td { background:rgba(255,255,255,.025); }
-.td-mono { font-family:var(--font-m); font-size:11px; letter-spacing:.04em; }
-.td-name { font-family:var(--font-d); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
-
-/* ── BADGES ─────────────────────────────── */
-.badge { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-m); font-size:9px; letter-spacing:.1em; text-transform:uppercase; padding:3px 10px; border-radius:100px; }
-.badge-admin { background:var(--orange-lo); border:1px solid rgba(245,101,0,.25); color:var(--orange); }
-.badge-client { background:var(--blue-lo); border:1px solid rgba(26,106,255,.2); color:var(--blue); }
-.badge-green { background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.2); color:#4ade80; }
-.badge-red { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.15); color:#f87171; }
-.badge-gray { background:rgba(107,127,163,.1); border:1px solid rgba(107,127,163,.2); color:var(--muted); }
-
-/* ── ROW ACTIONS ────────────────────────── */
-.actions { display:flex; gap:6px; flex-wrap:wrap; }
-.act { font-family:var(--font-m); font-size:10px; letter-spacing:.06em; text-transform:uppercase; padding:6px 12px; border-radius:6px; border:1px solid; transition:all .2s; white-space:nowrap; }
-.act-view { background:var(--blue-lo); border-color:rgba(26,106,255,.2); color:var(--blue); }
-.act-view:hover { background:rgba(26,106,255,.18); }
-.act-promote { background:var(--orange-lo); border-color:rgba(245,101,0,.25); color:var(--orange); }
-.act-promote:hover { background:rgba(245,101,0,.2); }
-.act-demote { background:rgba(107,127,163,.08); border-color:rgba(107,127,163,.15); color:var(--muted); }
-.act-demote:hover { background:rgba(107,127,163,.15); }
-.act-del { background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.15); color:#f87171; }
-.act-del:hover { background:rgba(239,68,68,.15); }
-
-/* ── USER DETAIL MODAL ──────────────────── */
-#user-modal {
-  position:fixed; inset:0; z-index:5000; background:rgba(7,10,16,.92); backdrop-filter:blur(20px);
-  display:flex; align-items:center; justify-content:center; padding:20px;
-  opacity:0; visibility:hidden; transition:all .3s;
-}
-#user-modal.open { opacity:1; visibility:visible; }
-.user-modal-box {
-  background:var(--bg3); border:1px solid var(--border-hi); border-radius:20px;
-  max-width:860px; width:100%; max-height:90vh; overflow-y:auto;
-  transform:translateY(20px) scale(.98); transition:transform .32s cubic-bezier(.34,1.56,.64,1);
-  box-shadow:0 40px 100px rgba(0,0,0,.7);
+/* ══════════════════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════════════════ */
+.srch-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+.srch {
+  flex:1; min-width:220px; background:var(--bg4); border:1px solid var(--bdr);
+  font-family:var(--fb); font-size:13px; padding:11px 14px 11px 40px;
+  border-radius:var(--r); outline:none; transition:border-color .2s;
   position:relative;
 }
-#user-modal.open .user-modal-box { transform:none; }
-.user-modal-top {
-  position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--orange),var(--blue));
+.srch:focus { border-color:rgba(245,101,0,.4); }
+.srch::placeholder { color:var(--mut); }
+.srch-wrap { position:relative; flex:1; min-width:220px; }
+.srch-wrap svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--mut); pointer-events:none; }
+.srch-wrap input { width:100%; background:var(--bg4); border:1px solid var(--bdr); color:var(--txt); font-family:var(--fb); font-size:13px; padding:11px 14px 11px 40px; border-radius:var(--r); outline:none; transition:border-color .2s; }
+.srch-wrap input:focus { border-color:rgba(245,101,0,.4); }
+.srch-wrap input::placeholder { color:var(--mut); }
+.sel { background:var(--bg4); border:1px solid var(--bdr); color:var(--txt); font-family:var(--fb); font-size:13px; padding:11px 14px; border-radius:var(--r); outline:none; }
+.sel:focus { border-color:rgba(245,101,0,.4); }
+
+/* ══════════════════════════════════════════════════════════
+   TABLE
+══════════════════════════════════════════════════════════ */
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; }
+th { font-family:var(--fm); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut); padding:11px 14px; text-align:left; border-bottom:1px solid var(--bdr); white-space:nowrap; }
+td { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.03); font-size:13px; vertical-align:middle; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:rgba(255,255,255,.02); }
+.td-id { font-family:var(--fm); font-size:10px; color:var(--mut); max-width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.td-name { font-family:var(--fd); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
+.td-mono { font-family:var(--fm); font-size:11px; letter-spacing:.02em; }
+.td-og { color:var(--og); font-family:var(--fd); font-weight:700; }
+
+/* ══════════════════════════════════════════════════════════
+   BADGES & PILLS
+══════════════════════════════════════════════════════════ */
+.badge { display:inline-flex; align-items:center; gap:4px; font-family:var(--fm); font-size:9px; letter-spacing:.1em; text-transform:uppercase; padding:3px 9px; border-radius:100px; }
+.b-admin  { background:var(--og-lo); border:1px solid rgba(245,101,0,.25); color:var(--og); }
+.b-client { background:var(--bl-lo); border:1px solid rgba(26,106,255,.2); color:var(--bl); }
+.b-green  { background:var(--gn-lo); border:1px solid rgba(34,197,94,.2); color:#4ade80; }
+.b-red    { background:var(--rd-lo); border:1px solid rgba(239,68,68,.2); color:#fca5a5; }
+.b-gray   { background:rgba(100,117,139,.1); border:1px solid rgba(100,117,139,.2); color:var(--mut); }
+.b-yellow { background:var(--yw-lo); border:1px solid rgba(245,158,11,.2); color:#fcd34d; }
+
+/* ══════════════════════════════════════════════════════════
+   ROW ACTIONS
+══════════════════════════════════════════════════════════ */
+.acts { display:flex; gap:5px; flex-wrap:wrap; }
+.act { font-family:var(--fm); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; padding:5px 10px; border-radius:6px; border:1px solid; transition:all .18s; white-space:nowrap; cursor:pointer; background:none; }
+.act-view    { border-color:rgba(26,106,255,.25); color:var(--bl); }
+.act-view:hover { background:var(--bl-lo); }
+.act-promote { border-color:rgba(245,101,0,.25); color:var(--og); }
+.act-promote:hover { background:var(--og-lo); }
+.act-demote  { border-color:rgba(100,117,139,.2); color:var(--mut); }
+.act-demote:hover { background:rgba(100,117,139,.08); }
+.act-del     { border-color:rgba(239,68,68,.2); color:#fca5a5; }
+.act-del:hover { background:var(--rd-lo); }
+
+/* ══════════════════════════════════════════════════════════
+   USER MODAL
+══════════════════════════════════════════════════════════ */
+#um-overlay {
+  position:fixed; inset:0; z-index:5000;
+  background:rgba(6,9,15,.85); backdrop-filter:blur(16px);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  opacity:0; visibility:hidden; transition:all .25s;
 }
-.user-modal-header {
-  padding:28px 32px 20px; display:flex; align-items:center; gap:20px; border-bottom:1px solid var(--border);
+#um-overlay.open { opacity:1; visibility:visible; }
+.um-box {
+  background:var(--bg3); border:1px solid var(--bdr-hi); border-radius:20px;
+  max-width:880px; width:100%; max-height:90vh; overflow-y:auto;
+  transform:translateY(20px) scale(.98);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 50px 120px rgba(0,0,0,.8);
+  position:relative;
 }
-.user-modal-av {
-  width:72px; height:72px; border-radius:50%; flex-shrink:0;
-  background:linear-gradient(135deg,var(--orange),var(--blue));
+#um-overlay.open .um-box { transform:none; }
+.um-stripe { height:3px; background:linear-gradient(90deg,var(--og),var(--bl)); background-size:200%; animation:stripe-scroll 3s linear infinite; }
+.um-close {
+  position:absolute; top:14px; right:14px; width:32px; height:32px;
+  background:rgba(255,255,255,.07); border-radius:50%; display:flex;
+  align-items:center; justify-content:center; color:var(--mut);
+  transition:all .2s;
+}
+.um-close:hover { background:rgba(255,255,255,.14); color:var(--txt); }
+
+.um-hd { padding:24px 28px 18px; display:flex; align-items:center; gap:18px; border-bottom:1px solid var(--bdr); }
+.um-av {
+  width:68px; height:68px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,var(--og),var(--bl));
   display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-d); font-size:24px; font-weight:700; color:#fff;
+  font-family:var(--fd); font-size:22px; font-weight:700; color:#fff;
   position:relative; overflow:hidden;
 }
-.user-modal-av img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; }
-.user-modal-info { flex:1; min-width:0; }
-.user-modal-name { font-family:var(--font-d); font-size:24px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
-.user-modal-email { font-family:var(--font-m); font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:4px; }
-.user-modal-close {
-  position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%;
-  background:rgba(255,255,255,.07); border:none; color:var(--muted); font-size:16px;
-  display:flex; align-items:center; justify-content:center; transition:all .2s;
-}
-.user-modal-close:hover { background:rgba(255,255,255,.14); color:var(--text); }
+.um-av img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.um-name { font-family:var(--fd); font-size:22px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
+.um-email { font-family:var(--fm); font-size:12px; color:var(--mut); margin-top:4px; }
+.um-badges { display:flex; gap:7px; flex-wrap:wrap; margin-top:8px; }
 
 /* Modal tabs */
-.user-modal-tabs { display:flex; border-bottom:1px solid var(--border); padding:0 32px; overflow-x:auto; }
-.umt { flex-shrink:0; padding:14px 20px; font-family:var(--font-m); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); background:none; border:none; position:relative; transition:color .2s; }
-.umt.active { color:var(--orange); }
-.umt.active::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:2px; background:var(--orange); }
-.user-modal-pane { display:none; padding:28px 32px; }
-.user-modal-pane.active { display:block; }
+.um-tabs { display:flex; border-bottom:1px solid var(--bdr); padding:0 28px; gap:2px; overflow-x:auto; }
+.um-tab {
+  flex-shrink:0; padding:13px 18px;
+  font-family:var(--fm); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--mut); background:none; border:none; position:relative; transition:color .2s;
+  display:flex; align-items:center; gap:7px;
+}
+.um-tab:hover { color:var(--txt); }
+.um-tab.active { color:var(--og); }
+.um-tab.active::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:2px; background:var(--og); }
+.um-pane { display:none; padding:24px 28px; }
+.um-pane.active { display:block; }
 
 /* Info grid */
-.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-.info-item {
-  background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:16px 18px;
-  transition:border-color .2s;
-}
-.info-item:hover { border-color:rgba(245,101,0,.2); }
-.info-key { font-family:var(--font-m); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.info-val { font-size:14px; color:var(--text); word-break:break-all; }
-.info-val.mono { font-family:var(--font-m); font-size:12px; letter-spacing:.04em; }
-.info-val.orange { color:var(--orange); font-family:var(--font-d); font-weight:700; }
-.info-val.highlight {
+.ig { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.ig-full { grid-column:1/-1; }
+.ii { background:var(--bg4); border:1px solid var(--bdr); border-radius:10px; padding:15px 17px; transition:border-color .2s; }
+.ii:hover { border-color:rgba(245,101,0,.18); }
+.ii-k { font-family:var(--fm); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.ii-v { font-size:14px; color:var(--txt); word-break:break-all; }
+.ii-v.mono { font-family:var(--fm); font-size:12px; }
+.ii-v.og { color:var(--og); font-family:var(--fd); font-weight:700; font-size:20px; }
+.ii-v.secret {
   background:var(--bg5); border:1px solid rgba(245,101,0,.2); border-radius:6px;
-  padding:8px 12px; font-family:var(--font-m); font-size:12px; letter-spacing:.04em;
-  color:var(--orange-hi); margin-top:4px; display:block;
+  padding:8px 12px; font-family:var(--fm); font-size:12px; color:var(--og-hi);
+  margin-top:4px; display:block; letter-spacing:.04em;
 }
-.info-full { grid-column:1/-1; }
 
-/* Order cards */
-.order-card { background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:18px; margin-bottom:12px; }
-.order-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
-.order-id { font-family:var(--font-m); font-size:11px; letter-spacing:.06em; color:var(--muted); }
-.order-date { font-family:var(--font-m); font-size:11px; color:var(--muted); }
-.order-item { display:flex; align-items:center; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:13px; }
-.order-item:last-of-type { border-bottom:none; }
-.order-total { display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-family:var(--font-d); font-size:14px; font-weight:600; }
+/* Order / comment cards */
+.oc { background:var(--bg4); border:1px solid var(--bdr); border-radius:10px; padding:16px 18px; margin-bottom:10px; }
+.oc-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+.oc-id { font-family:var(--fm); font-size:11px; color:var(--mut); }
+.oc-date { font-family:var(--fm); font-size:11px; color:var(--mut); }
+.oc-row { display:flex; align-items:center; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:13px; }
+.oc-row:last-of-type { border-bottom:none; }
+.oc-total { display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px solid var(--bdr); font-family:var(--fd); font-size:14px; font-weight:600; }
 
-/* Comment cards */
-.comment-card { background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:10px; }
-.comment-stars { color:var(--orange); font-size:14px; margin-bottom:6px; }
-.comment-text { font-size:13px; color:var(--muted-hi); line-height:1.6; margin-bottom:8px; }
-.comment-meta { font-family:var(--font-m); font-size:10px; letter-spacing:.06em; color:var(--muted); }
+/* Fields */
+.ff { margin-bottom:14px; }
+.ff label { display:block; font-family:var(--fm); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); margin-bottom:7px; }
+.fi { width:100%; background:var(--bg4); border:1px solid var(--bdr); color:var(--txt); font-family:var(--fb); font-size:13px; padding:11px 14px; border-radius:var(--r); outline:none; transition:border-color .2s; }
+.fi:focus { border-color:rgba(245,101,0,.4); }
+.fi-ta { min-height:80px; resize:vertical; }
+.star-row { display:flex; gap:6px; }
+.sr-btn { background:none; border:none; font-size:22px; color:rgba(255,255,255,.12); cursor:pointer; transition:color .15s; line-height:1; }
+.sr-btn.on { color:var(--og); }
 
-/* ── FORM FIELDS ────────────────────────── */
-.field-wrap { margin-bottom:14px; }
-.field-label { display:block; font-family:var(--font-m); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:7px; }
-.field-input {
-  width:100%; background:var(--bg4); border:1px solid var(--border); color:var(--text);
-  font-family:var(--font-b); font-size:13px; padding:12px 15px; border-radius:var(--radius);
-  outline:none; transition:border-color .2s;
-}
-.field-input:focus { border-color:rgba(245,101,0,.4); }
-.field-textarea { min-height:90px; resize:vertical; }
-.star-row { display:flex; gap:6px; margin-bottom:14px; }
-.star-btn { background:none; border:none; font-size:22px; color:rgba(255,255,255,.15); cursor:pointer; transition:color .15s; }
-.star-btn.on { color:var(--orange); }
+/* Code items */
+.ci { background:var(--bg4); border:1px solid var(--bdr); border-radius:10px; padding:14px 18px; margin-bottom:10px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.ci-val { font-family:var(--fm); font-size:20px; font-weight:600; letter-spacing:.22em; color:var(--og); flex:1; }
 
-/* ── CODE ITEM ──────────────────────────── */
-.code-item { background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:10px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-.code-val { font-family:var(--font-m); font-size:18px; font-weight:600; letter-spacing:.2em; color:var(--orange); flex:1; }
-.code-status { font-family:var(--font-m); font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
-.code-expiry { font-family:var(--font-m); font-size:11px; color:var(--muted); }
+/* Empty state */
+.empty { text-align:center; padding:48px 20px; }
+.empty svg { margin:0 auto 14px; opacity:.2; }
+.empty-t { font-family:var(--fm); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); }
 
-/* ── EMPTY STATE ────────────────────────── */
-.empty-state { text-align:center; padding:48px 20px; }
-.empty-state svg { margin:0 auto 16px; opacity:.25; }
-.empty-text { font-family:var(--font-m); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
-
-/* ── TOAST ──────────────────────────────── */
-#toast-root { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
-.toastx {
-  background:var(--bg3); border:1px solid var(--border); color:var(--text);
-  font-family:var(--font-m); font-size:12px; letter-spacing:.04em;
-  padding:12px 18px; border-radius:var(--radius); max-width:280px;
+/* ══════════════════════════════════════════════════════════
+   TOASTS
+══════════════════════════════════════════════════════════ */
+#toast-wrap { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+.toast {
+  background:var(--bg3); border:1px solid var(--bdr); color:var(--txt);
+  font-family:var(--fm); font-size:12px; letter-spacing:.03em;
+  padding:12px 16px; border-radius:var(--r); max-width:300px;
   display:flex; align-items:center; gap:10px;
   transform:translateX(calc(100% + 28px)); opacity:0;
   transition:all .35s cubic-bezier(.34,1.56,.64,1);
   box-shadow:0 8px 32px rgba(0,0,0,.5);
 }
-.toastx.show { transform:none; opacity:1; }
+.toast.show { transform:none; opacity:1; }
 .toast-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 
-/* ── SEARCH HIGHLIGHT ───────────────────── */
-.hl { background:rgba(245,101,0,.25); border-radius:2px; padding:0 2px; }
-
-/* ── RESPONSIVE ─────────────────────────── */
-@media (max-width:900px) {
-  :root { --sidebar-w: 72px; }
-  .sidebar-logo-text, .sidebar-label, .sidebar-item span, .sidebar-badge,
-  .sidebar-footer .sidebar-user-info, .sidebar-logout-text { display:none; }
-  .sidebar-logo { justify-content:center; padding:20px 10px; }
-  .sidebar-item { justify-content:center; padding:12px; }
-  .sidebar-footer { padding:12px; }
-  .sidebar-user { justify-content:center; }
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════════ */
+@media (max-width:960px) {
+  :root { --nav-w: 68px; }
+  .sb-top .sb-brand, .sb-top .sb-sub,
+  .sb-lbl, .sb-item span:not(.sb-badge),
+  .sb-live-text, .sb-user-name, .sb-user-role { display:none; }
+  .sb-top { justify-content:center; padding:18px 10px; }
+  .sb-item { justify-content:center; padding:12px 8px; }
+  .sb-live { padding:8px; justify-content:center; }
+  .sb-user-row { justify-content:center; }
+  .sb-logout span { display:none; }
+  .sb-logout { justify-content:center; padding:9px; }
   .main { padding:20px 16px; }
-  .info-grid { grid-template-columns:1fr; }
-  .user-modal-box { max-width:100%; border-radius:16px; }
-  .user-modal-header { padding:20px; }
-  .user-modal-pane { padding:20px; }
-  .user-modal-tabs { padding:0 20px; }
 }
-@media (max-width:480px) {
+@media (max-width:600px) {
+  .ig { grid-template-columns:1fr; }
   .stats-grid { grid-template-columns:1fr 1fr; }
+  .um-box { border-radius:14px; }
+  .um-hd { padding:18px 18px 14px; }
+  .um-pane { padding:18px; }
+  .um-tabs { padding:0 14px; }
+  .topbar { flex-direction:column; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── LOGIN ──────────────────────────────────────────────────────────────── -->
+<!-- ═══════════════════════════════ LOGIN ═════════════════════════════════── -->
 <div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">
-      <img src="logo.png" alt="IMPEL" onerror="this.style.display='none'">
-      <div>
-        <div class="login-brand">IMP<span>EL</span></div>
+  <div class="lc">
+    <div class="lc-stripe"></div>
+    <div class="lc-body">
+      <div class="lc-logo">
+        <img class="lc-logo-img" src="logo.png" alt="IMPEL" onerror="this.style.display='none'">
+        <div class="lc-logo-text">
+          <div class="brand">IMP<span style="color:var(--og)">EL</span></div>
+          <div class="sub">Electromecánica</div>
+        </div>
+      </div>
+      <div class="lc-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Acceso Administrativo
+      </div>
+
+      <div id="l-err" class="l-err">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="l-err-msg">Credenciales incorrectas.</span>
+      </div>
+
+      <div class="lf">
+        <label>Usuario o Email</label>
+        <div class="lf-wrap">
+          <svg class="lf-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input id="l-user" type="text" placeholder="admin o email@impelpanama.com" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+      </div>
+      <div class="lf">
+        <label>Contraseña</label>
+        <div class="lf-wrap">
+          <svg class="lf-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <input id="l-pass" type="password" placeholder="••••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+          <button class="lf-eye" onclick="togglePass('l-pass',this)" tabindex="-1">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="l-btn" id="l-btn" onclick="doLogin()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        Entrar al Panel
+      </button>
+
+      <div class="lc-hint">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Acceso restringido. Solo administradores de <span>IMPEL</span>.
       </div>
     </div>
-    <div class="login-sub">⚡ Panel de Administración ⚡</div>
-    <div id="login-err" class="login-err">Credenciales incorrectas o acceso no autorizado.</div>
-    <div class="login-field">
-      <label class="login-label">Email o Usuario</label>
-      <input class="login-input" id="l-em" type="text" placeholder="admin@impelpanama.com" onkeydown="if(event.key==='Enter')doAdminLogin()">
-    </div>
-    <div class="login-field">
-      <label class="login-label">Contraseña</label>
-      <input class="login-input" id="l-ps" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()">
-    </div>
-    <button class="login-btn" onclick="doAdminLogin()">Acceder al Panel</button>
   </div>
 </div>
 
-<!-- ── APP ────────────────────────────────────────────────────────────────── -->
+<!-- ═══════════════════════════════ APP ═══════════════════════════════════── -->
 <div id="app">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <img src="logo.png" alt="IMPEL" style="height:36px" onerror="this.style.display='none'">
-      <div class="sidebar-logo-text">
-        <div class="brand">IMPEL</div>
-        <div class="sub">Admin Panel</div>
+  <nav class="sb" id="sidebar">
+    <div class="sb-top">
+      <img src="logo.png" alt="IMPEL" onerror="this.style.display='none'">
+      <div>
+        <div class="sb-brand">IMP<span>EL</span></div>
+        <div class="sb-sub">CRM Panel</div>
       </div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Principal</div>
-      <button class="sidebar-item active" onclick="showPane('dashboard',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+
+    <div class="sb-live">
+      <div class="sb-live-dot"></div>
+      <span class="sb-live-text">En vivo</span>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-lbl">Principal</div>
+      <button class="sb-item active" id="nav-dashboard" onclick="nav('dashboard',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         <span>Dashboard</span>
       </button>
-      <button class="sidebar-item" onclick="showPane('users',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      <button class="sb-item" id="nav-users" onclick="nav('users',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         <span>Usuarios</span>
-        <span class="sidebar-badge" id="sb-users">0</span>
+        <span class="sb-badge" id="badge-users">0</span>
       </button>
-      <button class="sidebar-item" onclick="showPane('search',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span>Buscar Usuario</span>
+      <button class="sb-item" id="nav-search" onclick="nav('search',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Buscar</span>
       </button>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Contenido</div>
-      <button class="sidebar-item" onclick="showPane('comments',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+
+    <div class="sb-section">
+      <div class="sb-lbl">Contenido</div>
+      <button class="sb-item" id="nav-comments" onclick="nav('comments',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         <span>Comentarios</span>
-        <span class="sidebar-badge" id="sb-comments">0</span>
+        <span class="sb-badge" id="badge-comments">0</span>
       </button>
-      <button class="sidebar-item" onclick="showPane('orders',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg>
+      <button class="sb-item" id="nav-orders" onclick="nav('orders',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg>
         <span>Pedidos</span>
-        <span class="sidebar-badge" id="sb-orders">0</span>
+        <span class="sb-badge" id="badge-orders">0</span>
       </button>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Sistema</div>
-      <button class="sidebar-item" onclick="showPane('codes',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+
+    <div class="sb-section">
+      <div class="sb-lbl">Sistema</div>
+      <button class="sb-item" id="nav-codes" onclick="nav('codes',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
         <span>Códigos Admin</span>
       </button>
-      <button class="sidebar-item" onclick="showPane('addcomment',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        <span>Añadir Reseña</span>
+      <button class="sb-item" id="nav-addcomment" onclick="nav('addcomment',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Nueva Reseña</span>
       </button>
-      <button class="sidebar-item" onclick="showPane('export',this)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>Exportar Datos</span>
+      <button class="sb-item" id="nav-settings" onclick="nav('settings',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M2 12h2m16 0h2M6.34 6.34L4.93 4.93M19.07 19.07l-1.41-1.41M12 2v2m0 16v2"/></svg>
+        <span>Configuración</span>
       </button>
     </div>
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="sidebar-av" id="sb-av">A</div>
-        <div class="sidebar-user-info">
-          <div style="font-size:12px;color:var(--text);font-weight:600" id="sb-name">Admin</div>
-          <div style="font-size:10px;color:var(--muted)" id="sb-email">—</div>
+
+    <div class="sb-user">
+      <div class="sb-user-row">
+        <div class="sb-av" id="sb-av">A</div>
+        <div>
+          <div class="sb-user-name" id="sb-name">Admin</div>
+          <div class="sb-user-role">Administrador</div>
         </div>
       </div>
-      <button class="sidebar-logout" onclick="doLogout()">
-        <span class="sidebar-logout-text">Cerrar Sesión</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      <button class="sb-logout" onclick="doLogout()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Cerrar Sesión</span>
       </button>
     </div>
-  </aside>
+  </nav>
 
   <!-- MAIN -->
   <main class="main">
 
-    <!-- DASHBOARD -->
+    <!-- ── DASHBOARD ──────────────────────────────────────────── -->
     <div class="pane active" id="pane-dashboard">
       <div class="topbar">
         <div>
           <div class="topbar-title">⚡ <span>Dashboard</span></div>
-          <div style="font-family:var(--font-m);font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:4px" id="dash-welcome">Cargando...</div>
+          <div class="topbar-sub" id="dash-time">—</div>
         </div>
         <div class="topbar-right">
-          <button class="btn btn-ghost" onclick="refreshAll()">
+          <button class="btn btn-ghost btn-sm" onclick="refresh()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
             Actualizar
           </button>
         </div>
       </div>
+
+      <!-- Stats -->
       <div class="stats-grid" id="dash-stats"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;" class="dash-cols">
+
+      <!-- Two columns -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">Últimos Registros</div>
+          <div class="card-hd">
+            <div class="card-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              Últimos Registros
+            </div>
           </div>
-          <div id="dash-latest-users"></div>
+          <div id="dash-new-users"></div>
         </div>
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">Últimos Comentarios</div>
+          <div class="card-hd">
+            <div class="card-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              Últimas Reseñas
+            </div>
           </div>
-          <div id="dash-latest-comments"></div>
+          <div id="dash-new-comments"></div>
         </div>
       </div>
-      <div class="card" style="margin-top:18px">
-        <div class="card-header">
-          <div class="card-title">Últimos Pedidos</div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg>
+            Últimos Pedidos
+          </div>
         </div>
-        <div id="dash-latest-orders"></div>
+        <div id="dash-new-orders"></div>
       </div>
     </div>
 
-    <!-- USERS -->
+    <!-- ── USERS ───────────────────────────────────────────────── -->
     <div class="pane" id="pane-users">
       <div class="topbar">
-        <div class="topbar-title">👥 <span>Usuarios</span></div>
-        <div class="topbar-right">
-          <button class="btn btn-ghost" onclick="loadUsers()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-            Refrescar
-          </button>
+        <div>
+          <div class="topbar-title">👥 <span>Usuarios</span></div>
+          <div class="topbar-sub" id="users-sub">—</div>
         </div>
+        <button class="btn btn-ghost btn-sm" onclick="loadUsers()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          Refrescar
+        </button>
       </div>
-      <div class="search-wrap">
-        <input class="search-input" id="user-search-input" placeholder="Buscar por nombre, email, teléfono..." oninput="filterUsers()" >
-        <select class="search-select" id="user-role-filter" onchange="filterUsers()">
+      <div class="srch-row">
+        <div class="srch-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="u-search" placeholder="Buscar por nombre, email, teléfono..." oninput="filterUsers()">
+        </div>
+        <select class="sel" id="u-role" onchange="filterUsers()">
           <option value="all">Todos los roles</option>
           <option value="admin">Administradores</option>
           <option value="cliente">Clientes</option>
         </select>
       </div>
       <div class="card">
-        <div class="card-header">
-          <div class="card-title" id="users-count">Usuarios</div>
+        <div class="card-hd">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span id="u-count">Usuarios</span>
+          </div>
         </div>
-        <div class="table-wrap">
+        <div class="tbl-wrap">
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Vehículo</th>
-                <th>Rol</th>
-                <th>Registro</th>
-                <th>Último Acceso</th>
-                <th>Acciones</th>
+                <th>ID</th><th>Nombre</th><th>Email</th><th>Teléfono</th>
+                <th>Vehículo</th><th>Rol</th><th>Registro</th><th>Último Login</th><th>Acciones</th>
               </tr>
             </thead>
-            <tbody id="users-tbody"></tbody>
+            <tbody id="u-tbody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- SEARCH BY ID -->
+    <!-- ── SEARCH ──────────────────────────────────────────────── -->
     <div class="pane" id="pane-search">
       <div class="topbar">
         <div class="topbar-title">🔍 <span>Buscar Usuario</span></div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title">Búsqueda por ID / Email / Nombre</div></div>
+        <div class="card-hd">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Búsqueda por ID / Email / Nombre
+          </div>
+        </div>
         <div class="card-body">
-          <div class="search-wrap">
-            <input class="search-input" id="id-search-input" placeholder="Ingresa ID numérico, email o nombre completo..." onkeydown="if(event.key==='Enter')searchById()">
-            <button class="btn btn-primary" onclick="searchById()">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="srch-row">
+            <div class="srch-wrap" style="flex:1">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="s-input" placeholder="ID numérico, email o nombre..." onkeydown="if(event.key==='Enter')doSearch()">
+            </div>
+            <button class="btn btn-primary" onclick="doSearch()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               Buscar
             </button>
           </div>
-          <div id="search-result" style="margin-top:12px"></div>
+          <div id="s-result"></div>
         </div>
       </div>
     </div>
 
-    <!-- COMMENTS -->
+    <!-- ── COMMENTS ───────────────────────────────────────────── -->
     <div class="pane" id="pane-comments">
       <div class="topbar">
         <div class="topbar-title">💬 <span>Comentarios</span></div>
-        <button class="btn btn-ghost" onclick="loadComments()">
+        <button class="btn btn-ghost btn-sm" onclick="loadComments()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
           Refrescar
         </button>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title" id="comments-count">Comentarios</div></div>
-        <div class="table-wrap">
+        <div class="card-hd">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <span id="c-count">Comentarios</span>
+          </div>
+        </div>
+        <div class="tbl-wrap">
           <table>
-            <thead>
-              <tr><th>#</th><th>Autor</th><th>Vehículo</th><th>Estrellas</th><th>Comentario</th><th>Fecha</th><th>Acción</th></tr>
-            </thead>
-            <tbody id="comments-tbody"></tbody>
+            <thead><tr><th>#</th><th>Autor</th><th>Vehículo</th><th>⭐</th><th>Comentario</th><th>Fecha</th><th>Acción</th></tr></thead>
+            <tbody id="c-tbody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ORDERS -->
+    <!-- ── ORDERS ──────────────────────────────────────────────── -->
     <div class="pane" id="pane-orders">
       <div class="topbar">
         <div class="topbar-title">🛒 <span>Pedidos</span></div>
-        <button class="btn btn-ghost" onclick="loadOrders()">
+        <button class="btn btn-ghost btn-sm" onclick="loadOrders()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
           Refrescar
         </button>
       </div>
-      <div class="search-wrap">
-        <input class="search-input" id="orders-search" placeholder="Buscar por nombre de usuario o ID..." oninput="filterOrders()">
+      <div class="srch-row">
+        <div class="srch-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="o-search" placeholder="Buscar por usuario o ID de pedido..." oninput="filterOrders()">
+        </div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title" id="orders-count">Pedidos</div></div>
-        <div class="table-wrap">
+        <div class="card-hd">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg>
+            <span id="o-count">Pedidos</span>
+          </div>
+        </div>
+        <div class="tbl-wrap">
           <table>
-            <thead>
-              <tr><th>ID Pedido</th><th>Usuario</th><th>Items</th><th>Total</th><th>Fecha</th><th>Ver</th></tr>
-            </thead>
-            <tbody id="orders-tbody"></tbody>
+            <thead><tr><th>ID Pedido</th><th>Cliente</th><th>Items</th><th>Total</th><th>Fecha</th><th>Ver</th></tr></thead>
+            <tbody id="o-tbody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- CODES -->
+    <!-- ── CÓDIGOS ─────────────────────────────────────────────── -->
     <div class="pane" id="pane-codes">
       <div class="topbar">
         <div class="topbar-title">🔑 <span>Códigos Admin</span></div>
-        <button class="btn btn-primary" onclick="generateCode()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <button class="btn btn-primary" onclick="genCode()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Generar Código
         </button>
       </div>
-      <div id="new-code-display" style="display:none" class="card" style="margin-bottom:18px">
+      <div class="card" id="new-code-card" style="display:none;margin-bottom:16px">
         <div class="card-body" style="text-align:center;padding:32px">
-          <div style="font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:12px">Código Generado</div>
-          <div id="new-code-val" style="font-family:var(--font-m);font-size:36px;font-weight:600;letter-spacing:.25em;color:var(--orange)">—</div>
-          <div style="font-family:var(--font-m);font-size:11px;color:var(--muted);margin-top:10px">Expira en 24 horas · Un solo uso</div>
+          <div style="font-family:var(--fm);font-size:10px;letter-spacing:.12em;color:var(--mut);text-transform:uppercase;margin-bottom:10px">Código Generado — válido 24 horas · 1 uso</div>
+          <div id="new-code-val" style="font-family:var(--fm);font-size:38px;font-weight:600;letter-spacing:.25em;color:var(--og)">—</div>
+          <div style="font-size:13px;color:var(--mut);margin-top:10px">Compártelo solo con personas de confianza.</div>
         </div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title">Códigos Generados</div></div>
+        <div class="card-hd">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Historial de Códigos
+          </div>
+        </div>
         <div class="card-body" id="codes-list"></div>
       </div>
     </div>
 
-    <!-- ADD COMMENT -->
+    <!-- ── NUEVA RESEÑA ────────────────────────────────────────── -->
     <div class="pane" id="pane-addcomment">
-      <div class="topbar"><div class="topbar-title">✍️ <span>Nueva Reseña</span></div></div>
+      <div class="topbar"><div class="topbar-title">✍️ <span>Nueva Reseña Manual</span></div></div>
       <div class="card" style="max-width:560px">
-        <div class="card-header"><div class="card-title">Añadir Reseña Manual</div></div>
+        <div class="card-hd">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Publicar Reseña
+          </div>
+        </div>
         <div class="card-body">
-          <div class="field-wrap"><label class="field-label">Nombre del Cliente</label><input class="field-input" id="ac-name" placeholder="Nombre Apellido"></div>
-          <div class="field-wrap"><label class="field-label">Vehículo (opcional)</label><input class="field-input" id="ac-veh" placeholder="Toyota Corolla 2020"></div>
-          <div class="field-wrap">
-            <label class="field-label">Calificación</label>
+          <div class="ff"><label>Nombre del Cliente</label><input class="fi" id="ac-name" placeholder="Juan Pérez"></div>
+          <div class="ff"><label>Vehículo (opcional)</label><input class="fi" id="ac-veh" placeholder="Toyota Corolla 2022"></div>
+          <div class="ff">
+            <label>Calificación</label>
             <div class="star-row" id="ac-stars">
-              <button class="star-btn on" onclick="setAcStar(1)">★</button>
-              <button class="star-btn on" onclick="setAcStar(2)">★</button>
-              <button class="star-btn on" onclick="setAcStar(3)">★</button>
-              <button class="star-btn on" onclick="setAcStar(4)">★</button>
-              <button class="star-btn on" onclick="setAcStar(5)">★</button>
+              <button class="sr-btn on" onclick="setAcStar(1)">★</button>
+              <button class="sr-btn on" onclick="setAcStar(2)">★</button>
+              <button class="sr-btn on" onclick="setAcStar(3)">★</button>
+              <button class="sr-btn on" onclick="setAcStar(4)">★</button>
+              <button class="sr-btn on" onclick="setAcStar(5)">★</button>
             </div>
           </div>
-          <div class="field-wrap"><label class="field-label">Comentario</label><textarea class="field-input field-textarea" id="ac-text" placeholder="Excelente servicio..."></textarea></div>
-          <button class="btn btn-primary" onclick="addComment()" style="width:100%;justify-content:center">Publicar Reseña</button>
+          <div class="ff"><label>Comentario</label><textarea class="fi fi-ta" id="ac-text" placeholder="Excelente servicio y atención al detalle..."></textarea></div>
+          <button class="btn btn-primary" onclick="addComment()" style="width:100%;justify-content:center;padding:13px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Publicar Reseña
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- EXPORT -->
-    <div class="pane" id="pane-export">
-      <div class="topbar"><div class="topbar-title">📦 <span>Exportar Datos</span></div></div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+    <!-- ── CONFIGURACIÓN ──────────────────────────────────────── -->
+    <div class="pane" id="pane-settings">
+      <div class="topbar"><div class="topbar-title">⚙️ <span>Configuración</span></div></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px">
+
+        <!-- Cambiar contraseña del panel -->
         <div class="card">
-          <div class="card-header"><div class="card-title">👥 Usuarios</div></div>
+          <div class="card-hd">
+            <div class="card-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              Contraseña del Panel
+            </div>
+          </div>
           <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Exporta todos los usuarios registrados en formato JSON.</p>
-            <button class="btn btn-primary" onclick="exportData('users')" style="width:100%;justify-content:center">Descargar JSON</button>
+            <p style="font-size:13px;color:var(--mut);line-height:1.65;margin-bottom:16px">Cambia la contraseña de acceso a este panel de administración.</p>
+            <div class="ff"><label>Contraseña Actual</label><input class="fi" id="sp-cur" type="password" placeholder="••••••••"></div>
+            <div class="ff"><label>Nueva Contraseña</label><input class="fi" id="sp-new" type="password" placeholder="Mínimo 6 caracteres"></div>
+            <div class="ff"><label>Confirmar Nueva</label><input class="fi" id="sp-cf" type="password" placeholder="Repite la contraseña"></div>
+            <button class="btn btn-primary" onclick="changeAdminPass()" style="width:100%;justify-content:center">Cambiar Contraseña</button>
           </div>
         </div>
+
+        <!-- Exportar datos -->
         <div class="card">
-          <div class="card-header"><div class="card-title">💬 Comentarios</div></div>
-          <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Exporta todas las reseñas y comentarios publicados.</p>
-            <button class="btn btn-primary" onclick="exportData('comments')" style="width:100%;justify-content:center">Descargar JSON</button>
+          <div class="card-hd">
+            <div class="card-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar Datos
+            </div>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">🛒 Pedidos</div></div>
-          <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Exporta el historial completo de pedidos vía WhatsApp.</p>
-            <button class="btn btn-primary" onclick="exportData('orders')" style="width:100%;justify-content:center">Descargar JSON</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">🗂️ Todo</div></div>
-          <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Exporta todos los datos del sistema en un solo archivo.</p>
-            <button class="btn btn-primary" onclick="exportData('all')" style="width:100%;justify-content:center">Exportar Todo</button>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+            <button class="btn btn-ghost" onclick="exportData('users')" style="justify-content:flex-start;width:100%">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              Exportar Usuarios (JSON)
+            </button>
+            <button class="btn btn-ghost" onclick="exportData('comments')" style="justify-content:flex-start;width:100%">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              Exportar Comentarios (JSON)
+            </button>
+            <button class="btn btn-ghost" onclick="exportData('orders')" style="justify-content:flex-start;width:100%">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg>
+              Exportar Pedidos (JSON)
+            </button>
+            <button class="btn btn-primary" onclick="exportData('all')" style="justify-content:flex-start;width:100%">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar Todo (Backup)
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-  </main><!-- /main -->
-</div><!-- /app -->
+  </main>
+</div>
 
-<!-- USER DETAIL MODAL -->
-<div id="user-modal" onclick="if(event.target===this)closeUserModal()">
-  <div class="user-modal-box">
-    <div class="user-modal-top"></div>
-    <button class="user-modal-close" onclick="closeUserModal()">✕</button>
-    <div class="user-modal-header">
-      <div class="user-modal-av" id="um-av">
+<!-- ═══════════════ USER MODAL ═══════════════════════════════════════════── -->
+<div id="um-overlay" onclick="if(event.target===this)closeUM()">
+  <div class="um-box">
+    <div class="um-stripe"></div>
+    <button class="um-close" onclick="closeUM()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="um-hd">
+      <div class="um-av" id="um-av">
         <img id="um-av-img" src="" style="display:none">
-        <span id="um-av-initials">?</span>
+        <span id="um-av-init">?</span>
       </div>
-      <div class="user-modal-info">
-        <div class="user-modal-name" id="um-name">—</div>
-        <div class="user-modal-email" id="um-email">—</div>
-        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap" id="um-badges"></div>
+      <div style="flex:1;min-width:0">
+        <div class="um-name" id="um-name">—</div>
+        <div class="um-email" id="um-email">—</div>
+        <div class="um-badges" id="um-badges"></div>
       </div>
     </div>
-    <div class="user-modal-tabs">
-      <button class="umt active" onclick="switchUMTab(0,this)">📋 Info General</button>
-      <button class="umt" onclick="switchUMTab(1,this)">🔐 Seguridad</button>
-      <button class="umt" onclick="switchUMTab(2,this)">🛒 Pedidos</button>
-      <button class="umt" onclick="switchUMTab(3,this)">💬 Reseñas</button>
-      <button class="umt" onclick="switchUMTab(4,this)">⚙️ Acciones</button>
+
+    <!-- Stats bar -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)">
+      <div style="padding:13px;text-align:center;border-right:1px solid var(--bdr)">
+        <div id="ums-orders" style="font-family:var(--fd);font-size:24px;font-weight:700;color:var(--og)">0</div>
+        <div style="font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-top:3px">Pedidos</div>
+      </div>
+      <div style="padding:13px;text-align:center;border-right:1px solid var(--bdr)">
+        <div id="ums-spent" style="font-family:var(--fd);font-size:24px;font-weight:700;color:var(--bl)">$0</div>
+        <div style="font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-top:3px">Gastado</div>
+      </div>
+      <div style="padding:13px;text-align:center">
+        <div id="ums-reviews" style="font-family:var(--fd);font-size:24px;font-weight:700;color:var(--gn)">0</div>
+        <div style="font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-top:3px">Reseñas</div>
+      </div>
     </div>
-    <div class="user-modal-pane active" id="um-tab0">
-      <div class="info-grid" id="um-info-grid"></div>
+
+    <div class="um-tabs">
+      <button class="um-tab active" onclick="umTab(0,this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        Info
+      </button>
+      <button class="um-tab" onclick="umTab(1,this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Seguridad
+      </button>
+      <button class="um-tab" onclick="umTab(2,this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg>
+        Pedidos
+      </button>
+      <button class="um-tab" onclick="umTab(3,this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Reseñas
+      </button>
+      <button class="um-tab" onclick="umTab(4,this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M2 12h2m16 0h2M6.34 6.34L4.93 4.93M19.07 19.07l-1.41-1.41M12 2v2m0 16v2"/></svg>
+        Acciones
+      </button>
     </div>
-    <div class="user-modal-pane" id="um-tab1">
-      <div class="info-grid" id="um-security-grid"></div>
-    </div>
-    <div class="user-modal-pane" id="um-tab2" id="um-orders">
-      <div id="um-orders-list"></div>
-    </div>
-    <div class="user-modal-pane" id="um-tab3">
-      <div id="um-comments-list"></div>
-    </div>
-    <div class="user-modal-pane" id="um-tab4">
-      <div id="um-actions-content"></div>
-    </div>
+
+    <div class="um-pane active" id="ump-0"><div class="ig" id="um-info"></div></div>
+    <div class="um-pane" id="ump-1"><div class="ig" id="um-security"></div></div>
+    <div class="um-pane" id="ump-2"><div id="um-orders"></div></div>
+    <div class="um-pane" id="ump-3"><div id="um-comments"></div></div>
+    <div class="um-pane" id="ump-4"><div id="um-actions"></div></div>
   </div>
 </div>
 
-<!-- TOAST -->
-<div id="toast-root"></div>
+<!-- TOASTS -->
+<div id="toast-wrap"></div>
 
 <script>
-/* ── CONFIG (same as main site) ───────────────────────────────────────────── */
-const KEYS = { users: 'impel_users', sess: 'impel_sess', comments: 'impel_comments_v1', codes: 'impel_admin_codes', orders: 'impel_orders' };
-const ADMIN_ACCOUNTS = [
-  { u: 'impel_admin',  u2: 'admin@impelpanama.com', p: 'impel2024',    name: 'Admin', last: 'IMPEL',  id: '__admin__'     },
-  { u: 'dev_debug',    u2: 'dev@debug.impel',        p: 'DevDebug2024!', name: 'Dev',   last: 'Debug',  id: '__dev_debug__' },
-  { u: 'benitoxz',    u2: 'dev@benitoxz.dev',        p: 'Benitoxz.dev!', name: 'Yael',  last: 'Dev',    id: '__benitoxz__'  }
-];
+'use strict';
+/* ══════════════════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════════════════ */
+const KEYS = {
+  users:    'impel_users',
+  sess:     'impel_sess',
+  comments: 'impel_comments_v1',
+  codes:    'impel_admin_codes',
+  orders:   'impel_orders',
+  adminKey: 'impel_admin_key'   // contraseña del panel (guardada en localStorage)
+};
 
-const $ = id => document.getElementById(id);
-const getLS = k => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch { return null; } };
-const setLS = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
-const fmtDate = iso => { try { return new Date(iso).toLocaleDateString('es-PA', { day:'2-digit', month:'short', year:'numeric' }); } catch { return '—'; } };
-const fmtDateTime = iso => { try { return new Date(iso).toLocaleString('es-PA', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }); } catch { return '—'; } };
-const initials = n => (n||'?').trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+// Credenciales por defecto si no hay ninguna configurada
+// Usuario: admin  |  Contraseña: impel2024
+// El admin puede cambiarla desde Configuración
+const DEFAULT_USER = 'admin';
+const DEFAULT_PASS = 'impel2024';
+
+/* ══════════════════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════════════════ */
+const $   = id => document.getElementById(id);
+const getLS = k  => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch { return null; } };
+const setLS = (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const ini = n => (n||'?').trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'?';
+const fmt = iso => { try { return new Date(iso).toLocaleDateString('es-PA',{day:'2-digit',month:'short',year:'numeric'}); } catch{return '—';} };
+const fmtDT = iso => { try { return new Date(iso).toLocaleString('es-PA',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); } catch{return '—';} };
 
-let adminUser = null;
-let allUsers = [], allComments = [], allOrders = [];
-let acStar = 5;
-let currentViewUser = null;
-
-/* ── TOAST ─────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════════════ */
 function toast(msg, type='info') {
-  const wrap = $('toast-root');
+  const w = $('toast-wrap');
   const el = document.createElement('div');
-  el.className = 'toastx';
-  const colors = { success:'#22c55e', error:'#ef4444', info:'#F56500' };
-  el.innerHTML = `<div class="toast-dot" style="background:${colors[type]||colors.info}"></div>${msg}`;
-  wrap.appendChild(el);
-  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
-  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 3500);
+  el.className = 'toast';
+  const c = {success:'#22c55e', error:'#ef4444', info:var_og(), new:'#1A6AFF'};
+  el.innerHTML = `<div class="toast-dot" style="background:${c[type]||c.info}"></div><span>${msg}</span>`;
+  w.appendChild(el);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+  setTimeout(()=>{el.classList.remove('show'); setTimeout(()=>el.remove(),400);}, 4000);
+}
+function var_og(){ return '#F56500'; }
+
+/* ══════════════════════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════════════════════ */
+function getAdminCreds() {
+  const stored = getLS(KEYS.adminKey);
+  return stored || { user: DEFAULT_USER, pass: DEFAULT_PASS };
 }
 
-/* ── AUTH ───────────────────────────────────────────────────────── */
-function doAdminLogin() {
-  const em = $('l-em').value.trim();
-  const ps = $('l-ps').value;
-  const errEl = $('login-err');
-  errEl.classList.remove('show');
+function doLogin() {
+  const user  = ($('l-user').value  || '').trim();
+  const pass  = ($('l-pass').value  || '');
+  const btn   = $('l-btn');
+  const errEl = $('l-err');
 
-  // Check hardcoded admin accounts
-  let found = ADMIN_ACCOUNTS.find(a => (em === a.u || em === a.u2) && ps === a.p);
-  if (found) {
-    adminUser = { name: found.name, last: found.last, email: found.u2, role: 'admin', id: found.id };
-    initApp();
-    return;
-  }
-  // Check localStorage users with admin role
-  const users = getLS(KEYS.users) || [];
-  const u = users.find(u => (u.email === em || u.name === em) && u.pass === ps && u.role === 'admin');
-  if (u) {
-    adminUser = u;
-    initApp();
-    return;
-  }
-  errEl.classList.add('show');
+  if (!user || !pass) { showLErr('Completa usuario y contraseña.'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="animation:spin .8s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> Verificando...';
+
+  setTimeout(()=>{
+    const creds = getAdminCreds();
+    // Check panel credentials
+    const okPanel = (user === creds.user || user === 'admin') && pass === creds.pass;
+    // Also check localStorage users with admin role
+    const users = getLS(KEYS.users) || [];
+    const okUser = users.find(u => (u.email===user || u.name===user) && u.pass===pass && u.role==='admin');
+
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg> Entrar al Panel';
+
+    if (okPanel || okUser) {
+      const adminName = okUser ? okUser.name : 'Admin';
+      setLS('impel_admin_sess', { name: adminName, loginAt: Date.now() });
+      errEl.classList.remove('show');
+      $('login-screen').style.display = 'none';
+      $('app').style.display = 'block';
+      $('sb-av').textContent = ini(adminName);
+      $('sb-name').textContent = adminName;
+      refresh(true);
+      updateClock();
+      setInterval(updateClock, 60000);
+    } else {
+      showLErr('Usuario o contraseña incorrectos.');
+      $('l-pass').value = '';
+      $('l-pass').focus();
+    }
+  }, 600);
+}
+
+function showLErr(msg) {
+  $('l-err-msg').textContent = msg;
+  $('l-err').classList.add('show');
+  setTimeout(()=>$('l-err').classList.remove('show'), 4000);
 }
 
 function doLogout() {
-  adminUser = null;
+  localStorage.removeItem('impel_admin_sess');
   $('app').style.display = 'none';
   $('login-screen').style.display = 'flex';
-  $('l-em').value = ''; $('l-ps').value = '';
+  $('l-user').value = '';
+  $('l-pass').value = '';
 }
 
-function initApp() {
-  $('login-screen').style.display = 'none';
-  $('app').style.display = 'block';
-  // Set sidebar info
-  $('sb-av').textContent = initials(adminUser.name);
-  $('sb-name').textContent = adminUser.name + ' ' + (adminUser.last||'');
-  $('sb-email').textContent = adminUser.email;
-  $('dash-welcome').textContent = `Sesión: ${adminUser.name} ${adminUser.last||''} · ${adminUser.email}`;
-  refreshAll();
+function togglePass(id, btn) {
+  const el = $(id);
+  el.type = el.type==='password' ? 'text' : 'password';
+  btn.style.opacity = el.type==='text' ? '1' : '.6';
 }
 
-/* ── DATA LOADING ───────────────────────────────────────────────── */
-function refreshAll() {
-  allUsers = getLS(KEYS.users) || [];
-  allComments = getLS(KEYS.comments) || [];
-  allOrders = getLS(KEYS.orders) || [];
+/* ══════════════════════════════════════════════════════════
+   CLOCK
+══════════════════════════════════════════════════════════ */
+function updateClock() {
+  const now = new Date();
+  const d = now.toLocaleDateString('es-PA',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const t = now.toLocaleTimeString('es-PA',{hour:'2-digit',minute:'2-digit'});
+  const el = $('dash-time');
+  if (el) el.textContent = `${d} — ${t}`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════════ */
+let D = { users:[], comments:[], orders:[] };
+let prev = { u:0, c:0, o:0 };
+
+function refresh(silent) {
+  const nu = getLS(KEYS.users)    || [];
+  const nc = getLS(KEYS.comments) || [];
+  const no = getLS(KEYS.orders)   || [];
+
+  if (!silent) {
+    if (nu.length > prev.u && prev.u > 0) {
+      const newest = nu[nu.length-1];
+      toast(`🆕 Nuevo usuario: <b>${esc(newest.name)} ${esc(newest.last||'')}</b>`, 'new');
+      flashBadge('badge-users');
+    }
+    if (nc.length > prev.c && prev.c > 0) { toast('💬 Nueva reseña publicada', 'new'); flashBadge('badge-comments'); }
+    if (no.length > prev.o && prev.o > 0) { toast('🛒 Nuevo pedido recibido', 'new'); flashBadge('badge-orders'); }
+  }
+
+  prev = { u:nu.length, c:nc.length, o:no.length };
+  D = { users:nu, comments:nc, orders:no };
+
   updateBadges();
-  renderDashboard();
+  renderDash();
+
+  // Refresh active pane
+  const ap = document.querySelector('.pane.active');
+  if (ap) {
+    const id = ap.id.replace('pane-','');
+    if (id==='users')    renderUsersTable(D.users);
+    if (id==='comments') renderComments();
+    if (id==='orders')   renderOrdersTable(D.orders);
+  }
 }
 
+function flashBadge(id) {
+  const el = $(id); if (!el) return;
+  el.classList.add('flash');
+  setTimeout(()=>el.classList.remove('flash'), 700);
+}
 function updateBadges() {
-  $('sb-users').textContent = allUsers.length;
-  $('sb-comments').textContent = allComments.length;
-  $('sb-orders').textContent = allOrders.length;
+  $('badge-users').textContent    = D.users.length;
+  $('badge-comments').textContent = D.comments.length;
+  $('badge-orders').textContent   = D.orders.length;
 }
 
-/* ── PANE SWITCHING ─────────────────────────────────────────────── */
-function showPane(id, btn) {
-  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+/* ══════════════════════════════════════════════════════════
+   LIVE SYNC
+══════════════════════════════════════════════════════════ */
+window.addEventListener('storage', e => {
+  if (Object.values(KEYS).includes(e.key)) refresh(false);
+});
+setInterval(()=>refresh(false), 3000);
+
+/* ══════════════════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════════════════ */
+function nav(id, btn) {
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
   $('pane-'+id).classList.add('active');
-  if (btn) btn.classList.add('active');
-  // Load data for pane
-  if (id === 'users') loadUsers();
-  if (id === 'comments') loadComments();
-  if (id === 'orders') loadOrders();
-  if (id === 'codes') loadCodes();
+  btn.classList.add('active');
+  if (id==='users')    loadUsers();
+  if (id==='comments') loadComments();
+  if (id==='orders')   loadOrders();
+  if (id==='codes')    loadCodes();
 }
 
-/* ── DASHBOARD ──────────────────────────────────────────────────── */
-function renderDashboard() {
-  const admins = allUsers.filter(u => u.role === 'admin').length;
-  const totalRev = allOrders.reduce((s,o) => s + (o.total||0), 0);
-  const avgRating = allComments.length ? (allComments.reduce((s,c) => s+(c.r||0), 0) / allComments.length).toFixed(1) : '—';
+/* ══════════════════════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════════════════════ */
+function renderDash() {
+  const admins   = D.users.filter(u=>u.role==='admin').length;
+  const rev      = D.orders.reduce((s,o)=>s+(o.total||0),0);
+  const avgR     = D.comments.length ? (D.comments.reduce((s,c)=>s+(c.r||0),0)/D.comments.length).toFixed(1) : '—';
+  const clients  = D.users.length - admins;
+  const avPerOrd = D.orders.length ? Math.round(rev/D.orders.length) : 0;
 
+  const ico = (p) => `<svg class="sc-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">${p}</svg>`;
   $('dash-stats').innerHTML = [
-    { l:'Total Usuarios', v:allUsers.length, c:'blue', icon:'<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>' },
-    { l:'Administradores', v:admins, c:'orange', icon:'<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>' },
-    { l:'Comentarios', v:allComments.length, c:'green', icon:'<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>' },
-    { l:'Pedidos WhatsApp', v:allOrders.length, c:'purple', icon:'<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg>' },
-    { l:'Ingresos Estimados', v:'$'+totalRev, c:'orange', icon:'<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>' },
-    { l:'Rating Promedio', v:avgRating+'★', c:'green', icon:'<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' }
-  ].map(s => `<div class="stat-card ${s.c}"><div class="stat-n ${s.c}">${s.v}</div><div class="stat-l">${s.l}</div><div class="stat-icon">${s.icon}</div></div>`).join('');
+    { c:'bl', l:'Usuarios Totales',  v:D.users.length,          i:ico('<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>') },
+    { c:'og', l:'Administradores',   v:admins,                   i:ico('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>') },
+    { c:'gn', l:'Clientes Activos',  v:clients,                  i:ico('<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>') },
+    { c:'pu', l:'Pedidos Totales',   v:D.orders.length,          i:ico('<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/>') },
+    { c:'og', l:'Ingresos Estimados',v:'$'+rev,                  i:ico('<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>') },
+    { c:'yw', l:'Ticket Promedio',   v:'$'+avPerOrd,             i:ico('<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>') },
+    { c:'gn', l:'Reseñas',          v:D.comments.length,        i:ico('<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>') },
+    { c:'yw', l:'Rating Promedio',   v:avgR+(avgR!=='—'?'★':''), i:ico('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>') }
+  ].map(s=>`<div class="sc ${s.c}">${s.i}<div class="sc-n">${s.v}</div><div class="sc-l">${s.l}</div></div>`).join('');
 
   // Latest users
-  const latestU = allUsers.slice(-5).reverse();
-  $('dash-latest-users').innerHTML = latestU.length ? latestU.map(u => `
-    <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer" onclick="openUserModal(${u.id})">
-      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--blue));display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:13px;font-weight:700;color:#fff;flex-shrink:0">${initials(u.name)}</div>
+  const lu = D.users.slice(-6).reverse();
+  $('dash-new-users').innerHTML = lu.length ? lu.map(u=>`
+    <div onclick="openUM(${u.id})" style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.025)'" onmouseout="this.style.background=''">
+      <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--og),var(--bl));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:12px;font-weight:700;color:#fff;flex-shrink:0">${ini(u.name)}</div>
       <div style="flex:1;min-width:0">
-        <div style="font-family:var(--font-d);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.03em">${esc(u.name)} ${esc(u.last||'')}</div>
-        <div style="font-family:var(--font-m);font-size:11px;color:var(--muted)">${esc(u.email)}</div>
+        <div style="font-family:var(--fd);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(u.name)} ${esc(u.last||'')}</div>
+        <div style="font-family:var(--fm);font-size:10px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(u.email)}</div>
       </div>
-      <span class="badge ${u.role==='admin'?'badge-admin':'badge-client'}">${u.role||'cliente'}</span>
-    </div>
-  `).join('') : '<div style="padding:24px;text-align:center;color:var(--muted);font-family:var(--font-m);font-size:12px">Sin usuarios</div>';
+      <span class="badge ${u.role==='admin'?'b-admin':'b-client'}">${u.role||'cliente'}</span>
+    </div>`).join('')
+  : `<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><div class="empty-t">Sin usuarios aún</div></div>`;
 
   // Latest comments
-  const latestC = allComments.slice(0,5);
-  $('dash-latest-comments').innerHTML = latestC.length ? latestC.map(c => `
-    <div style="padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.04)">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
-        <span style="font-family:var(--font-d);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em">${esc(c.name)}</span>
-        <span style="color:var(--orange);font-size:12px">${'★'.repeat(c.r||0)}</span>
+  const lc = D.comments.slice(0,5);
+  $('dash-new-comments').innerHTML = lc.length ? lc.map(c=>`
+    <div style="padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.03)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+        <span style="font-family:var(--fd);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em">${esc(c.name)}</span>
+        <span style="color:var(--og);font-size:13px">${'★'.repeat(c.r||0)}</span>
       </div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.5">${esc((c.txt||'').substring(0,80))}${(c.txt||'').length>80?'...':''}</div>
-    </div>
-  `).join('') : '<div style="padding:24px;text-align:center;color:var(--muted);font-family:var(--font-m);font-size:12px">Sin comentarios</div>';
+      <div style="font-size:12px;color:var(--mut);line-height:1.5">${esc((c.txt||'').substring(0,80))}${(c.txt||'').length>80?'...':''}</div>
+    </div>`).join('')
+  : `<div class="empty"><div class="empty-t">Sin reseñas</div></div>`;
 
   // Latest orders
-  const latestO = allOrders.slice(-5).reverse();
-  $('dash-latest-orders').innerHTML = latestO.length ? `
-    <div class="table-wrap"><table>
-      <thead><tr><th>ID</th><th>Usuario</th><th>Items</th><th>Total</th><th>Fecha</th></tr></thead>
-      <tbody>${latestO.map(o => {
-        const u = allUsers.find(u => u.id === o.userId);
+  const lo = D.orders.slice(-5).reverse();
+  $('dash-new-orders').innerHTML = lo.length ? `
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>ID</th><th>Cliente</th><th>Items</th><th>Total</th><th>Fecha</th></tr></thead>
+      <tbody>${lo.map(o=>{
+        const u=D.users.find(u=>u.id===o.userId);
         return `<tr>
-          <td class="td-mono">#${o.id}</td>
-          <td class="td-name">${u ? esc(u.name+' '+(u.last||'')) : '<span style="color:var(--muted)">—</span>'}</td>
-          <td class="td-mono">${(o.items||[]).length} items</td>
-          <td style="color:var(--orange);font-family:var(--font-d);font-weight:700">$${o.total||0}</td>
-          <td class="td-mono">${fmtDate(o.date)}</td>
+          <td class="td-mono" style="color:var(--mut)">#${o.id}</td>
+          <td><div class="td-name">${u?esc(u.name+' '+(u.last||'')):'<span style="color:var(--mut)">—</span>'}</div>${u?`<div style="font-family:var(--fm);font-size:10px;color:var(--mut)">${esc(u.email)}</div>`:''}</td>
+          <td class="td-mono" style="color:var(--mut)">${(o.items||[]).length} item(s)</td>
+          <td class="td-og">$${o.total||0}</td>
+          <td class="td-mono" style="color:var(--mut)">${fmt(o.date)}</td>
         </tr>`;
       }).join('')}</tbody>
-    </table></div>
-  ` : '<div style="padding:24px;text-align:center;color:var(--muted);font-family:var(--font-m);font-size:12px">Sin pedidos</div>';
+    </table></div>`
+  : `<div class="empty"><div class="empty-t">Sin pedidos</div></div>`;
 }
 
-/* ── USERS TABLE ────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   USERS
+══════════════════════════════════════════════════════════ */
 function loadUsers() {
-  allUsers = getLS(KEYS.users) || [];
-  renderUsersTable(allUsers);
+  D.users = getLS(KEYS.users) || [];
+  renderUsersTable(D.users);
 }
-
 function filterUsers() {
-  const q = $('user-search-input').value.toLowerCase();
-  const role = $('user-role-filter').value;
-  const filtered = allUsers.filter(u => {
-    const matchQ = !q || (u.name+' '+u.last+' '+u.email+' '+u.phone).toLowerCase().includes(q);
-    const matchR = role === 'all' || (u.role||'cliente') === role;
-    return matchQ && matchR;
-  });
-  renderUsersTable(filtered);
+  const q = ($('u-search').value||'').toLowerCase();
+  const r = $('u-role').value;
+  renderUsersTable(D.users.filter(u=>{
+    const mq=!q||(u.name+' '+(u.last||'')+' '+u.email+' '+(u.phone||'')).toLowerCase().includes(q);
+    const mr=r==='all'||(u.role||'cliente')===r;
+    return mq&&mr;
+  }));
 }
-
 function renderUsersTable(users) {
-  $('users-count').textContent = `Usuarios (${users.length})`;
-  if (!users.length) {
-    $('users-tbody').innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted);font-family:var(--font-m);font-size:12px">Sin resultados</td></tr>';
-    return;
-  }
-  $('users-tbody').innerHTML = users.map((u, i) => `
+  $('u-count').textContent = `Usuarios (${users.length})`;
+  $('users-sub').textContent = `${D.users.filter(u=>u.role==='admin').length} admins · ${D.users.filter(u=>u.role!=='admin').length} clientes`;
+  if (!users.length) { $('u-tbody').innerHTML='<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--mut);font-family:var(--fm);font-size:11px">Sin resultados</td></tr>'; return; }
+  $('u-tbody').innerHTML = users.map(u=>`
     <tr>
-      <td class="td-mono" style="color:var(--muted)">${u.id}</td>
-      <td class="td-name">${esc(u.name)} ${esc(u.last||'')}</td>
+      <td class="td-id">${u.id}</td>
+      <td><div class="td-name">${esc(u.name)} ${esc(u.last||'')}</div></td>
       <td class="td-mono">${esc(u.email)}</td>
       <td class="td-mono">${esc(u.phone||'—')}</td>
-      <td style="font-size:12px;color:var(--muted)">${esc(u.vehicle||'—')}</td>
-      <td><span class="badge ${u.role==='admin'?'badge-admin':'badge-client'}">${u.role||'cliente'}</span></td>
-      <td class="td-mono" style="color:var(--muted)">${fmtDate(u.created)}</td>
-      <td class="td-mono" style="color:var(--muted)">${fmtDate(u.lastLogin)||'—'}</td>
+      <td style="font-size:12px;color:var(--mut)">${esc(u.vehicle||'—')}</td>
+      <td><span class="badge ${u.role==='admin'?'b-admin':'b-client'}">${u.role||'cliente'}</span></td>
+      <td class="td-mono" style="color:var(--mut)">${fmt(u.created)}</td>
+      <td class="td-mono" style="color:var(--mut)">${fmt(u.lastLogin)||'—'}</td>
       <td>
-        <div class="actions">
-          <button class="act act-view" onclick="openUserModal(${u.id})">Ver</button>
+        <div class="acts">
+          <button class="act act-view" onclick="openUM(${u.id})">Ver</button>
           ${u.role==='admin'
-            ? `<button class="act act-demote" onclick="setRole(${u.id},'cliente')">Quitar Admin</button>`
-            : `<button class="act act-promote" onclick="setRole(${u.id},'admin')">Admin</button>`}
+            ?`<button class="act act-demote" onclick="setRole(${u.id},'cliente')">Quitar Admin</button>`
+            :`<button class="act act-promote" onclick="setRole(${u.id},'admin')">Admin</button>`}
           <button class="act act-del" onclick="delUser(${u.id})">✕</button>
         </div>
       </td>
-    </tr>
-  `).join('');
+    </tr>`).join('');
 }
 
-/* ── USER SEARCH BY ID ──────────────────────────────────────────── */
-function searchById() {
-  const q = $('id-search-input').value.trim();
-  const res = $('search-result');
-  if (!q) { res.innerHTML = ''; return; }
-
-  const users = getLS(KEYS.users) || [];
-  let found = users.filter(u => {
-    return String(u.id) === q ||
-           u.email.toLowerCase().includes(q.toLowerCase()) ||
-           (u.name+' '+(u.last||'')).toLowerCase().includes(q.toLowerCase());
-  });
-
-  if (!found.length) {
-    res.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted);font-family:var(--font-m);font-size:12px;letter-spacing:.08em">No se encontró ningún usuario con ese criterio.</div>';
-    return;
-  }
-
-  res.innerHTML = found.map(u => {
-    const userOrders = allOrders.filter(o => o.userId === u.id);
-    const userComments = allComments.filter(c => c.name === u.name + (u.last?' '+u.last:''));
-    return `
-    <div class="card" style="margin-bottom:12px">
-      <div class="card-header">
+/* ══════════════════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════════════════ */
+function doSearch() {
+  const q = ($('s-input').value||'').trim();
+  const res = $('s-result');
+  if (!q) { res.innerHTML=''; return; }
+  const found = D.users.filter(u=>
+    String(u.id)===q ||
+    u.email.toLowerCase().includes(q.toLowerCase()) ||
+    (u.name+' '+(u.last||'')).toLowerCase().includes(q.toLowerCase()) ||
+    (u.phone||'').includes(q)
+  );
+  if (!found.length) { res.innerHTML='<div class="empty" style="padding:32px"><div class="empty-t">Sin resultados para "'+esc(q)+'"</div></div>'; return; }
+  res.innerHTML = found.map(u=>{
+    const uo = D.orders.filter(o=>o.userId===u.id);
+    const ts = uo.reduce((s,o)=>s+(o.total||0),0);
+    return `<div class="card" style="margin-bottom:12px">
+      <div class="card-hd">
         <div style="display:flex;align-items:center;gap:14px">
-          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--blue));display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:16px;font-weight:700;color:#fff">${initials(u.name)}</div>
+          <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--og),var(--bl));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:15px;font-weight:700;color:#fff">${ini(u.name)}</div>
           <div>
-            <div style="font-family:var(--font-d);font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.03em">${esc(u.name)} ${esc(u.last||'')}</div>
-            <div style="font-family:var(--font-m);font-size:11px;color:var(--muted)">${esc(u.email)} · ID: ${u.id}</div>
+            <div class="td-name" style="font-size:16px">${esc(u.name)} ${esc(u.last||'')}</div>
+            <div class="td-mono" style="color:var(--mut)">${esc(u.email)} · ID: ${u.id}</div>
           </div>
         </div>
-        <button class="btn btn-blue" onclick="openUserModal(${u.id})">Ver Perfil Completo</button>
+        <button class="btn btn-blue btn-sm" onclick="openUM(${u.id})">Ver Perfil</button>
       </div>
       <div class="card-body">
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
-          ${[
-            ['📱 Teléfono', u.phone||'—'],
-            ['🚗 Vehículo', u.vehicle||'—'],
-            ['🎭 Rol', u.role||'cliente'],
-            ['📅 Registro', fmtDate(u.created)],
-            ['🔄 Último Login', fmtDate(u.lastLogin)||'—'],
-            ['🛒 Pedidos', userOrders.length],
-            ['💬 Reseñas', userComments.length],
-            ['💰 Total Gastado', '$'+userOrders.reduce((s,o)=>s+(o.total||0),0)]
-          ].map(([k,v]) => `<div class="info-item"><div class="info-key">${k}</div><div class="info-val">${esc(String(v))}</div></div>`).join('')}
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px">
+          ${[['📱 Teléfono',u.phone||'—'],['🚗 Vehículo',u.vehicle||'—'],['🎭 Rol',u.role||'cliente'],['📅 Registro',fmt(u.created)],['🛒 Pedidos',uo.length],['💰 Total Gastado','$'+ts]]
+            .map(([k,v])=>`<div class="ii"><div class="ii-k">${k}</div><div class="ii-v">${esc(String(v))}</div></div>`).join('')}
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-/* ── COMMENTS ───────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   COMMENTS
+══════════════════════════════════════════════════════════ */
 function loadComments() {
-  allComments = getLS(KEYS.comments) || [];
-  $('comments-count').textContent = `Comentarios (${allComments.length})`;
-  if (!allComments.length) {
-    $('comments-tbody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);font-family:var(--font-m);font-size:12px">Sin comentarios</td></tr>';
-    return;
-  }
-  $('comments-tbody').innerHTML = allComments.map((c, i) => `
-    <tr>
-      <td class="td-mono" style="color:var(--muted)">${i+1}</td>
-      <td class="td-name">${esc(c.name)}</td>
-      <td style="font-size:12px;color:var(--muted)">${esc(c.veh||'—')}</td>
-      <td style="color:var(--orange)">${'★'.repeat(c.r||0)}<span style="color:var(--muted);font-family:var(--font-m);font-size:10px"> ${c.r||0}/5</span></td>
-      <td style="font-size:12px;color:var(--muted-hi);max-width:260px">${esc((c.txt||'').substring(0,100))}${(c.txt||'').length>100?'...':''}</td>
-      <td class="td-mono" style="color:var(--muted)">${fmtDate(c.date)}</td>
-      <td><button class="act act-del" onclick="delComment(${i})">✕ Eliminar</button></td>
-    </tr>
-  `).join('');
+  D.comments = getLS(KEYS.comments) || [];
+  renderComments();
 }
-
+function renderComments() {
+  $('c-count').textContent = `Comentarios (${D.comments.length})`;
+  if (!D.comments.length) { $('c-tbody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--mut);font-family:var(--fm);font-size:11px">Sin comentarios</td></tr>'; return; }
+  $('c-tbody').innerHTML = D.comments.map((c,i)=>`
+    <tr>
+      <td class="td-mono" style="color:var(--mut)">${i+1}</td>
+      <td class="td-name">${esc(c.name)}</td>
+      <td style="font-size:12px;color:var(--mut)">${esc(c.veh||'—')}</td>
+      <td style="color:var(--og);white-space:nowrap">${'★'.repeat(c.r||0)}<span style="color:var(--mut);font-family:var(--fm);font-size:10px"> ${c.r||0}/5</span></td>
+      <td style="font-size:12px;color:var(--mut-hi);max-width:240px">${esc((c.txt||'').substring(0,90))}${(c.txt||'').length>90?'...':''}</td>
+      <td class="td-mono" style="color:var(--mut)">${fmt(c.date)}</td>
+      <td><button class="act act-del" onclick="delComment(${i})">✕ Borrar</button></td>
+    </tr>`).join('');
+}
 function delComment(i) {
   if (!confirm('¿Eliminar este comentario?')) return;
-  allComments = getLS(KEYS.comments) || [];
-  allComments.splice(i, 1);
-  setLS(KEYS.comments, allComments);
-  loadComments();
-  updateBadges();
-  toast('Comentario eliminado', 'info');
+  D.comments.splice(i,1);
+  setLS(KEYS.comments, D.comments);
+  renderComments(); updateBadges();
+  toast('Comentario eliminado','info');
 }
 
-/* ── ORDERS ─────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   ORDERS
+══════════════════════════════════════════════════════════ */
 function loadOrders() {
-  allOrders = getLS(KEYS.orders) || [];
-  renderOrdersTable(allOrders);
+  D.orders = getLS(KEYS.orders) || [];
+  renderOrdersTable(D.orders);
 }
-
 function filterOrders() {
-  const q = $('orders-search').value.toLowerCase();
-  const filtered = allOrders.filter(o => {
-    const u = allUsers.find(u => u.id === o.userId);
-    const name = u ? (u.name+' '+(u.last||'')).toLowerCase() : '';
-    return !q || name.includes(q) || String(o.id).includes(q);
-  });
-  renderOrdersTable(filtered);
+  const q = ($('o-search').value||'').toLowerCase();
+  renderOrdersTable(D.orders.filter(o=>{
+    const u=D.users.find(u=>u.id===o.userId);
+    const n=u?(u.name+' '+(u.last||'')).toLowerCase():'';
+    return !q||n.includes(q)||String(o.id).includes(q);
+  }));
 }
-
 function renderOrdersTable(orders) {
-  $('orders-count').textContent = `Pedidos (${orders.length})`;
-  if (!orders.length) {
-    $('orders-tbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted);font-family:var(--font-m);font-size:12px">Sin pedidos registrados</td></tr>';
-    return;
-  }
-  $('orders-tbody').innerHTML = [...orders].reverse().map(o => {
-    const u = allUsers.find(u => u.id === o.userId);
+  $('o-count').textContent = `Pedidos (${orders.length}) — Total: $${orders.reduce((s,o)=>s+(o.total||0),0)}`;
+  if (!orders.length) { $('o-tbody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--mut);font-family:var(--fm);font-size:11px">Sin pedidos</td></tr>'; return; }
+  $('o-tbody').innerHTML = [...orders].reverse().map(o=>{
+    const u=D.users.find(u=>u.id===o.userId);
     return `<tr>
       <td class="td-mono">#${o.id}</td>
-      <td>
-        <div class="td-name">${u ? esc(u.name+' '+(u.last||'')) : '<span style="color:var(--muted)">—</span>'}</div>
-        ${u?`<div style="font-family:var(--font-m);font-size:10px;color:var(--muted)">${esc(u.email)}</div>`:''}
-      </td>
-      <td style="font-size:12px;color:var(--muted)">${(o.items||[]).map(it=>esc(it.name)+' x'+it.qty).join(', ').substring(0,60)||'—'}</td>
-      <td style="color:var(--orange);font-family:var(--font-d);font-weight:700;font-size:16px">$${o.total||0}</td>
-      <td class="td-mono" style="color:var(--muted)">${fmtDateTime(o.date)}</td>
-      <td><button class="act act-view" onclick="showOrderDetail(${o.id})">Ver</button></td>
+      <td><div class="td-name">${u?esc(u.name+' '+(u.last||'')):'<span style="color:var(--mut)">—</span>'}</div>${u?`<div style="font-family:var(--fm);font-size:10px;color:var(--mut)">${esc(u.email)}</div>`:''}</td>
+      <td style="font-size:12px;color:var(--mut)">${(o.items||[]).slice(0,2).map(it=>esc(it.name)+' x'+it.qty).join(', ')}${(o.items||[]).length>2?' +más':''}||'—'}</td>
+      <td class="td-og" style="font-size:16px">$${o.total||0}</td>
+      <td class="td-mono" style="color:var(--mut)">${fmtDT(o.date)}</td>
+      <td><button class="act act-view" onclick="openUM(${o.userId||0})">Ver Cliente</button></td>
     </tr>`;
   }).join('');
 }
 
-function showOrderDetail(id) {
-  const o = allOrders.find(o => o.id === id);
-  if (!o) return;
-  const u = allUsers.find(u => u.id === o.userId);
-  const items = (o.items||[]).map(it => `
-    <div class="order-item">
-      <span>${esc(it.name)}</span>
-      <span style="color:var(--muted)">x${it.qty}</span>
-      <span style="color:var(--orange);font-family:var(--font-d);font-weight:700">$${(it.price||0)*it.qty}</span>
-    </div>
-  `).join('');
-  const html = `
-    <div style="padding:24px">
-      <div style="font-family:var(--font-m);font-size:11px;color:var(--muted);margin-bottom:16px">PEDIDO #${o.id} · ${fmtDateTime(o.date)}</div>
-      ${u ? `<div style="margin-bottom:16px">
-        <div style="font-family:var(--font-d);font-size:14px;font-weight:600;text-transform:uppercase">${esc(u.name+' '+(u.last||''))}</div>
-        <div style="font-family:var(--font-m);font-size:11px;color:var(--muted)">${esc(u.email)} · ${esc(u.phone||'—')}</div>
-      </div>` : ''}
-      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:16px">
-        ${items}
-        <div style="display:flex;justify-content:space-between;padding-top:12px;margin-top:8px;border-top:1px solid var(--border);font-family:var(--font-d);font-size:15px;font-weight:700">
-          <span>Total</span><span style="color:var(--orange)">$${o.total||0}</span>
-        </div>
-      </div>
-    </div>`;
-  alert('Funcionalidad de detalle — ver consola');
-  console.log('ORDER DETAIL:', o, u);
-  toast('Detalle en consola del navegador', 'info');
+/* ══════════════════════════════════════════════════════════
+   ROLE / DELETE
+══════════════════════════════════════════════════════════ */
+function setRole(uid, role) {
+  const users = getLS(KEYS.users)||[];
+  const idx=users.findIndex(u=>u.id===uid); if(idx===-1) return;
+  users[idx].role=role; setLS(KEYS.users,users); D.users=users;
+  renderUsersTable(D.users); updateBadges();
+  toast(`Rol → ${role}`,'success');
+  if (_umUser && _umUser.id===uid) { _umUser.role=role; renderUMContent(_umUser); }
+}
+function delUser(uid) {
+  const users=getLS(KEYS.users)||[];
+  const u=users.find(u=>u.id===uid); if(!u) return;
+  if(!confirm(`¿Eliminar permanentemente a ${u.name}?\nEsta acción no se puede deshacer.`)) return;
+  setLS(KEYS.users, users.filter(u=>u.id!==uid)); D.users=getLS(KEYS.users)||[];
+  renderUsersTable(D.users); updateBadges(); closeUM();
+  toast('Usuario eliminado','info');
 }
 
-/* ── ROLE MANAGEMENT ────────────────────────────────────────────── */
-function setRole(userId, role) {
-  const users = getLS(KEYS.users) || [];
-  const idx = users.findIndex(u => u.id === userId);
-  if (idx === -1) return;
-  users[idx].role = role;
-  setLS(KEYS.users, users);
-  allUsers = users;
-  renderUsersTable(allUsers);
-  updateBadges();
-  toast(`Rol actualizado: ${role}`, 'success');
-  if (currentViewUser && currentViewUser.id === userId) {
-    currentViewUser.role = role;
-    renderUserModal(currentViewUser);
-  }
-}
-
-function delUser(userId) {
-  const users = getLS(KEYS.users) || [];
-  const u = users.find(u => u.id === userId);
-  if (!u) return;
-  if (!confirm(`¿Eliminar permanentemente a ${u.name} ${u.last||''}? Esta acción no se puede deshacer.`)) return;
-  const newUsers = users.filter(u => u.id !== userId);
-  setLS(KEYS.users, newUsers);
-  allUsers = newUsers;
-  renderUsersTable(allUsers);
-  updateBadges();
-  closeUserModal();
-  toast('Usuario eliminado', 'info');
-}
-
-/* ── CODES ──────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   CODES
+══════════════════════════════════════════════════════════ */
 function loadCodes() {
-  const codes = getLS(KEYS.codes) || [];
-  $('codes-list').innerHTML = codes.length ? codes.slice().reverse().map(c => {
-    const expired = c.expiry < Date.now();
-    const status = c.used ? 'USADO' : expired ? 'EXPIRADO' : 'ACTIVO';
-    const color = c.used ? 'badge-red' : expired ? 'badge-gray' : 'badge-green';
-    return `<div class="code-item">
-      <div class="code-val">${c.code}</div>
-      <span class="badge ${color}">${status}</span>
-      <div class="code-expiry">Expira: ${fmtDateTime(c.expiry)}</div>
+  const codes=getLS(KEYS.codes)||[];
+  $('codes-list').innerHTML=codes.length ? codes.slice().reverse().map(c=>{
+    const exp=c.expiry<Date.now();
+    const st=c.used?'USADO':exp?'EXPIRADO':'ACTIVO';
+    const bc=c.used?'b-red':exp?'b-gray':'b-green';
+    return `<div class="ci">
+      <div class="ci-val">${c.code}</div>
+      <span class="badge ${bc}">${st}</span>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--mut)">Expira: ${fmtDT(c.expiry)}</div>
     </div>`;
-  }).join('') : '<div style="text-align:center;padding:24px;color:var(--muted);font-family:var(--font-m);font-size:12px">Sin códigos generados</div>';
+  }).join('') : '<div class="empty"><div class="empty-t">Sin códigos generados</div></div>';
 }
-
-function generateCode() {
-  const code = 'IMP-' + Math.random().toString(36).substring(2,8).toUpperCase();
-  const expiry = Date.now() + 24*60*60*1000;
-  const codes = getLS(KEYS.codes) || [];
-  codes.push({ code, expiry, used:false });
-  setLS(KEYS.codes, codes);
-  $('new-code-display').style.display = 'block';
-  $('new-code-val').textContent = code;
+function genCode() {
+  const code='IMP-'+Math.random().toString(36).substring(2,8).toUpperCase();
+  const expiry=Date.now()+24*60*60*1000;
+  const codes=getLS(KEYS.codes)||[];
+  codes.push({code,expiry,used:false}); setLS(KEYS.codes,codes);
+  $('new-code-card').style.display='block';
+  $('new-code-val').textContent=code;
   loadCodes();
-  toast('Código generado: '+code, 'success');
+  toast('Código generado: '+code,'success');
 }
 
-/* ── ADD COMMENT ────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   ADD COMMENT
+══════════════════════════════════════════════════════════ */
+let _acStar=5;
 function setAcStar(n) {
-  acStar = n;
-  document.querySelectorAll('#ac-stars .star-btn').forEach((b,i) => b.classList.toggle('on', i < n));
+  _acStar=n;
+  document.querySelectorAll('#ac-stars .sr-btn').forEach((b,i)=>b.classList.toggle('on',i<n));
 }
-
 function addComment() {
-  const nm = $('ac-name').value.trim();
-  const veh = $('ac-veh').value.trim();
-  const txt = $('ac-text').value.trim();
-  if (!nm || !txt) { toast('Completa nombre y comentario', 'error'); return; }
-  const all = getLS(KEYS.comments) || [];
-  all.unshift({ id:Date.now(), name:nm, veh, r:acStar, txt, date:new Date().toISOString() });
-  setLS(KEYS.comments, all);
-  allComments = all;
-  $('ac-name').value = ''; $('ac-veh').value = ''; $('ac-text').value = '';
-  updateBadges();
-  toast('Reseña publicada ✓', 'success');
+  const nm=($('ac-name').value||'').trim(), veh=($('ac-veh').value||'').trim(), txt=($('ac-text').value||'').trim();
+  if(!nm||!txt){ toast('Nombre y comentario requeridos','error'); return; }
+  const all=getLS(KEYS.comments)||[];
+  all.unshift({id:Date.now(),name:nm,veh,r:_acStar,txt,date:new Date().toISOString()});
+  setLS(KEYS.comments,all); D.comments=all;
+  $('ac-name').value=''; $('ac-veh').value=''; $('ac-text').value='';
+  updateBadges(); toast('Reseña publicada ✓','success');
 }
 
-/* ── USER MODAL ─────────────────────────────────────────────────── */
-function openUserModal(userId) {
-  const users = getLS(KEYS.users) || [];
-  const u = users.find(u => u.id === userId);
-  if (!u) { toast('Usuario no encontrado', 'error'); return; }
-  currentViewUser = u;
-  renderUserModal(u);
-  $('user-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+/* ══════════════════════════════════════════════════════════
+   SETTINGS — cambiar contraseña del panel
+══════════════════════════════════════════════════════════ */
+function changeAdminPass() {
+  const cur=($('sp-cur').value||''), nw=($('sp-new').value||''), cf=($('sp-cf').value||'');
+  const creds=getAdminCreds();
+  if (!cur||!nw||!cf) { toast('Completa todos los campos','error'); return; }
+  if (cur !== creds.pass) { toast('Contraseña actual incorrecta','error'); return; }
+  if (nw.length < 6) { toast('Mínimo 6 caracteres','error'); return; }
+  if (nw !== cf) { toast('Las contraseñas no coinciden','error'); return; }
+  setLS(KEYS.adminKey, { user: creds.user, pass: nw });
+  $('sp-cur').value=''; $('sp-new').value=''; $('sp-cf').value='';
+  toast('Contraseña actualizada ✓','success');
 }
 
-function renderUserModal(u) {
-  $('um-name').textContent = (u.name + ' ' + (u.last||'')).trim();
-  $('um-email').textContent = u.email;
-  $('um-av-initials').textContent = initials(u.name);
-  const avImg = $('um-av-img');
-  if (u.avatar) { avImg.src = u.avatar; avImg.style.display = 'block'; $('um-av-initials').style.display = 'none'; }
-  else { avImg.style.display = 'none'; $('um-av-initials').style.display = 'flex'; }
+function exportData(type) {
+  let data, name;
+  if (type==='users')    { data=getLS(KEYS.users)||[];    name='impel_users.json'; }
+  else if (type==='comments') { data=getLS(KEYS.comments)||[]; name='impel_comments.json'; }
+  else if (type==='orders')   { data=getLS(KEYS.orders)||[];   name='impel_orders.json'; }
+  else { data={users:getLS(KEYS.users)||[],comments:getLS(KEYS.comments)||[],orders:getLS(KEYS.orders)||[],exported:new Date().toISOString()}; name='impel_backup.json'; }
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download=name; a.click();
+  toast('Descargando '+name,'success');
+}
 
-  $('um-badges').innerHTML = [
-    `<span class="badge ${u.role==='admin'?'badge-admin':'badge-client'}">${u.role||'cliente'}</span>`,
-    u.phone ? `<span class="badge badge-gray">📱 ${esc(u.phone)}</span>` : '',
-    u.vehicle ? `<span class="badge badge-gray">🚗 ${esc(u.vehicle)}</span>` : ''
-  ].filter(Boolean).join('');
+/* ══════════════════════════════════════════════════════════
+   USER MODAL
+══════════════════════════════════════════════════════════ */
+let _umUser=null;
+function openUM(uid) {
+  const users=getLS(KEYS.users)||[];
+  const u=users.find(u=>u.id===uid);
+  if (!u) { toast('Usuario no encontrado','error'); return; }
+  _umUser=u; renderUMContent(u);
+  $('um-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeUM() {
+  $('um-overlay').classList.remove('open');
+  document.body.style.overflow=''; _umUser=null;
+}
+function umTab(i, btn) {
+  document.querySelectorAll('.um-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.um-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  $('ump-'+i).classList.add('active');
+}
 
-  const userOrders = (getLS(KEYS.orders)||[]).filter(o => o.userId === u.id);
-  const totalSpent = userOrders.reduce((s,o) => s+(o.total||0), 0);
+function renderUMContent(u) {
+  const uo=D.orders.filter(o=>o.userId===u.id);
+  const ts=uo.reduce((s,o)=>s+(o.total||0),0);
+  const uc=D.comments.filter(c=>c.name===u.name+(u.last?' '+u.last:''));
 
-  // Tab 0: General info
-  $('um-info-grid').innerHTML = [
-    ['🆔 ID del Sistema', `<span class="info-val mono">${u.id}</span>`],
-    ['👤 Nombre Completo', esc(u.name + ' ' + (u.last||''))],
-    ['📧 Email', `<span class="info-val mono">${esc(u.email)}</span>`],
-    ['📱 Teléfono', esc(u.phone||'—')],
-    ['🚗 Vehículo', esc(u.vehicle||'—')],
-    ['🎭 Rol', `<span class="badge ${u.role==='admin'?'badge-admin':'badge-client'}">${u.role||'cliente'}</span>`],
-    ['📅 Fecha de Registro', fmtDateTime(u.created)],
-    ['🔄 Último Acceso', fmtDateTime(u.lastLogin)||'—'],
-    ['🛒 Total de Pedidos', `<span class="info-val orange">${userOrders.length}</span>`],
-    ['💰 Total Gastado', `<span class="info-val orange">$${totalSpent}</span>`],
-    ['💬 Reseñas Publicadas', allComments.filter(c => c.name === u.name+(u.last?' '+u.last:'')).length],
-    ['📷 Foto de Perfil', u.avatar ? '<span class="badge badge-green">✓ Configurada</span>' : '<span class="badge badge-gray">Sin foto</span>']
-  ].map(([k,v]) => `<div class="info-item"><div class="info-key">${k}</div><div class="info-val">${v}</div></div>`).join('');
+  $('um-name').textContent=(u.name+' '+(u.last||'')).trim();
+  $('um-email').textContent=u.email;
+  $('um-av-init').textContent=ini(u.name);
+  const avImg=$('um-av-img');
+  if(u.avatar){avImg.src=u.avatar;avImg.style.display='block';$('um-av-init').style.display='none';}
+  else{avImg.style.display='none';$('um-av-init').style.display='flex';}
+  $('um-badges').innerHTML=`<span class="badge ${u.role==='admin'?'b-admin':'b-client'}">${u.role||'cliente'}</span>`
+    +(u.phone?`<span class="badge b-gray">📱 ${esc(u.phone)}</span>`:'')
+    +(u.vehicle?`<span class="badge b-gray">🚗 ${esc(u.vehicle)}</span>`:'');
+  $('ums-orders').textContent=uo.length;
+  $('ums-spent').textContent='$'+ts;
+  $('ums-reviews').textContent=uc.length;
 
-  // Tab 1: Security
-  $('um-security-grid').innerHTML = [
-    ['🔑 Contraseña Almacenada', `<span class="info-val highlight">${esc(u.pass||'—')}</span>`],
-    ['🎭 Rol Actual', `<span class="badge ${u.role==='admin'?'badge-admin':'badge-client'}">${u.role||'cliente'}</span>`],
-    ['📅 Cuenta Creada', fmtDateTime(u.created)],
-    ['🔄 Último Inicio de Sesión', fmtDateTime(u.lastLogin)||'—'],
-    ['🆔 ID Único', `<span class="info-val mono">${u.id}</span>`],
-    ['✉️ Email de Acceso', `<span class="info-val mono">${esc(u.email)}</span>`]
-  ].map(([k,v]) => `<div class="info-item"><div class="info-key">${k}</div><div class="info-val">${v}</div></div>`).join('') +
-  `<div class="info-item info-full">
-    <div class="info-key">🔧 Cambiar Contraseña</div>
+  // TAB 0 — Info
+  $('um-info').innerHTML=[
+    ['🆔 ID del Sistema',`<span class="ii-v mono">${u.id}</span>`,''],
+    ['👤 Nombre Completo',esc(u.name+' '+(u.last||'')),''],
+    ['📧 Email',`<span class="ii-v mono">${esc(u.email)}</span>`,''],
+    ['📱 Teléfono',esc(u.phone||'—'),''],
+    ['🚗 Vehículo',esc(u.vehicle||'—'),''],
+    ['🎭 Rol',`<span class="badge ${u.role==='admin'?'b-admin':'b-client'}">${u.role||'cliente'}</span>`,''],
+    ['📅 Fecha de Registro',fmtDT(u.created),''],
+    ['🔄 Último Acceso',fmtDT(u.lastLogin)||'—',''],
+    ['🛒 Pedidos',`<span class="ii-v og">${uo.length}</span>`,''],
+    ['💰 Total Gastado',`<span class="ii-v og">$${ts}</span>`,''],
+    ['💬 Reseñas',uc.length,''],
+    ['📷 Avatar',u.avatar?'<span class="badge b-green">✓ Configurado</span>':'<span class="badge b-gray">Sin foto</span>','']
+  ].map(([k,v])=>`<div class="ii"><div class="ii-k">${k}</div><div class="ii-v">${v}</div></div>`).join('');
+
+  // TAB 1 — Seguridad
+  $('um-security').innerHTML=[
+    ['🎭 Rol Actual',`<span class="badge ${u.role==='admin'?'b-admin':'b-client'}">${u.role||'cliente'}</span>`],
+    ['🔑 Contraseña','<span class="badge b-gray">••••••• (oculta por seguridad)</span>'],
+    ['📅 Registro',fmtDT(u.created)],
+    ['🔄 Último Login',fmtDT(u.lastLogin)||'—'],
+    ['🆔 ID',`<span class="ii-v mono">${u.id}</span>`],
+    ['✉️ Email',`<span class="ii-v mono">${esc(u.email)}</span>`]
+  ].map(([k,v])=>`<div class="ii"><div class="ii-k">${k}</div><div class="ii-v">${v}</div></div>`).join('')
+  +`<div class="ii ig-full"><div class="ii-k">🔧 Forzar Nueva Contraseña</div>
     <div style="display:flex;gap:8px;margin-top:8px">
-      <input id="um-new-pass" class="field-input" placeholder="Nueva contraseña" type="text" style="flex:1">
-      <button class="btn btn-orange" onclick="changeUserPass(${u.id})" style="background:var(--orange);color:#fff;border:none;padding:10px 16px;border-radius:var(--radius);font-family:var(--font-m);font-size:11px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer">Cambiar</button>
+      <input id="um-np" class="fi" type="text" placeholder="Nueva contraseña (mín. 6)" style="flex:1">
+      <button onclick="changeUPass(${u.id})" class="btn btn-primary btn-sm">Cambiar</button>
     </div>
   </div>`;
 
-  // Tab 2: Orders
-  $('um-orders-list').innerHTML = userOrders.length ? [...userOrders].reverse().map(o => `
-    <div class="order-card">
-      <div class="order-header">
-        <span class="order-id">#${o.id}</span>
-        <span class="order-date">📅 ${fmtDateTime(o.date)}</span>
-        <span style="color:var(--orange);font-family:var(--font-d);font-weight:700;font-size:16px">$${o.total}</span>
+  // TAB 2 — Pedidos
+  $('um-orders').innerHTML=uo.length ? [...uo].reverse().map(o=>`
+    <div class="oc">
+      <div class="oc-hd">
+        <span class="oc-id">#${o.id}</span>
+        <span class="oc-date">📅 ${fmtDT(o.date)}</span>
+        <span class="td-og" style="font-size:17px">$${o.total}</span>
       </div>
-      ${(o.items||[]).map(it => `<div class="order-item"><span>${esc(it.name)}</span><span style="color:var(--muted)">x${it.qty}</span><span style="color:var(--orange)">$${(it.price||0)*it.qty}</span></div>`).join('')}
-    </div>
-  `).join('') : '<div class="empty-state"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61H19a2 2 0 001.96-1.63L23 6H6"/></svg><div class="empty-text">Sin pedidos registrados</div></div>';
+      ${(o.items||[]).map(it=>`<div class="oc-row"><span>${esc(it.name)}</span><span style="color:var(--mut)">x${it.qty}</span><span style="color:var(--og)">$${(it.price||0)*it.qty}</span></div>`).join('')}
+    </div>`).join('')
+  : '<div class="empty"><div class="empty-t">Sin pedidos registrados</div></div>';
 
-  // Tab 3: Comments by this user
-  const userComments = allComments.filter(c => c.name === u.name+(u.last?' '+u.last:''));
-  $('um-comments-list').innerHTML = userComments.length ? userComments.map(c => `
-    <div class="comment-card">
-      <div class="comment-stars">${'★'.repeat(c.r||0)}${'☆'.repeat(5-(c.r||0))}</div>
-      <div class="comment-text">${esc(c.txt)}</div>
-      <div class="comment-meta">🚗 ${esc(c.veh||'—')} · 📅 ${fmtDate(c.date)}</div>
-    </div>
-  `).join('') : '<div class="empty-state"><div class="empty-text">Sin reseñas publicadas</div></div>';
+  // TAB 3 — Reseñas
+  $('um-comments').innerHTML=uc.length ? uc.map(c=>`
+    <div class="oc">
+      <div style="color:var(--og);font-size:15px;margin-bottom:5px">${'★'.repeat(c.r||0)}${'☆'.repeat(5-(c.r||0))}</div>
+      <div style="font-size:13px;color:var(--mut-hi);line-height:1.6;margin-bottom:7px">${esc(c.txt)}</div>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--mut)">🚗 ${esc(c.veh||'—')} · 📅 ${fmt(c.date)}</div>
+    </div>`).join('')
+  : '<div class="empty"><div class="empty-t">Sin reseñas publicadas</div></div>';
 
-  // Tab 4: Actions
-  $('um-actions-content').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div class="info-item">
-        <div class="info-key">🔄 Cambiar Rol</div>
+  // TAB 4 — Acciones
+  $('um-actions').innerHTML=`
+    <div class="ig">
+      <div class="ii">
+        <div class="ii-k">🔄 Cambiar Rol</div>
         <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="setRole(${u.id},'admin')" ${u.role==='admin'?'disabled style="opacity:.5"':''}>Hacer Admin</button>
-          <button class="btn btn-ghost" onclick="setRole(${u.id},'cliente')" ${u.role==='cliente'?'disabled style="opacity:.5"':''}>Hacer Cliente</button>
+          <button class="btn btn-primary btn-sm" onclick="setRole(${u.id},'admin')" ${u.role==='admin'?'disabled style="opacity:.4"':''}>Hacer Admin</button>
+          <button class="btn btn-ghost btn-sm"   onclick="setRole(${u.id},'cliente')" ${u.role==='cliente'?'disabled style="opacity:.4"':''}>Hacer Cliente</button>
         </div>
       </div>
-      <div class="info-item">
-        <div class="info-key">🗑️ Eliminar Usuario</div>
+      <div class="ii">
+        <div class="ii-k">🗑️ Eliminar Usuario</div>
         <div style="margin-top:10px">
-          <button class="btn btn-red" onclick="delUser(${u.id})" style="width:100%;justify-content:center">Eliminar Permanentemente</button>
+          <button class="btn btn-red btn-sm" onclick="delUser(${u.id})" style="width:100%;justify-content:center">Eliminar Permanentemente</button>
         </div>
       </div>
-      <div class="info-item info-full" style="grid-column:1/-1">
-        <div class="info-key">📊 Resumen de Actividad</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:10px">
+      <div class="ii ig-full">
+        <div class="ii-k">📊 Actividad Resumida</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
           <div style="text-align:center;padding:16px;background:var(--bg5);border-radius:8px">
-            <div style="font-family:var(--font-d);font-size:28px;font-weight:700;color:var(--orange)">${userOrders.length}</div>
-            <div style="font-family:var(--font-m);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px">Pedidos</div>
+            <div style="font-family:var(--fd);font-size:26px;font-weight:700;color:var(--og)">${uo.length}</div>
+            <div style="font-family:var(--fm);font-size:9px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin-top:3px">Pedidos</div>
           </div>
           <div style="text-align:center;padding:16px;background:var(--bg5);border-radius:8px">
-            <div style="font-family:var(--font-d);font-size:28px;font-weight:700;color:var(--blue)">$${totalSpent}</div>
-            <div style="font-family:var(--font-m);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px">Gastado</div>
+            <div style="font-family:var(--fd);font-size:26px;font-weight:700;color:var(--bl)">$${ts}</div>
+            <div style="font-family:var(--fm);font-size:9px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin-top:3px">Gastado</div>
           </div>
           <div style="text-align:center;padding:16px;background:var(--bg5);border-radius:8px">
-            <div style="font-family:var(--font-d);font-size:28px;font-weight:700;color:var(--green)">${userComments.length}</div>
-            <div style="font-family:var(--font-m);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px">Reseñas</div>
+            <div style="font-family:var(--fd);font-size:26px;font-weight:700;color:var(--gn)">${uc.length}</div>
+            <div style="font-family:var(--fm);font-size:9px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin-top:3px">Reseñas</div>
           </div>
         </div>
       </div>
     </div>`;
 }
 
-function changeUserPass(userId) {
-  const newPass = $('um-new-pass').value.trim();
-  if (!newPass || newPass.length < 4) { toast('Contraseña muy corta', 'error'); return; }
-  const users = getLS(KEYS.users) || [];
-  const idx = users.findIndex(u => u.id === userId);
-  if (idx === -1) return;
-  users[idx].pass = newPass;
-  setLS(KEYS.users, users);
-  allUsers = users;
-  currentViewUser = users[idx];
-  $('um-new-pass').value = '';
-  renderUserModal(currentViewUser);
-  toast('Contraseña actualizada', 'success');
+function changeUPass(uid) {
+  const np=($('um-np').value||'').trim();
+  if(!np||np.length<6){toast('Mínimo 6 caracteres','error');return;}
+  const users=getLS(KEYS.users)||[];
+  const idx=users.findIndex(u=>u.id===uid); if(idx===-1) return;
+  users[idx].pass=np; setLS(KEYS.users,users);
+  D.users=users; _umUser=users[idx];
+  $('um-np').value='';
+  toast('Contraseña cambiada ✓','success');
 }
 
-function switchUMTab(i, btn) {
-  document.querySelectorAll('.umt').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.user-modal-pane').forEach(p => p.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  else document.querySelectorAll('.umt')[i].classList.add('active');
-  $('um-tab'+i).classList.add('active');
-}
-
-function closeUserModal() {
-  $('user-modal').classList.remove('open');
-  document.body.style.overflow = '';
-  currentViewUser = null;
-}
-
-/* ── EXPORT ─────────────────────────────────────────────────────── */
-function exportData(type) {
-  let data, filename;
-  if (type === 'users') { data = getLS(KEYS.users)||[]; filename = 'impel_users.json'; }
-  else if (type === 'comments') { data = getLS(KEYS.comments)||[]; filename = 'impel_comments.json'; }
-  else if (type === 'orders') { data = getLS(KEYS.orders)||[]; filename = 'impel_orders.json'; }
-  else { data = { users: getLS(KEYS.users)||[], comments: getLS(KEYS.comments)||[], orders: getLS(KEYS.orders)||[], codes: getLS(KEYS.codes)||[], exported: new Date().toISOString() }; filename = 'impel_backup.json'; }
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
-  toast('Descargando '+filename, 'success');
-}
-
-/* ── KEYBOARD ───────────────────────────────────────────────────── */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeUserModal();
+/* ══════════════════════════════════════════════════════════
+   KEYBOARD
+══════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closeUM();
+  if(e.key==='Enter' && $('login-screen').style.display!=='none') doLogin();
 });
 
-/* ── INIT ───────────────────────────────────────────────────────── */
-// Auto-login if session is active admin
-const sess = getLS(KEYS.sess);
-if (sess && (sess.role === 'admin' || ADMIN_ACCOUNTS.some(a => a.id === sess.id))) {
-  adminUser = sess;
-  initApp();
-}
+/* ══════════════════════════════════════════════════════════
+   CSS SPIN KEYFRAME
+══════════════════════════════════════════════════════════ */
+const _s=document.createElement('style');
+_s.textContent='@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(_s);
+
+/* ══════════════════════════════════════════════════════════
+   INIT — Auto-login si ya había sesión activa
+══════════════════════════════════════════════════════════ */
+(function init() {
+  const sess = getLS('impel_admin_sess');
+  if (sess && sess.loginAt && (Date.now()-sess.loginAt) < 8*60*60*1000) {
+    // Sesión válida (menos de 8 horas)
+    $('login-screen').style.display='none';
+    $('app').style.display='block';
+    $('sb-av').textContent=ini(sess.name||'Admin');
+    $('sb-name').textContent=sess.name||'Admin';
+    refresh(true);
+    updateClock();
+    setInterval(updateClock,60000);
+  }
+})();
 </script>
 </body>
 </html>
