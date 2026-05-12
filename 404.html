@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 | IMPEL Electromecánica</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(255, 70, 35, .13), transparent 34%),
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, .06), transparent 28%),
+        linear-gradient(135deg, #050505, #111, #070707);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      position: relative;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle, #000 25%, transparent 75%);
+      pointer-events: none;
+    }
+
+    .panel {
+      width: min(1120px, 100%);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 34px;
+      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+      box-shadow: 0 40px 120px rgba(0,0,0,.7);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .top {
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 900;
+      letter-spacing: .3px;
+    }
+
+    .mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: #fff;
+      color: #111;
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+      box-shadow: 0 0 35px rgba(255,255,255,.13);
+    }
+
+    .badge {
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: rgba(255, 70, 35, .10);
+      border: 1px solid rgba(255, 70, 35, .35);
+      color: #ff6b4a;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr .95fr;
+      gap: 30px;
+      padding: 58px;
+      align-items: center;
+    }
+
+    .label {
+      color: #ff6b4a;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: .9;
+      letter-spacing: -4px;
+      margin-bottom: 24px;
+    }
+
+    h1 span {
+      color: #bdbdbd;
+    }
+
+    p {
+      color: #b9b9b9;
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 15px 24px;
+      font-weight: 900;
+      transition: .25s ease;
+    }
+
+    .primary {
+      background: #fff;
+      color: #090909;
+    }
+
+    .secondary {
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.055);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .scanner {
+      height: 390px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)),
+        #080808;
+      position: relative;
+      overflow: hidden;
+      padding: 26px;
+      box-shadow: inset 0 0 60px rgba(255,255,255,.035);
+    }
+
+    .scanner::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 45%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ff4a2b, transparent);
+      box-shadow: 0 0 30px #ff4a2b;
+      animation: scan 3s infinite ease-in-out;
+    }
+
+    .screen-top {
+      display: flex;
+      justify-content: space-between;
+      color: #8f8f8f;
+      font-size: 13px;
+      margin-bottom: 40px;
+    }
+
+    .code {
+      font-size: clamp(88px, 14vw, 150px);
+      font-weight: 950;
+      letter-spacing: -8px;
+      color: #fff;
+    }
+
+    .error {
+      color: #ff6b4a;
+      font-weight: 900;
+      margin-top: 8px;
+    }
+
+    .lines {
+      margin-top: 34px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .line {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      overflow: hidden;
+    }
+
+    .line span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #ff4a2b, #fff);
+      border-radius: inherit;
+    }
+
+    .l1 span { width: 82%; }
+    .l2 span { width: 56%; }
+    .l3 span { width: 34%; }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .item {
+      padding: 22px 28px;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+
+    .item:last-child {
+      border-right: 0;
+    }
+
+    .item strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .item small {
+      color: #999;
+      line-height: 1.5;
+    }
+
+    @keyframes scan {
+      0%, 100% { transform: translateY(-120px); opacity: .35; }
+      50% { transform: translateY(120px); opacity: 1; }
+    }
+
+    @media (max-width: 850px) {
+      .content {
+        grid-template-columns: 1fr;
+        padding: 34px 24px;
+      }
+
+      .scanner {
+        height: 330px;
+      }
+
+      .bottom {
+        grid-template-columns: 1fr;
+      }
+
+      .item {
+        border-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+      }
+
+      .badge {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="grid"></div>
+
+    <section class="panel">
+      <header class="top">
+        <div class="brand">
+          <div class="mark">I</div>
+          <div>
+            IMPEL Electromecánica<br>
+            <small style="color:#8d8d8d;font-weight:600;">Especialistas eléctricos automotrices</small>
+          </div>
+        </div>
+
+        <div class="badge">Ruta no encontrada</div>
+      </header>
+
+      <section class="content">
+        <div>
+          <div class="label">Error 404 · Diagnóstico del sistema</div>
+
+          <h1>
+            Página fuera<br>
+            <span>de servicio</span>
+          </h1>
+
+          <p>
+            La dirección que intentaste abrir no está disponible.
+            Puede que el enlace haya cambiado, esté incompleto o ya no exista.
+          </p>
+
+          <div class="actions">
+            <a class="btn primary" href="/">Volver al inicio</a>
+            <a class="btn secondary" href="https://wa.me/50762838021">Solicitar asistencia</a>
+          </div>
+        </div>
+
+        <div class="scanner">
+          <div class="screen-top">
+            <span>SISTEMA IMPEL</span>
+            <span>OBD / WEB SCAN</span>
+          </div>
+
+          <div class="code">404</div>
+          <div class="error">FALLA DETECTADA: URL NO EXISTE</div>
+
+          <div class="lines">
+            <div class="line l1"><span></span></div>
+            <div class="line l2"><span></span></div>
+            <div class="line l3"><span></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom">
+        <div class="item">
+          <strong>Diagnóstico preciso</strong>
+          <small>Revisión técnica con equipos especializados.</small>
+        </div>
+
+        <div class="item">
+          <strong>Servicio 24/7</strong>
+          <small>Asistencia para emergencias eléctricas automotrices.</small>
+        </div>
+
+        <div class="item">
+          <strong>Atención en Panamá</strong>
+          <small>Soporte rápido en el área metropolitana.</small>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
