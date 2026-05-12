@@ -584,6 +584,34 @@ footer{background:linear-gradient(180deg,#050810,#060a14);border-top:1px solid v
   #login-btn{display:none!important;}
 }
 </style>
+<style id="impel-promo-bar-css">
+:root{--promo-h:50px;}
+#impel-promo{position:fixed;top:0;left:0;right:0;z-index:1100;height:var(--promo-h);overflow:hidden;transition:height .4s cubic-bezier(.4,0,.2,1),opacity .35s ease;}
+nav#navbar{top:var(--promo-h)!important;transition:top .4s cubic-bezier(.4,0,.2,1),background .3s,border-color .3s,box-shadow .3s!important;}
+#home.impel-hero .hero-content{padding-top:calc(var(--nav-h) + var(--promo-h) + 38px)!important;}
+@media(max-width:768px){:root{--promo-h:50px;}#home.impel-hero .hero-content{padding-top:calc(var(--nav-h) + var(--promo-h) + 18px)!important;}}
+@keyframes promoscan{0%{left:-100%}100%{left:150%}}
+@keyframes promoglow{0%,100%{box-shadow:0 0 12px rgba(245,101,0,.4)}50%{box-shadow:0 0 26px rgba(245,101,0,.75),0 0 50px rgba(245,101,0,.12)}}
+.promo-inner{height:100%;background:linear-gradient(90deg,#04060f 0%,#0b1020 35%,#0e1428 65%,#04060f 100%);border-top:1px solid rgba(245,101,0,.4);border-bottom:1px solid rgba(245,101,0,.16);display:flex;align-items:center;padding:0 10px 0 0;position:relative;overflow:hidden;gap:0;}
+.promo-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#F56500 20%,#FF9A3C 50%,#1A6AFF 80%,transparent 100%);background-size:200% 100%;animation:impelStripeMove 4s linear infinite;box-shadow:0 0 18px rgba(245,101,0,.65);}
+.promo-inner::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 120% at 50% 50%,rgba(245,101,0,.055),transparent 70%);}
+.promo-shine{position:absolute;top:0;bottom:0;width:35%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.025),transparent);animation:promoscan 3.5s ease-in-out infinite;pointer-events:none;z-index:0;}
+.promo-stripe{width:3px;height:100%;flex-shrink:0;background:linear-gradient(180deg,#F56500 0%,#FF7A1E 50%,#1A6AFF 100%);box-shadow:2px 0 14px rgba(245,101,0,.5);margin-right:12px;animation:promoglow 2.5s ease-in-out infinite;position:relative;z-index:1;}
+.promo-offer{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;margin-right:12px;background:linear-gradient(160deg,rgba(245,101,0,.18),rgba(245,101,0,.07));border:1px solid rgba(245,101,0,.4);border-radius:8px;padding:5px 10px;min-width:52px;position:relative;z-index:1;animation:promoglow 2.5s ease-in-out infinite;}
+.promo-offer-val{font-family:var(--font-d);font-weight:700;font-size:14px;line-height:1;background:linear-gradient(90deg,#F56500 0%,#FF9A3C 35%,#FFD080 65%,#F56500 100%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:impelStripeMove 2.8s linear infinite;filter:drop-shadow(0 0 6px rgba(245,101,0,.5));white-space:nowrap;}
+.promo-offer-tag{font-family:var(--font-m);font-size:7px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,160,80,.75);margin-top:1px;white-space:nowrap;}
+.promo-texts{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;position:relative;z-index:1;}
+.promo-title{font-family:var(--font-d);font-size:11.5px;font-weight:700;color:#eef3ff;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
+.promo-sub{font-family:var(--font-b);font-size:11px;font-weight:400;color:rgba(140,165,215,.72);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;display:flex;align-items:center;gap:5px;}
+.promo-sub-dot{width:4px;height:4px;border-radius:50%;background:#F56500;flex-shrink:0;animation:pulse 1.6s ease-in-out infinite;box-shadow:0 0 5px rgba(245,101,0,.7);}
+.promo-wa{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex-shrink:0;margin-left:10px;background:linear-gradient(160deg,rgba(37,211,102,.16),rgba(37,211,102,.07));border:1px solid rgba(37,211,102,.38);border-radius:10px;padding:6px 11px;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s;position:relative;z-index:1;}
+.promo-wa:hover{background:rgba(37,211,102,.26);transform:scale(1.04);}
+.promo-wa svg{color:#25D366;display:block;}
+.promo-wa-lbl{font-family:var(--font-m);font-size:7.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(37,211,102,.8);line-height:1;white-space:nowrap;}
+.promo-close{background:none;border:none;cursor:pointer;color:rgba(107,127,163,.45);padding:0;margin-left:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;transition:color .2s,background .2s;position:relative;z-index:1;}
+.promo-close:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.07);}
+@media(min-width:769px){.promo-title{font-size:12.5px;}.promo-sub{font-size:12px;}.promo-offer-val{font-size:15px;}.promo-wa{padding:6px 14px;}.promo-wa-lbl{font-size:8.5px;}}
+</style>
 </head>
 <body>
 <div id="toast-wrap"></div>
@@ -591,6 +619,65 @@ footer{background:linear-gradient(180deg,#050810,#060a14);border-top:1px solid v
   <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </a>
 
+<div id="impel-promo" role="banner" aria-label="Promoción del día">
+  <div class="promo-inner">
+    <div class="promo-shine"></div>
+    <div class="promo-stripe"></div>
+    <div class="promo-offer">
+      <span class="promo-offer-val" id="promo-val">-10%</span>
+      <span class="promo-offer-tag" id="promo-tag">HOY</span>
+    </div>
+    <div class="promo-texts">
+      <span class="promo-title" id="promo-title">DIAGNÓSTICO OBD</span>
+      <span class="promo-sub"><span class="promo-sub-dot"></span><span id="promo-sub">Válido solo hasta medianoche</span></span>
+    </div>
+    <a class="promo-wa" href="#" id="promo-wa" target="_blank" rel="noopener">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      <span class="promo-wa-lbl">Reclamar</span>
+    </a>
+    <button class="promo-close" onclick="dismissPromo()" aria-label="Cerrar">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+<script>
+(function(){
+  var offers=[
+    {val:'-10%',tag:'HOY',title:'DIAGN\u00d3STICO OBD',sub:'V\u00e1lido solo hasta medianoche',wa:'promo%20-10%25%20OBD'},
+    {val:'GRATIS',tag:'HOY',title:'DIAGN\u00d3STICO INCLUIDO',sub:'Con cualquier servicio mayor',wa:'promo%20diagn%C3%B3stico%20gratis'},
+    {val:'6 MESES',tag:'GARANT\u00cdA',title:'ALTERNADOR REVISADO',sub:'Garant\u00eda documentada \u00b7 Agenda hoy',wa:'promo%20alternador%20garant%C3%ADa'},
+    {val:'2\u00d71',tag:'OFERTA',title:'DIAGN\u00d3STICO HOY',sub:'Trae a un familiar \u2014 ambos incluidos',wa:'promo%202x1%20diagn%C3%B3stico'},
+    {val:'-15%',tag:'TEMPORAL',title:'REPUESTOS REMANUF.',sub:'Oferta de temporada IMPEL',wa:'promo%20-15%25%20repuestos'},
+    {val:'24/7',tag:'EMERGENCIA',title:'ASISTENCIA EN RUTA',sub:'Respuesta en menos de 30 minutos',wa:'promo%20emergencia%2024h'},
+    {val:'EXPRESS',tag:'CITA',title:'DIAGN\u00d3STICO 30 MIN',sub:'Sin filas \u00b7 Sin espera \u00b7 Hoy',wa:'promo%20cita%20express'},
+    {val:'GRATIS',tag:'REVISI\u00d3N',title:'SISTEMA EL\u00c9CTRICO',sub:'Revisi\u00f3n completa + reporte t\u00e9cnico',wa:'promo%20revisi%C3%B3n%20el%C3%A9ctrica'},
+    {val:'-10%',tag:'SEMANA',title:'SERVICIO A/C',sub:'Recarga + diagn\u00f3stico del compresor',wa:'promo%20-10%25%20AC'},
+    {val:'HOY',tag:'ESPECIAL',title:'BATER\u00cdA + ARRANQUE',sub:'Diagn\u00f3stico sin costo adicional',wa:'promo%20bater%C3%ADa%20arranque'},
+  ];
+  if(sessionStorage.getItem('impel_promo_off')){
+    var el=document.getElementById('impel-promo');
+    if(el)el.style.display='none';
+    document.documentElement.style.setProperty('--promo-h','0px');
+    return;
+  }
+  var d=new Date(),idx=(d.getDate()+d.getMonth()*31)%offers.length;
+  function set(o){
+    document.getElementById('promo-val').textContent=o.val;
+    document.getElementById('promo-tag').textContent=o.tag;
+    document.getElementById('promo-title').textContent=o.title;
+    document.getElementById('promo-sub').textContent=o.sub;
+    document.getElementById('promo-wa').href='https://wa.me/50762838021?text=Hola%20IMPEL,%20vi%20la%20'+o.wa;
+  }
+  set(offers[idx]);
+  window.dismissPromo=function(){
+    sessionStorage.setItem('impel_promo_off','1');
+    var bar=document.getElementById('impel-promo');
+    if(bar){bar.style.opacity='0';bar.style.height='0';}
+    document.documentElement.style.setProperty('--promo-h','0px');
+    setTimeout(function(){if(bar)bar.style.display='none';},420);
+  };
+})();
+</script>
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#home" class="nav-logo" onclick="closeMob()">
@@ -1036,7 +1123,37 @@ footer{background:linear-gradient(180deg,#050810,#060a14);border-top:1px solid v
         <div class="emrg-inline"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div class="emrg-pulse"></div><div style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;color:var(--orange);text-transform:uppercase">Emergencias 24/7</div></div><a href="tel:+50762838021" style="font-family:var(--font-d);font-size:22px;font-weight:700;color:#fff">+507 6283-8021</a></div>
       </div>
     </div>
-    <div class="foot-bottom"><div class="foot-copy">© 2026 IMPEL Electromecánica • @yael.ggx — Todos los derechos reservados</div><div style="display:flex;align-items:center;gap:8px"><div style="width:18px;height:1px;background:var(--orange)"></div><span style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;color:var(--orange);text-transform:uppercase">Energía que mueve tu vehículo</span><div style="width:18px;height:1px;background:var(--blue)"></div></div></div>
+    <div class="foot-bottom">
+  <div class="foot-copy" style="color:#555566;font-size:11px">
+    © 2026 <span style="color:#c0c0cc">IMPEL Electromecánica</span> — Todos los derechos reservados
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="width:18px;height:1px;background:linear-gradient(90deg,transparent,var(--orange))"></div>
+    <span style="font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(90deg,#F56500,#ff9a3c,#1A6AFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Energía que mueve tu vehículo</span>
+    <div style="width:18px;height:1px;background:linear-gradient(90deg,var(--blue),transparent)"></div>
+  </div>
+  <a href="https://www.instagram.com/tropix.studio" target="_blank" rel="noopener"
+     style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 8px;background:rgba(255,255,255,.03);border:0.5px solid rgba(255,255,255,.08);border-radius:100px;text-decoration:none;transition:background .2s,border-color .2s,transform .15s"
+     onmouseover="this.style.borderColor='rgba(255,255,255,.18)';this.style.transform='translateY(-1px)'"
+     onmouseout="this.style.borderColor='rgba(255,255,255,.08)';this.style.transform='none'">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+      <defs>
+        <linearGradient id="ig-g" x1="0" y1="24" x2="24" y2="0">
+          <stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/>
+          <stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/>
+          <stop offset="100%" stop-color="#bc1888"/>
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#ig-g)" stroke-width="1.5"/>
+      <circle cx="12" cy="12" r="4" stroke="url(#ig-g)" stroke-width="1.5"/>
+      <circle cx="17.5" cy="6.5" r="1" fill="url(#ig-g)"/>
+    </svg>
+    <span style="font-family:var(--font-b);font-size:11px;letter-spacing:.03em">
+      <span style="color:#555566;font-weight:300">made by </span><span style="font-weight:700;background:linear-gradient(90deg,#ff6b35,#ff46c8,#7b5cff,#1A6AFF);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:impelStripeMove 4s linear infinite">Tropix Studio</span>
+    </span>
+    <span style="font-size:10px;color:#444455;-webkit-text-fill-color:#444455;transition:color .2s">↗</span>
+  </a>
+</div>
   </div></div>
 </footer>
 
