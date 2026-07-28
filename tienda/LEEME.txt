@@ -1,0 +1,17 @@
+CARPETA TIENDA — fotos de productos IMPEL
+==========================================
+
+Guardá cada foto con EXACTAMENTE este nombre (cuadradas o 4:3, mínimo 800px, formato .jpg):
+
+motor-arranque.jpg          → Motor de Arranque
+alternador.jpg               → Alternador
+diagnostico-obd.jpg          → Diagnóstico OBD
+servicio-ac.jpg              → Servicio A/C
+mantenimiento-preventivo.jpg → Mantenimiento Preventivo
+servicio-domicilio.jpg       → Servicio a Domicilio 24/7
+bateria-65ah.jpg             → Batería 65Ah
+diagnostico-alternador.jpg   → Diagnóstico de Alternador
+
+No hace falta tocar el código: apenas subís un archivo con el nombre correcto
+a esta carpeta, la tienda lo muestra solo. Si un archivo no existe todavía,
+la tarjeta sigue mostrando el ícono decorativo — nada se rompe.
