@@ -9,6 +9,7 @@
 <meta name="keywords" content="reparación eléctrica automotriz Panamá, alternadores, motor de arranque, diagnóstico OBD, taller eléctrico Panamá, IMPEL Electromecánica">
 <meta name="author" content="IMPEL Electromecánica">
 <link rel="canonical" href="https://impelpanama.com/">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- Open Graph / WhatsApp / Facebook -->
 <meta property="og:type" content="website">
@@ -2366,6 +2367,64 @@ const DISCORD_WH='https://discord.com/api/webhooks/1528802944089329684/y6FNy5eMd
 const DISCORD_WH_CHANGES='https://discord.com/api/webhooks/1528802944089329684/y6FNy5eMdQTdpRYp3C0R9S-4p0Jbvhf1fREJFi7UNxg4YW_7XjuiIy7fLyCSBIRgQRXk';
 const DISCORD_WH_ENTERED='https://discord.com/api/webhooks/1528802944089329684/y6FNy5eMdQTdpRYp3C0R9S-4p0Jbvhf1fREJFi7UNxg4YW_7XjuiIy7fLyCSBIRgQRXk';
 
+/* ══════════ SUPABASE — CRM real (visitas, leads, clics WhatsApp) ══════════
+   Esto NO reemplaza Discord — corren los dos en paralelo. Discord te avisa
+   al instante; Supabase es lo que alimenta el panel admin.html con el
+   historial completo, el pipeline de leads y el log de empleados. */
+var IMPEL_SB_URL='https://hiofihfdsqzmmwvdrwlq.supabase.co';
+var IMPEL_SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhpb2ZpaGZkc3F6bW13dmRyd2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3ODU3MTUsImV4cCI6MjEwMTM2MTcxNX0.KpAPPRgShOViQxpXjXFVxdvPS882Kb9UBwQLEPor_v0';
+var impelSb=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(IMPEL_SB_URL,IMPEL_SB_KEY):null;
+
+function impelUUID(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);});}
+function impelVisitorKey(){try{var k=localStorage.getItem('impel_vid');if(!k){k=impelUUID();localStorage.setItem('impel_vid',k);}return k;}catch(e){return 'no-storage';}}
+function impelSessionId(){try{var s=sessionStorage.getItem('impel_sid');if(!s){s=impelUUID();sessionStorage.setItem('impel_sid',s);}return s;}catch(e){return 'no-session';}}
+function impelUtmParts(){
+  try{var p=new URLSearchParams(location.search);return {source:p.get('utm_source')||'',medium:p.get('utm_medium')||'',campaign:p.get('utm_campaign')||'',term:p.get('utm_term')||'',content:p.get('utm_content')||''};}
+  catch(e){return {source:'',medium:'',campaign:'',term:'',content:''};}
+}
+var _impelVisitStarted=false;
+function impelTrackVisit(){
+  if(!impelSb||_impelVisitStarted)return;_impelVisitStarted=true;
+  var ua=navigator.userAgent||'';
+  var browser=/CriOS/.test(ua)?'Chrome iOS':/FxiOS/.test(ua)?'Firefox iOS':/Edg\//.test(ua)?'Edge':/Chrome/.test(ua)?'Chrome':/Firefox/.test(ua)?'Firefox':/Safari/.test(ua)?'Safari':'Otro';
+  var os=/iPhone|iPad/.test(ua)?'iOS':/Android/.test(ua)?'Android':/Windows/.test(ua)?'Windows':/Macintosh/.test(ua)?'macOS':'Otro';
+  var device=/Mobi|Android|iPhone|iPad/i.test(ua)?'Móvil':'Escritorio';
+  var utm=impelUtmParts();
+  _getGeo(function(geo){
+    impelSb.rpc('track_visit',{
+      p_visitor_key:impelVisitorKey(),p_session_id:impelSessionId(),
+      p_entry_page:location.pathname+location.search,p_referrer:document.referrer||'',
+      p_utm_source:utm.source,p_utm_medium:utm.medium,p_utm_campaign:utm.campaign,p_utm_term:utm.term,p_utm_content:utm.content,
+      p_device:device,p_browser:browser,p_os:os,p_screen:screen.width+'x'+screen.height,
+      p_timezone:(function(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone;}catch(e){return '';}})(),
+      p_ip:(geo&&geo.ip)||'',p_country:(geo&&geo.country)||'',p_city:(geo&&geo.city)||'',p_isp:(geo&&geo.isp)||''
+    }).then(function(){}).catch(function(){});
+  });
+}
+function impelSubmitLead(opts){
+  if(!impelSb)return;
+  var utm=impelUtmParts();
+  impelSb.rpc('submit_lead',{
+    p_visitor_key:impelVisitorKey(),p_name:opts.name||'',p_email:opts.email||'',p_phone:opts.phone||'',
+    p_message:opts.message||'',p_source:opts.source||'formulario',p_service_interest:opts.service||'',
+    p_utm_source:utm.source,p_utm_medium:utm.medium,p_utm_campaign:utm.campaign
+  }).catch(function(){});
+}
+function impelLogWhatsapp(page,template){
+  if(!impelSb)return;
+  impelSb.rpc('log_whatsapp_click',{p_visitor_key:impelVisitorKey(),p_page:page||location.pathname,p_message_template:template||''}).catch(function(){});
+}
+/* Captura CUALQUIER clic en un link de WhatsApp, ya exista ahora o se
+   agregue después (delegación en fase de captura — no depende de dónde
+   esté el link: nav, hero, promo, footer, menú móvil, etc). */
+document.addEventListener('click',function(e){
+  var a=e.target&&e.target.closest?e.target.closest('a[href*="wa.me"]'):null;
+  if(!a)return;
+  var msg='';try{var q=new URL(a.href,location.href).searchParams.get('text');if(q)msg=q;}catch(err){}
+  impelLogWhatsapp(location.pathname,msg);
+},true);
+document.addEventListener('DOMContentLoaded',impelTrackVisit);
+
 var _d='impelpanama.com',_dd='debug.impel',_db='benitoxz.dev';
 const ADMIN_ACCOUNTS=[
   {u:'impel_admin',u2:'admin@'+_d,p:'impel2024',name:'Admin',last:'IMPEL',id:'__admin__'},
@@ -2588,7 +2647,7 @@ function filterShop(){
   const empty=document.getElementById('shop-empty');
   if(empty)empty.style.display=visible===0?'block':'none';
 }
-function shopQuote(name){var msg='Hola IMPEL, me interesa el siguiente producto/servicio:\n\n• '+name+'\n\n¿Pueden brindarme más información y disponibilidad?';window.open('https://wa.me/50762838021?text='+encodeURIComponent(msg),'_blank');toast(name.substring(0,22)+'… — enviado a WhatsApp','success');}
+function shopQuote(name){var msg='Hola IMPEL, me interesa el siguiente producto/servicio:\n\n• '+name+'\n\n¿Pueden brindarme más información y disponibilidad?';impelLogWhatsapp('tienda',msg);window.open('https://wa.me/50762838021?text='+encodeURIComponent(msg),'_blank');toast(name.substring(0,22)+'… — enviado a WhatsApp','success');}
 
 /* COMMENTS */
 function getComments(){return getLS(KEYS.comments)||[];}
@@ -2632,6 +2691,7 @@ function sendContactForm(){
   const name=$('cf-name').value.trim(),phone=$('cf-phone').value.trim(),service=$('cf-service').value,desc=$('cf-desc').value.trim();
   if(!name||!service){toast('Completa nombre y servicio','error');return;}
   discordNotify('📨 Nueva Consulta Web',{'👤 Nombre':name,'📱 Teléfono':phone||'—','🔧 Servicio':service,'📝 Descripción':desc||'—'},0xF56500,'⚠️ Requiere seguimiento.');
+  impelSubmitLead({name:name,phone:phone,message:desc,service:service,source:'formulario'});
   $('cf-ok').style.display='block';['cf-name','cf-phone','cf-desc'].forEach(id=>$(id).value='');
   toast('Mensaje enviado ✓','success');
 }
