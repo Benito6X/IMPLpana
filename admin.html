@@ -1037,13 +1037,30 @@ tr.rowlink:hover td { background:var(--bg4); }
 
         <div class="card ig-full" style="grid-column:1/-1">
           <div class="card-hd"><div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+            Roles (jerarquía de acceso)
+          </div></div>
+          <div class="card-body">
+            <p style="font-size:12.5px;color:var(--mut);line-height:1.6;margin-bottom:14px">Los roles van de menor a mayor acceso, como en una empresa: cada nivel incluye lo del nivel anterior y suma más. Nivel 1 es la base (Leads, Visitas, WhatsApp, Reseñas); a partir de nivel 2 se puede editar valor y etiquetas de un lead; a partir de nivel 3 se puede eliminar leads. Crea los roles que necesites — no estás limitado a los 3 que vienen por defecto.</p>
+            <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+              <input class="fi" id="role-name" placeholder="Nombre del rol (ej: Supervisor)" style="flex:2;min-width:160px">
+              <input class="fi" id="role-level" type="number" min="1" placeholder="Nivel (1, 2, 3…)" style="flex:1;min-width:110px">
+              <button class="btn btn-primary btn-sm" onclick="createRole()" style="flex-shrink:0">+ Crear Rol</button>
+            </div>
+            <div id="role-list" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+        </div>
+
+        <div class="card ig-full" style="grid-column:1/-1">
+          <div class="card-hd"><div class="card-title">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
             Empleados (acceso por código)
           </div></div>
           <div class="card-body">
-            <p style="font-size:11.5px;color:var(--mut);line-height:1.6;margin-bottom:14px">Genera un código para cada empleado. Entran con ese código (sin correo ni contraseña) y solo pueden trabajar Leads, Visitas, WhatsApp y Reseñas — nada de Configuración. Cada acción suya queda en su log.</p>
-            <div style="display:flex;gap:8px;margin-bottom:16px">
-              <input class="fi" id="ec-name" placeholder="Nombre del empleado (ej: Carlos Ruiz)">
+            <p style="font-size:12.5px;color:var(--mut);line-height:1.6;margin-bottom:14px">Genera un código para cada persona y asignale un rol de la lista de arriba. Entran con ese código (sin correo ni contraseña). Nadie con código llega a Configuración — eso es solo para cuentas de dueño. Cada acción queda en su log.</p>
+            <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+              <input class="fi" id="ec-name" placeholder="Nombre (ej: Carlos Ruiz)" style="flex:2;min-width:160px">
+              <select class="sel" id="ec-role" style="flex:1;min-width:130px"></select>
               <button class="btn btn-primary btn-sm" onclick="createEmployeeCode()" style="flex-shrink:0">+ Generar Código</button>
             </div>
             <div id="ec-list" style="display:flex;flex-direction:column;gap:8px"></div>
@@ -1427,7 +1444,7 @@ function trafficSource(referrer, utmSource) {
    - Empleado → código generado, guardado solo en sessionStorage del navegador.
 ══════════════════════════════════════════════════════════ */
 let CURRENT_PROFILE = null;
-let SESSION = { mode: null, code: null, employeeName: null }; // mode: 'owner' | 'employee'
+let SESSION = { mode: null, code: null, employeeName: null, roleName: null, roleLevel: null }; // mode: 'owner' | 'employee'; roleLevel: null (dueño) o el nivel del rol del código
 let EMP_POLL = null;
 
 function switchLoginMode(mode) {
@@ -1457,8 +1474,8 @@ async function doLoginEmployee() {
     $('l-code').value = ''; $('l-code').focus();
     return;
   }
-  SESSION = { mode:'employee', code, employeeName: row.employee_name };
-  sessionStorage.setItem('impel_emp_session', JSON.stringify({ code, employeeName: row.employee_name }));
+  SESSION = { mode:'employee', code, employeeName: row.employee_name, roleName: row.role_name || 'Empleado', roleLevel: row.role_level ?? 1 };
+  sessionStorage.setItem('impel_emp_session', JSON.stringify({ code, employeeName: row.employee_name, roleName: row.role_name || 'Empleado', roleLevel: row.role_level ?? 1 }));
   enterAppEmployee();
 }
 
@@ -1523,7 +1540,7 @@ function enterAppEmployee() {
   $('app').style.display = 'block';
   $('sb-av').textContent = ini(SESSION.employeeName);
   $('sb-name').textContent = SESSION.employeeName;
-  $('sb-user-role-lbl').textContent = 'Empleado';
+  $('sb-user-role-lbl').textContent = SESSION.roleName || 'Empleado';
   setOwnerUI(false);
   updateClock(); setInterval(updateClock, 60000);
   nav('leads', $('nav-leads'));
@@ -1559,11 +1576,11 @@ function updateClock() {
 /* ══════════════════════════════════════════════════════════
    DATA STATE
 ══════════════════════════════════════════════════════════ */
-let D = { visits:[], leads:[], whatsapp:[], reviews:[], team:[], employeeCodes:[], clientes:[], products:[] };
+let D = { visits:[], leads:[], whatsapp:[], reviews:[], team:[], employeeCodes:[], clientes:[], products:[], roles:[] };
 let REALTIME_CHANNEL = null;
 
 async function refreshAll() {
-  await Promise.all([loadVisits(), loadLeads(), loadWhatsapp(), loadReviews(), loadTeam(), loadEmployeeCodes(), loadClientes(), loadProducts()]);
+  await Promise.all([loadVisits(), loadLeads(), loadWhatsapp(), loadReviews(), loadTeam(), loadRoles(), loadEmployeeCodes(), loadClientes(), loadProducts()]);
   renderDash();
   $('conn-sync').textContent = new Date().toLocaleTimeString('es-PA',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
@@ -1887,6 +1904,9 @@ async function addLeadNote() {
 
 function renderLmActions(l) {
   const isOwner = SESSION.mode === 'owner';
+  const level = isOwner ? Infinity : (SESSION.roleLevel || 0);
+  const canEdit = level >= 2;
+  const canDelete = isOwner || level >= 3;
   $('lm-actions').innerHTML = `
     <div class="ig">
       <div class="ii ig-full">
@@ -1895,7 +1915,7 @@ function renderLmActions(l) {
           ${LEAD_STATUSES.map(s=>`<button class="btn btn-sm ${l.status===s.id?'btn-primary':'btn-ghost'}" onclick="setLeadStatus(${l.id},'${s.id}');closeLeadModal();openLeadModal(${l.id})">${s.label}</button>`).join('')}
         </div>
       </div>
-      ${isOwner ? `
+      ${canEdit ? `
       <div class="ii">
         <div class="ii-k">💰 Valor Estimado (USD)</div>
         <div style="display:flex;gap:8px;margin-top:8px">
@@ -1910,18 +1930,21 @@ function renderLmActions(l) {
           <input class="fi" id="lm-newtag" placeholder="ej: urgente, industrial…" onkeydown="if(event.key==='Enter')addTag()">
           <button class="btn btn-ghost btn-sm" onclick="addTag()">+</button>
         </div>
-      </div>
+      </div>` : `
+      <div class="ii ig-full"><div class="ii-k">🔒 Acceso limitado</div><div style="font-size:12px;color:var(--mut);margin-top:6px">Editar valor y etiquetas requiere un rol de nivel 2 o más.</div></div>`}
+      ${canDelete ? `
       <div class="ii ig-full">
         <div class="ii-k">🗑️ Eliminar Lead</div>
         <div style="margin-top:10px"><button class="btn btn-red btn-sm" onclick="deleteLead(${l.id})" style="width:100%;justify-content:center">Eliminar Permanentemente</button></div>
-      </div>` : `
-      <div class="ii ig-full"><div class="ii-k">🔒 Acceso limitado</div><div style="font-size:12px;color:var(--mut);margin-top:6px">Valor, etiquetas y eliminar son solo para dueños.</div></div>`}
+      </div>` : ''}
     </div>`;
 }
 
 async function saveLeadValue(id) {
   const val = parseFloat($('lm-value').value) || null;
-  const { error } = await sb.from('leads').update({ value_estimate: val }).eq('id', id);
+  const { error } = SESSION.mode === 'employee'
+    ? await sb.rpc('employee_update_lead_value', { p_code:SESSION.code, p_lead_id:id, p_value:val })
+    : await sb.from('leads').update({ value_estimate: val }).eq('id', id);
   if (error) { toast('Error al guardar','error'); return; }
   const l = D.leads.find(x=>x.id===id); if (l) l.value_estimate = val;
   toast('Valor actualizado ✓','success');
@@ -1930,7 +1953,9 @@ async function saveLeadValue(id) {
 async function addTag() {
   const t = ($('lm-newtag').value||'').trim(); if (!t || !_lmLead) return;
   const tags = Array.from(new Set([...(_lmLead.tags||[]), t]));
-  const { error } = await sb.from('leads').update({ tags }).eq('id', _lmLead.id);
+  const { error } = SESSION.mode === 'employee'
+    ? await sb.rpc('employee_update_lead_tags', { p_code:SESSION.code, p_lead_id:_lmLead.id, p_tags:tags })
+    : await sb.from('leads').update({ tags }).eq('id', _lmLead.id);
   if (error) { toast('Error al agregar etiqueta','error'); return; }
   _lmLead.tags = tags;
   const l = D.leads.find(x=>x.id===_lmLead.id); if (l) l.tags = tags;
@@ -1943,7 +1968,9 @@ async function addTag() {
 async function removeTag(t) {
   if (!_lmLead) return;
   const tags = (_lmLead.tags||[]).filter(x=>x!==t);
-  const { error } = await sb.from('leads').update({ tags }).eq('id', _lmLead.id);
+  const { error } = SESSION.mode === 'employee'
+    ? await sb.rpc('employee_update_lead_tags', { p_code:SESSION.code, p_lead_id:_lmLead.id, p_tags:tags })
+    : await sb.from('leads').update({ tags }).eq('id', _lmLead.id);
   if (error) { toast('Error al quitar etiqueta','error'); return; }
   _lmLead.tags = tags;
   const l = D.leads.find(x=>x.id===_lmLead.id); if (l) l.tags = tags;
@@ -1952,12 +1979,15 @@ async function removeTag(t) {
 
 async function deleteLead(id) {
   if (!confirm('¿Eliminar este lead permanentemente? Esta acción no se puede deshacer.')) return;
-  const { error } = await sb.from('leads').delete().eq('id', id);
+  const { error } = SESSION.mode === 'employee'
+    ? await sb.rpc('employee_delete_lead', { p_code:SESSION.code, p_lead_id:id })
+    : await sb.from('leads').delete().eq('id', id);
   if (error) { toast('Error al eliminar','error'); return; }
   D.leads = D.leads.filter(l=>l.id!==id);
   closeLeadModal(); renderLeadsKanban(); updateBadges();
   toast('Lead eliminado','success');
 }
+
 
 /* ── Nuevo lead manual ──────────────────────────────────────── */
 function openNewLead() { $('newlead-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
@@ -2602,9 +2632,65 @@ function genEmployeeCode() {
   return 'IMPEL-' + s.slice(0,4) + '-' + s.slice(4,8);
 }
 
+async function loadRoles() {
+  if (!sb || SESSION.mode !== 'owner') return;
+  const { data, error } = await sb.from('roles').select('*').order('level',{ascending:true});
+  if (error) { console.error(error); return; }
+  D.roles = data || [];
+  renderRoles();
+  populateEcRoleSelect();
+}
+
+function roleBadgeClass(level) {
+  const max = D.roles.length ? Math.max(...D.roles.map(r=>r.level)) : 3;
+  if (level >= max) return 'b-admin';
+  if (level <= 1) return 'b-gray';
+  return 'b-blue';
+}
+
+function renderRoles() {
+  const el = $('role-list'); if (!el) return;
+  el.innerHTML = D.roles.length ? D.roles.map(r=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--bg4);border:1px solid var(--bdr);border-radius:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:140px">
+        <div style="font-family:var(--fd);font-size:13.5px;font-weight:700">${esc(r.name)}</div>
+      </div>
+      <span class="badge ${roleBadgeClass(r.level)}">Nivel ${r.level}</span>
+      <div class="acts"><button class="act act-del" onclick="deleteRole('${r.id}','${esc(r.name).replace(/'/g,"\\'")}')">Eliminar</button></div>
+    </div>`).join('')
+  : '<div class="empty"><div class="empty-t">Sin roles todavía</div></div>';
+}
+
+function populateEcRoleSelect() {
+  const sel = $('ec-role'); if (!sel) return;
+  const current = sel.value;
+  sel.innerHTML = D.roles.map(r=>`<option value="${r.id}">${esc(r.name)} (nivel ${r.level})</option>`).join('');
+  if (current && D.roles.some(r=>r.id===current)) sel.value = current;
+}
+
+async function createRole() {
+  const name = ($('role-name').value||'').trim();
+  const level = parseInt($('role-level').value, 10);
+  if (!name) { toast('Escribe el nombre del rol','error'); return; }
+  if (!level || level < 1) { toast('Escribe un nivel válido (1, 2, 3…)','error'); return; }
+  const { error } = await sb.from('roles').insert({ name, level, created_by:CURRENT_PROFILE.id });
+  if (error) { toast('Error al crear el rol','error'); return; }
+  $('role-name').value = ''; $('role-level').value = '';
+  await loadRoles();
+  toast(`Rol "${name}" creado ✓`,'success');
+}
+
+async function deleteRole(id, name) {
+  if (!confirm(`¿Eliminar el rol "${name}"? Solo se puede borrar si ningún código lo está usando.`)) return;
+  const { error } = await sb.from('roles').delete().eq('id', id);
+  if (error) { toast('No se pudo eliminar: hay códigos usando este rol','error'); return; }
+  await loadRoles();
+  toast('Rol eliminado','success');
+}
+
 async function loadEmployeeCodes() {
   if (!sb || SESSION.mode !== 'owner') return;
-  const { data, error } = await sb.from('employee_codes').select('*').order('created_at',{ascending:false});
+  const { data, error } = await sb.from('employee_codes').select('*, roles(name, level)').order('created_at',{ascending:false});
   if (error) { console.error(error); return; }
   D.employeeCodes = data || [];
   renderEmployeeCodes();
@@ -2613,13 +2699,14 @@ async function loadEmployeeCodes() {
 function renderEmployeeCodes() {
   const el = $('ec-list'); if (!el) return;
   el.innerHTML = D.employeeCodes.length ? D.employeeCodes.map(c=>`
-    <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--bg4);border:1px solid var(--bdr);border-radius:8px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--bg4);border:1px solid var(--bdr);border-radius:12px;flex-wrap:wrap">
       <div style="flex:1;min-width:140px">
-        <div style="font-family:var(--fd);font-size:12.5px;font-weight:700">${esc(c.employee_name)}</div>
-        <div class="td-mono" style="font-size:11px;color:var(--og);letter-spacing:.05em">${esc(c.code)}</div>
+        <div style="font-family:var(--fd);font-size:13.5px;font-weight:700">${esc(c.employee_name)}</div>
+        <div class="td-mono" style="font-size:12px;color:var(--og);letter-spacing:.02em">${esc(c.code)}</div>
       </div>
+      <span class="badge ${roleBadgeClass(c.roles ? c.roles.level : 1)}">${c.roles ? esc(c.roles.name) : '—'}</span>
       <span class="badge ${c.active?'b-green':'b-gray'}">${c.active?'Activo':'Revocado'}</span>
-      <span style="font-family:var(--fm);font-size:9.5px;color:var(--mut)">${c.last_used_at?'Últ. uso '+fmtDT(c.last_used_at):'Sin usar'}</span>
+      <span style="font-family:var(--fb);font-size:11.5px;font-weight:600;color:var(--mut)">${c.last_used_at?'Últ. uso '+fmtDT(c.last_used_at):'Sin usar'}</span>
       <div class="acts">
         <button class="act act-ghost" onclick="copyEmployeeCode('${c.code}')">Copiar</button>
         <button class="act act-view" onclick="openEmployeeLog('${c.id}','${esc(c.employee_name).replace(/'/g,"\\'")}')">Ver Log</button>
@@ -2631,9 +2718,11 @@ function renderEmployeeCodes() {
 
 async function createEmployeeCode() {
   const name = ($('ec-name').value||'').trim();
-  if (!name) { toast('Escribe el nombre del empleado','error'); return; }
+  const roleId = $('ec-role') ? $('ec-role').value : '';
+  if (!name) { toast('Escribe el nombre','error'); return; }
+  if (!roleId) { toast('Elige un rol (creá uno arriba si no hay ninguno)','error'); return; }
   const code = genEmployeeCode();
-  const { error } = await sb.from('employee_codes').insert({ code, employee_name:name, created_by:CURRENT_PROFILE.id });
+  const { error } = await sb.from('employee_codes').insert({ code, employee_name:name, role_id:roleId, created_by:CURRENT_PROFILE.id });
   if (error) { toast('Error al generar el código','error'); return; }
   $('ec-name').value = '';
   await loadEmployeeCodes();
@@ -2759,7 +2848,7 @@ document.head.appendChild(_s);
       const { data } = await sb.rpc('employee_validate_code', { p_code: emp.code });
       const row = data && data[0];
       if (row && row.ok) {
-        SESSION = { mode:'employee', code: emp.code, employeeName: row.employee_name };
+        SESSION = { mode:'employee', code: emp.code, employeeName: row.employee_name, roleName: row.role_name || emp.roleName || 'Empleado', roleLevel: row.role_level ?? emp.roleLevel ?? 1 };
         enterAppEmployee();
         return;
       }
