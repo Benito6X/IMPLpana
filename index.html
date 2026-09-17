@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#04060B" id="meta-theme-color">
 <title>IMPEL Electromecánica — Especialistas Eléctricos Automotrices en Panamá</title>
-<meta name="description" content="Taller electromecanico en Panama: diagnostico gratis en 30 segundos, reparacion de alternador, motor de arranque y sistema electrico automotriz. Mas de 12,500 vehiculos atendidos, emergencias 24/7.">
+<meta name="description" content="Taller electromecanico en Panama: diagnostico gratis en 30 segundos, reparacion de alternador, motor de arranque, aire acondicionado y sistema electrico automotriz. Mas de 12,500 vehiculos atendidos, emergencias 24/7.">
 <meta name="keywords" content="reparación eléctrica automotriz Panamá, alternadores, motor de arranque, diagnóstico OBD, taller eléctrico Panamá, IMPEL Electromecánica">
 <meta name="author" content="IMPEL Electromecánica">
 <link rel="canonical" href="https://impelpanama.com/">
@@ -149,9 +149,13 @@ section{padding:88px 0;}
 /* ══════════ BANNER SUPERIOR — Diagnóstico Rápido (misma identidad bold que la tarjeta) ══════════ */
 .dxb-bar{position:relative;width:100%;max-width:680px;background:linear-gradient(160deg,var(--panel2),var(--panel));border:2.5px solid var(--bg);border-radius:20px;padding:11px 16px;display:flex;align-items:center;gap:12px;box-shadow:4px 5px 0 var(--bg),0 16px 32px rgba(0,0,0,.4);}
 .dxb-clip{position:absolute;inset:0;border-radius:17px;overflow:hidden;pointer-events:none;}
+.dxb-timer{position:absolute;left:0;bottom:0;height:3px;width:100%;background:linear-gradient(90deg,var(--orange),var(--o-hi));box-shadow:0 0 10px rgba(245,101,0,.7);transform-origin:left;animation:dxbTimer 8s linear forwards;}
+@keyframes dxbTimer{from{transform:scaleX(1);}to{transform:scaleX(0);}}
+.dxb-spark{position:absolute;color:#fff;filter:drop-shadow(0 0 6px rgba(255,255,255,.9));animation:dxTwinkle 2.2s ease-in-out infinite;pointer-events:none;z-index:1;}
 .dxb-sheen{position:absolute;top:-120%;left:-30%;width:55%;height:340%;background:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.14) 48%,rgba(255,255,255,0) 62%);transform:rotate(8deg);animation:dxSheenMove 5s ease-in-out infinite;}
 @keyframes dxSheenMove{0%,100%{transform:rotate(8deg) translateX(0);}50%{transform:rotate(8deg) translateX(60px);}}
-.dxb-icon{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;border:2.5px solid var(--bg);background:radial-gradient(circle at 32% 26%,var(--o-hi),var(--orange) 70%);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;box-shadow:2.5px 3px 0 var(--bg),inset 0 2px 0 rgba(255,255,255,.4);}
+.dxb-icon{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;border:2.5px solid var(--bg);background:radial-gradient(circle at 32% 26%,var(--o-hi),var(--orange) 70%);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;box-shadow:2.5px 3px 0 var(--bg),inset 0 2px 0 rgba(255,255,255,.4);animation:dxbIconGlow 2s ease-in-out infinite;}
+@keyframes dxbIconGlow{0%,100%{box-shadow:2.5px 3px 0 var(--bg),inset 0 2px 0 rgba(255,255,255,.4),0 0 0 rgba(245,101,0,0);}50%{box-shadow:2.5px 3px 0 var(--bg),inset 0 2px 0 rgba(255,255,255,.4),0 0 16px rgba(245,101,0,.7);}}
 .dxb-texts{position:relative;z-index:1;flex:1;min-width:0;}
 .dxb-title{font-family:var(--font-d);font-size:12px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .dxb-sub{font-family:var(--font-m);font-size:10px;color:var(--muted-hi);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
@@ -160,6 +164,8 @@ section{padding:88px 0;}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.4)}}
 @keyframes cardPop{from{opacity:0;transform:translateY(10px) scale(.96);}to{opacity:1;transform:none;}}
 .dxb-cta{position:relative;z-index:1;overflow:hidden;display:flex;align-items:center;gap:6px;flex-shrink:0;background:linear-gradient(160deg,#fff,#FFF7ED);border:2.5px solid var(--bg);border-radius:100px;padding:9px 16px;color:var(--bg);font-family:var(--font-d);font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;box-shadow:3px 4px 0 var(--bg),inset 0 1px 0 #fff;transition:transform .15s,box-shadow .15s;}
+.dxb-cta-emoji{display:inline-block;animation:dxbBounce 1.2s ease-in-out infinite;}
+@keyframes dxbBounce{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-2px) rotate(-8deg);}}
 .dxb-cta::after{content:'';position:absolute;top:-60%;left:-40%;width:50%;height:220%;background:linear-gradient(115deg,rgba(255,255,255,0),rgba(255,255,255,.7),rgba(255,255,255,0));transform:rotate(20deg);animation:dxSheenMove 3.5s ease-in-out infinite .3s;}
 .dxb-cta:hover{transform:translateY(-2px);box-shadow:4px 5px 0 var(--bg);}
 .dxb-cta:active{transform:translateY(2px);box-shadow:1px 1px 0 var(--bg);}
@@ -1283,13 +1289,15 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
 <!-- PROMO -->
 <div id="impel-promo" role="banner" aria-label="Diagnóstico rápido">
   <div class="dxb-bar">
-    <div class="dxb-clip" aria-hidden="true"><div class="dxb-sheen"></div></div>
+    <div class="dxb-clip" aria-hidden="true"><div class="dxb-sheen"></div><div class="dxb-timer" id="dxb-timer"></div></div>
+    <svg class="dxb-spark" style="top:6px;left:44%;width:12px;height:12px" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0l2.4 9.6L24 12l-9.6 2.4L12 24l-2.4-9.6L0 12l9.6-2.4z"/></svg>
+    <svg class="dxb-spark" style="bottom:8px;right:38%;width:8px;height:8px;animation-delay:.7s" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0l2.4 9.6L24 12l-9.6 2.4L12 24l-2.4-9.6L0 12l9.6-2.4z"/></svg>
     <div class="dxb-icon">🔧</div>
     <div class="dxb-texts">
       <div class="dxb-title">Diagnosticá tu carro gratis</div>
       <div class="dxb-sub"><span class="dxb-dot"></span>Desde tu celular · Resultado en 30 segundos</div>
     </div>
-    <button class="dxb-cta" onclick="openDiag()">Empezar →</button>
+    <button class="dxb-cta" onclick="openDiag()">Empezar <span class="dxb-cta-emoji">⚡</span></button>
     <button class="dxb-close" onclick="dismissPromo()" aria-label="Cerrar">✕</button>
   </div>
 </div>
@@ -1376,7 +1384,7 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
       <span class="w"><span class="grad">Eléctrica</span></span>
       <span class="w"><span class="hero-blue">Automotriz</span></span>
     </h1>
-    <p class="hero-p">Diagnóstico, reparación y mantenimiento eléctrico con precisión profesional. Servicio rápido y confiable en toda la Ciudad de Panamá.</p>
+    <p class="hero-p">Reparación de alternador, motor de arranque, aire acondicionado y sistema eléctrico automotriz con precisión profesional. Servicio rápido y confiable en toda la Ciudad de Panamá.</p>
     <div class="hero-cta">
       <a href="https://wa.me/50762838021?text=Hola%20IMPEL,%20necesito%20un%20diagnóstico" target="_blank" rel="noopener" class="btn btn-wa">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -1748,22 +1756,22 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
       <p class="cl-sub">Marcas y flotas que trabajan con nosotros en diagnósticos, repuestos y soporte electromecánico.</p>
     </div>
     <div class="cl-marquee"><div class="cl-track">
-      <div class="cl-logo"><img src="images/cocacola.png" alt="Coca-Cola FEMSA" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/ribs.png" alt="Riba Smith" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/blue.png" alt="Estrella Azul" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/dicarina.png" alt="Dicarina" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/forza.png" alt="Forza Logistics" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/felipe.png" alt="Felipe Motta" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/llantero.png" alt="Llantero" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/supro.png" alt="Supro" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/cocacola.png" alt="Coca-Cola FEMSA" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/ribs.png" alt="Riba Smith" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/blue.png" alt="Estrella Azul" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/dicarina.png" alt="Dicarina" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/forza.png" alt="Forza Logistics" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/felipe.png" alt="Felipe Motta" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/llantero.png" alt="Llantero" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="images/supro.png" alt="Supro" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/cocacola.png" alt="Coca-Cola FEMSA" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/ribs.png" alt="Riba Smith" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/blue.png" alt="Estrella Azul" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/dicarina.png" alt="Dicarina" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/forza.png" alt="Forza Logistics" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/felipe.png" alt="Felipe Motta" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/llantero.png" alt="Llantero" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/supro.png" alt="Supro" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/cocacola.png" alt="Coca-Cola FEMSA" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/ribs.png" alt="Riba Smith" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/blue.png" alt="Estrella Azul" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/dicarina.png" alt="Dicarina" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/forza.png" alt="Forza Logistics" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/felipe.png" alt="Felipe Motta" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/llantero.png" alt="Llantero" loading="lazy" decoding="async"></div>
+      <div class="cl-logo"><img src="img/supro.png" alt="Supro" loading="lazy" decoding="async"></div>
     </div></div>
   </div>
 </div></section>
@@ -1950,6 +1958,10 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
     document.documentElement.style.setProperty('--promo-h','0px');
     setTimeout(function(){if(bar)bar.style.display='none';},420);
   };
+  /* Autodestrucción: se cierra solo a los 8s, tiempo suficiente para leerlo */
+  setTimeout(function(){
+    if(!sessionStorage.getItem('impel_promo_off'))window.dismissPromo();
+  },8000);
   window.filterSvc=function(cat,btn){
     document.querySelectorAll('.svc-filter-pill').forEach(function(p){p.classList.toggle('active',p===btn);});
     document.querySelectorAll('#svc-rail .svc-card:not(.svc-wide)').forEach(function(c,i){
@@ -3261,7 +3273,7 @@ function getBotReply(raw){
 </script>
 <script id="v15-js">
 /* ── Burbuja de bienvenida del asistente: se escribe como mensaje real ── */
-var CHAT_HELLO_MSG='¡Hola! 👋 Soy Chispa, el asistente de IMPEL. ¿En qué te puedo ayudar?';
+var CHAT_HELLO_MSG='Asistente general de IMPEL 👋';
 var _helloTypeIv=null;
 function hideChatHello(){
   var b=document.getElementById('chat-hello');
