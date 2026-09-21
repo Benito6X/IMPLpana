@@ -93,7 +93,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:radial-gradient(720px 420px at 12% -8%,rgba(245,101,0,.07),transparent 62%),
              radial-gradient(720px 420px at 96% 6%,rgba(26,106,255,.07),transparent 62%);}
-main,section,footer,nav,.ticker{position:relative;z-index:1;}
+main,section,footer,nav{position:relative;z-index:1;}
 
 .container{max-width:1160px;margin:0 auto;padding:0 22px;}
 
@@ -236,21 +236,7 @@ nav#navbar.scrolled{background:rgba(10,24,48,.82);-webkit-backdrop-filter:blur(2
              radial-gradient(72% 62% at 20% 92%,rgba(10,24,48,.62),transparent 68%),
              radial-gradient(60% 45% at 18% 80%,rgba(245,101,0,.14),transparent 70%),
              radial-gradient(50% 40% at 88% 20%,rgba(26,106,255,.12),transparent 70%);}
-/* Onda de voltaje — firma visual */
-.hero-volt{position:absolute;left:0;right:0;bottom:0;height:150px;z-index:2;pointer-events:none;opacity:.9;}
-.hero-volt svg{width:100%;height:100%;display:block;overflow:visible;}
-.hero-volt .v1{stroke:var(--orange);opacity:.4;stroke-dasharray:1200;stroke-dashoffset:1200;animation:voltDraw 3.4s ease-out .3s forwards;filter:drop-shadow(0 0 6px rgba(245,101,0,.5));}
-.hero-volt .v2{stroke:var(--blue);opacity:.28;stroke-dasharray:1200;stroke-dashoffset:1200;animation:voltDraw 3.4s ease-out .7s forwards;filter:drop-shadow(0 0 6px rgba(26,106,255,.4));}
-@keyframes voltDraw{to{stroke-dashoffset:0;}}
-.hero-volt .v1-trace{stroke:#FFE3C2;stroke-dasharray:90 3000;stroke-dashoffset:3000;opacity:0;animation:voltFadeIn .3s 3.4s forwards,voltTravel 3.4s linear 3.6s infinite;filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 20px rgba(245,101,0,1)) drop-shadow(0 0 34px rgba(245,101,0,.6));}
-.hero-volt .v2-trace{stroke:#D6E6FF;stroke-dasharray:80 3000;stroke-dashoffset:3000;opacity:0;animation:voltFadeIn .3s 3.8s forwards,voltTravel 3.4s linear 4s infinite;filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 16px rgba(26,106,255,1)) drop-shadow(0 0 28px rgba(26,106,255,.55));}
-@keyframes voltFadeIn{to{opacity:1;}}
-@keyframes voltTravel{0%{stroke-dashoffset:3000;}100%{stroke-dashoffset:-400;}}
-.volt-blip{fill:var(--orange);opacity:0;transform-box:fill-box;transform-origin:center;animation:voltBlip 3.4s ease-in-out 3.6s infinite;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 16px rgba(245,101,0,1));}
-.volt-blip-b{fill:var(--blue);filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 14px rgba(26,106,255,1));}
-@keyframes voltBlip{0%,88%,100%{opacity:0;transform:scale(.6);}3%{opacity:1;transform:scale(2.1);}10%{opacity:0;transform:scale(.9);}}
-body.tab-hidden .hero-volt .v1-trace,body.tab-hidden .hero-volt .v2-trace,body.tab-hidden .volt-blip{animation-play-state:paused!important;}
-.hero-body{position:relative;z-index:3;width:100%;max-width:1160px;margin:0 auto;padding:calc(var(--nav-h) + var(--promo-h) + 30px) 22px 120px;}
+.hero-body{position:relative;z-index:3;width:100%;max-width:1160px;margin:0 auto;padding:calc(var(--nav-h) + var(--promo-h) + 30px) 22px 120px;transition:padding-top .4s cubic-bezier(.4,0,.2,1);}
 /* ══════════ HUD BADGE — insignia tecnológica "Especialistas · Desde 2012" ══════════ */
 .hud-badge{position:relative;display:inline-flex;align-items:center;margin-bottom:26px;margin-left:20px;opacity:0;animation:riseIn .7s .15s cubic-bezier(.22,1,.36,1) forwards;}
 .hud-badge-panel{position:relative;height:50px;display:flex;align-items:center;gap:13px;padding:0 26px 0 44px;background:linear-gradient(100deg,#0A1830 0%,#0E2242 55%,#0A1830 100%);clip-path:polygon(0 0,calc(100% - 15px) 0,100% 50%,calc(100% - 15px) 100%,0 100%);border-top:1px solid rgba(57,255,157,.4);border-bottom:1px solid rgba(57,255,157,.4);box-shadow:0 10px 26px rgba(0,0,0,.4),0 0 22px rgba(57,255,157,.1);overflow:hidden;}
@@ -304,48 +290,82 @@ body.tab-hidden .hero-volt .v1-trace,body.tab-hidden .hero-volt .v2-trace,body.t
   .hero-cta .btn{flex:1;min-width:150px;}
 }
 
-/* ══════════ TICKER ══════════ */
-.ticker{background:linear-gradient(90deg,#170F08,#0A1830);border-top:1px solid rgba(245,101,0,.2);border-bottom:1px solid rgba(26,106,255,.16);padding:13px 0;overflow:hidden;position:relative;}
-.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:70px;z-index:2;pointer-events:none;}
-.ticker::before{left:0;background:linear-gradient(90deg,var(--bg),transparent);}
-.ticker::after{right:0;background:linear-gradient(270deg,var(--bg),transparent);}
-.ticker-track{display:flex;gap:44px;width:max-content;animation:tick 26s linear infinite;}
-@keyframes tick{to{transform:translateX(-50%);}}
-.ticker-item{display:flex;align-items:center;gap:9px;font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-hi);white-space:nowrap;}
-.ticker-sep{width:5px;height:5px;border-radius:1px;transform:rotate(45deg);background:var(--orange);box-shadow:0 0 8px rgba(245,101,0,.8);flex-shrink:0;}
-.ticker-item:nth-child(even) .ticker-sep{background:var(--blue);box-shadow:0 0 8px rgba(26,106,255,.8);}
+/* ══════════ EMPRESAS QUE CONFÍAN ══════════ */
+@property --tb{syntax:'<length>';inherits:false;initial-value:9px;}
+.trust{position:relative;z-index:1;overflow:hidden;background:radial-gradient(60% 150% at 8% 50%,rgba(245,101,0,.11),transparent 62%),radial-gradient(55% 150% at 92% 50%,rgba(26,106,255,.16),transparent 62%),linear-gradient(180deg,var(--bg2),var(--bg));border-bottom:1px solid var(--line);}
+.trust-inner{display:flex;align-items:center;padding:26px 0 24px max(22px,calc((100vw - 1160px)/2 + 22px));}
+.trust-head{position:relative;flex:0 0 auto;width:262px;padding-right:30px;margin-right:20px;}
+.trust-head::after{content:'';position:absolute;right:0;top:-10px;bottom:-10px;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.2),transparent);}
+.trust-head::before{content:'';position:absolute;right:-2px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:1.5px;background:var(--orange);transform:rotate(45deg);box-shadow:0 0 0 3px rgba(245,101,0,.1),0 0 10px rgba(245,101,0,.8);z-index:1;animation:sdGlow 3s ease-in-out infinite;}
+.trust-title{margin-top:10px;font-family:var(--font-d);font-weight:700;font-size:19px;line-height:1.22;letter-spacing:-.01em;color:#fff;}
+.trust-title span{background:linear-gradient(92deg,var(--orange) 10%,var(--o-hi) 45%,var(--b-hi) 90%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:aurora 6s ease-in-out infinite;}
+.trust-marquee{flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 64px),transparent);mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 64px),transparent);}
+.trust-track{display:flex;width:max-content;margin:0;padding:10px 0 16px;list-style:none;animation:trustScroll var(--trust-dur,84s) linear infinite;animation-play-state:paused;will-change:transform;}
+.trust.anim-live .trust-track{animation-play-state:running;}
+@keyframes trustScroll{to{transform:translateX(-50%);}}
+/* Tarjeta de cliente: mismo lenguaje que las tarjetas del sitio (vidrio azul + hairline naranja/azul) */
+.trust-card{--acc:var(--orange);--acc-rgb:245,101,0;position:relative;flex:0 0 auto;width:196px;margin-right:14px;padding:8px;border-radius:18px;background:linear-gradient(170deg,var(--panel),var(--bg2));border:1px solid var(--line);box-shadow:0 14px 28px rgba(0,0,0,.38);transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s;}
+.trust-card:nth-child(even){--acc:var(--blue);--acc-rgb:26,106,255;}
+.trust-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;border-radius:18px 18px 0 0;background:linear-gradient(90deg,var(--acc),transparent 70%);}
+.trust-plate{position:relative;height:64px;padding:9px 16px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#F7FAFF 0%,#E6EDF9 100%);box-shadow:inset 0 1px 0 #fff,inset 0 -3px 0 rgba(10,24,48,.09),0 0 0 1px rgba(10,24,48,.35);}
+.trust-plate img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;}
+/* Marcas de enfoque en las esquinas (guiño al escáner del Diagnóstico) */
+.trust-plate::after{content:'';position:absolute;inset:5px;pointer-events:none;opacity:.6;--tb:9px;transition:--tb .3s cubic-bezier(.22,1,.36,1),inset .3s,opacity .3s;
+  background:
+   linear-gradient(var(--acc),var(--acc)) left top/var(--tb) 1.5px no-repeat,linear-gradient(var(--acc),var(--acc)) left top/1.5px var(--tb) no-repeat,
+   linear-gradient(var(--acc),var(--acc)) right top/var(--tb) 1.5px no-repeat,linear-gradient(var(--acc),var(--acc)) right top/1.5px var(--tb) no-repeat,
+   linear-gradient(var(--acc),var(--acc)) left bottom/var(--tb) 1.5px no-repeat,linear-gradient(var(--acc),var(--acc)) left bottom/1.5px var(--tb) no-repeat,
+   linear-gradient(var(--acc),var(--acc)) right bottom/var(--tb) 1.5px no-repeat,linear-gradient(var(--acc),var(--acc)) right bottom/1.5px var(--tb) no-repeat;}
+@media(hover:hover){
+  .trust .trust-marquee:hover .trust-track{animation-play-state:paused;}
+  .trust-card:hover{transform:translateY(-4px);border-color:rgba(var(--acc-rgb),.5);box-shadow:0 22px 40px rgba(0,0,0,.5),0 0 34px rgba(var(--acc-rgb),.22);}
+  .trust-card:hover .trust-plate::after{--tb:17px;inset:3px;opacity:1;}
+}
+@media(max-width:900px){
+  .trust-inner{flex-direction:column;align-items:stretch;padding:22px 0 18px;}
+  .trust-head{width:auto;padding:0 18px;margin:0 0 12px;}
+  .trust-head::before,.trust-head::after{display:none;}
+  .trust-title{margin-top:8px;font-size:15px;}
+  .trust-marquee{flex:none;width:100%;}
+}
+@media(max-width:768px){
+  .trust-track{--trust-dur:70s;padding:8px 0 14px;}
+  .trust-card{width:160px;margin-right:12px;padding:7px;border-radius:16px;}
+  .trust-plate{height:54px;padding:8px 12px;border-radius:10px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .trust-track{animation:none;}
+  .trust-title span{animation:none;}
+  .trust-marquee{overflow-x:auto;}
+  .trust-card[aria-hidden="true"]{display:none;}
+}
 
-/* ══════════ NOSOTROS ══════════ */
-#nosotros .about-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;}
-.about-num-panel{position:relative;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(160deg,var(--panel2),var(--bg2) 60%,var(--bg));border:1px solid rgba(255,255,255,.08);padding:38px 34px;box-shadow:0 40px 90px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);}
-.about-num-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(70% 60% at 85% 15%,rgba(245,101,0,.16),transparent 65%);pointer-events:none;}
-.about-est-chip{position:relative;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(245,101,0,.16),rgba(26,106,255,.12));border:1px solid rgba(255,138,61,.4);border-radius:100px;padding:11px 20px;font-family:var(--font-m);font-size:11px;font-weight:600;letter-spacing:.05em;color:#fff;margin-bottom:26px;box-shadow:0 8px 22px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);}
-.about-est-chip b{font-family:var(--font-d);font-size:12.5px;font-weight:800;letter-spacing:.03em;color:var(--o-hi);}
-.about-est-chip-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px rgba(26,106,255,.8);flex-shrink:0;}
-.about-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:0;}
-.ami{position:relative;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:16px;padding:18px 16px 16px;transition:border-color .25s,transform .25s,box-shadow .25s;overflow:hidden;}
-.ami:hover{border-color:rgba(245,101,0,.35);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.25);}
-.ami::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);}
-.ami-ic{position:absolute;top:13px;right:13px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 32% 26%,rgba(255,138,61,.4),rgba(245,101,0,.16));border:1px solid rgba(245,101,0,.35);color:#fff;box-shadow:0 3px 8px rgba(245,101,0,.25);}
-.ami:nth-child(2) .ami-ic{background:radial-gradient(circle at 32% 26%,rgba(111,161,255,.45),rgba(26,106,255,.18));border-color:rgba(111,161,255,.4);box-shadow:0 3px 8px rgba(26,106,255,.25);}
-.ami:nth-child(3) .ami-ic{background:radial-gradient(circle at 32% 26%,rgba(74,222,128,.45),rgba(37,211,102,.18));border-color:rgba(74,222,128,.4);box-shadow:0 3px 8px rgba(37,211,102,.25);}
-.ami:nth-child(4) .ami-ic{background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.45),rgba(255,255,255,.12));border-color:rgba(255,255,255,.4);box-shadow:0 3px 8px rgba(0,0,0,.2);}
-.ami-n{font-family:var(--font-d);font-weight:800;font-size:27px;color:var(--o-hi);letter-spacing:-.01em;text-shadow:0 0 20px rgba(245,101,0,.3);}
-.ami:nth-child(2) .ami-n{color:var(--b-hi);text-shadow:0 0 20px rgba(26,106,255,.3);}
-.ami:nth-child(3) .ami-n{color:#4ADE80;text-shadow:0 0 20px rgba(74,222,128,.3);}
-.ami:nth-child(4) .ami-n{color:#fff;text-shadow:0 0 20px rgba(255,255,255,.2);}
-.ami-l{font-family:var(--font-m);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted-hi);margin-top:6px;}
-.about-copy p{color:var(--muted-hi);font-size:14.5px;line-height:1.8;margin-top:16px;}
+@keyframes tick{to{transform:translateX(-50%);}}
+
+/* ══════════ NOSOTROS — banner + ficha del taller ══════════ */
+.ab-banner{position:relative;margin:0;border-radius:28px;overflow:hidden;aspect-ratio:2000/668;background:var(--bg2);border:1px solid rgba(255,255,255,.1);box-shadow:0 44px 100px rgba(0,0,0,.55);}
+.ab-banner img{width:100%;height:100%;object-fit:cover;object-position:66% 50%;}
+.ab-banner::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--o-hi) 45%,var(--blue));box-shadow:0 0 22px rgba(245,101,0,.55);}
+.ab-body{display:grid;grid-template-columns:.95fr 1.05fr;gap:64px;align-items:start;margin-top:64px;}
+.about-copy p{color:var(--muted-hi);font-size:14.5px;line-height:1.8;margin-top:16px;max-width:52ch;}
 .about-copy strong{color:#fff;font-weight:600;}
-.pillars{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px;}
-.pillar{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px 16px 16px 20px;overflow:hidden;transition:transform .25s,border-color .25s;}
-.pillar::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--orange),var(--blue));opacity:.55;transition:opacity .25s;}
-.pillar:hover{transform:translateY(-3px);border-color:var(--line-o);}
-.pillar:hover::before{opacity:1;}
-.pillar-title{font-family:var(--font-d);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--o-hi);}
-.pillar-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:5px;}
-@media(max-width:900px){#nosotros .about-wrap{grid-template-columns:1fr;gap:34px;}}
-@media(max-width:520px){.pillars{grid-template-columns:1fr;}}
+.ab-list{display:flex;flex-direction:column;}
+.ab-row{position:relative;display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:center;padding:22px 0;border-top:1px solid var(--line);}
+.ab-row:last-child{border-bottom:1px solid var(--line);}
+.ab-row::before{content:'';position:absolute;left:0;top:-1px;width:100%;height:1px;background:linear-gradient(90deg,var(--orange),var(--blue));transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.22,1,.36,1);}
+.ab-row:hover::before{transform:scaleX(1);}
+.ab-tile{width:56px;height:56px;border-radius:15px;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(150deg,var(--o-hi),var(--orange) 60%,#C24800);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 12px 26px rgba(245,101,0,.32);transition:transform .35s cubic-bezier(.22,1,.36,1);}
+.ab-row:nth-child(even) .ab-tile{background:linear-gradient(150deg,var(--b-hi),var(--blue) 60%,#0F49B8);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 12px 26px rgba(26,106,255,.34);}
+.ab-row:hover .ab-tile{transform:translateY(-3px) rotate(-4deg);}
+.ab-t{font-family:var(--font-d);font-weight:600;font-size:15px;color:#fff;}
+.ab-d{font-size:14px;color:var(--muted-hi);line-height:1.6;margin-top:4px;}
+@media(max-width:900px){.ab-body{grid-template-columns:1fr;gap:34px;margin-top:44px;}}
+@media(max-width:700px){
+  /* Imagen completa (ambos logos visibles), sin recorte y de borde a borde */
+  .ab-banner{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-left:0;border-right:0;aspect-ratio:2000/668;}
+  .ab-row{grid-template-columns:48px 1fr;gap:16px;padding:18px 0;}
+  .ab-tile{width:48px;height:48px;border-radius:13px;}
+}
 
 /* ══════════ PROCESO — línea de energía vertical ══════════ */
 #proceso{background:linear-gradient(180deg,transparent,rgba(26,106,255,.03) 50%,transparent);}
@@ -533,23 +553,6 @@ body.tab-hidden .hero-volt .v1-trace,body.tab-hidden .hero-volt .v2-trace,body.t
   .shop-card.hidden{display:none;}
 }
 
-/* ══════════ CLIENTES ══════════ */
-#clientes{padding:64px 0;}
-.cl-shell{position:relative;border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,var(--panel),var(--bg2));overflow:hidden;padding:30px 0 24px;box-shadow:0 30px 80px rgba(0,0,0,.45);}
-.cl-shell::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1.5px;background:linear-gradient(90deg,transparent,var(--orange) 35%,var(--blue) 65%,transparent);}
-.cl-head{text-align:center;padding:0 22px;margin-bottom:22px;}
-.cl-title{font-family:var(--font-d);font-size:clamp(18px,3.4vw,26px);font-weight:600;letter-spacing:.01em;}
-.cl-title span{color:var(--o-hi);}
-.cl-sub{font-size:12.5px;color:var(--muted);margin-top:8px;max-width:520px;margin-inline:auto;}
-.cl-marquee{position:relative;overflow:hidden;border-top:1px solid var(--line);padding-top:22px;}
-.cl-marquee::before,.cl-marquee::after{content:'';position:absolute;top:0;bottom:0;width:70px;z-index:2;pointer-events:none;}
-.cl-marquee::before{left:0;background:linear-gradient(90deg,var(--panel),transparent);}
-.cl-marquee::after{right:0;background:linear-gradient(270deg,var(--panel),transparent);}
-.cl-track{display:flex;align-items:center;width:max-content;animation:tick 30s linear infinite;}
-.cl-logo{flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0 38px;}
-.cl-logo img{height:46px;max-width:120px;width:auto;object-fit:contain;filter:brightness(1.15) saturate(.35) drop-shadow(0 0 10px rgba(255,255,255,.08));transition:filter .35s,transform .35s;}
-.cl-logo img:hover{transform:scale(1.1);filter:brightness(1.4) saturate(1.1) drop-shadow(0 0 16px rgba(245,101,0,.45));}
-@media(max-width:768px){.cl-logo{padding:0 24px;}.cl-logo img{height:38px;max-width:100px;}}
 
 /* ══════════ COMENTARIOS ══════════ */
 
@@ -917,7 +920,6 @@ body.no-scroll{overflow:hidden;height:100dvh;}
   .sub{font-size:13px;}
   section{padding:64px 0;}
   .work-sec{padding:52px 0;}
-  #clientes{padding:48px 0;}
   .container{padding:0 18px;}
   .cont-form,.comm-form-wrap{padding:22px 18px;}
 }
@@ -974,15 +976,10 @@ section{overflow:clip;}
 .shop-badge{animation:badgePop 3.4s ease-in-out infinite;}
 @keyframes badgePop{0%,88%,100%{transform:scale(1);}94%{transform:scale(1.1) rotate(-2deg);}}
 
-/* ── Ticker con color vivo ───────────────────────────────── */
-.ticker-item{color:transparent;background:linear-gradient(90deg,var(--muted-hi),var(--o-hi) 50%,var(--muted-hi));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;animation:aurora 7s linear infinite;animation-delay:calc(var(--stagger,0)*-1s);}
-.ticker-item:nth-child(even){background:linear-gradient(90deg,var(--muted-hi),var(--b-hi) 50%,var(--muted-hi));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;}
 
 /* ── Foto en panel Nosotros (2012) ───────────────────────── */
-.about-num-panel{isolation:isolate;}
 .about-photo-bg{position:absolute;inset:0;z-index:-1;background-size:cover;background-position:center;opacity:.34;filter:saturate(1.1) contrast(1.05);mask-image:linear-gradient(200deg,black 10%,rgba(0,0,0,.25) 55%,transparent 90%);animation:slowZoom 16s ease-in-out infinite alternate;}
 @keyframes slowZoom{from{transform:scale(1);}to{transform:scale(1.09);}}
-.about-num-panel::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(200deg,transparent 20%,rgba(10,24,48,.72) 70%);}
 
 /* ── GALERÍA «IMPEL en Acción» ───────────────────────────── */
 .work-sec{padding:76px 0;background:radial-gradient(75% 60% at 50% 0%,rgba(245,101,0,.05),transparent 70%);}
@@ -1029,9 +1026,8 @@ section{overflow:clip;}
 }
 
 /* ── Rendimiento: pausa animaciones ambientales fuera de vista ── */
-.svc-icon,.shop-visual svg,.shop-visual,.shop-badge,.ticker-item,.sec-orb,.about-photo-bg,.emrg-photo,.comm-avatar::after{animation-play-state:paused;}
-.anim-live .svc-icon,.anim-live .shop-visual svg,.anim-live .shop-visual,.anim-live .shop-badge,.anim-live .ticker-item,.anim-live .sec-orb,.anim-live .about-photo-bg,.anim-live .emrg-photo,.anim-live .comm-avatar::after{animation-play-state:running;}
-.ticker.anim-live .ticker-item{animation-play-state:running;}
+.svc-icon,.shop-visual svg,.shop-visual,.shop-badge,.sec-orb,.about-photo-bg,.emrg-photo,.comm-avatar::after{animation-play-state:paused;}
+.anim-live .svc-icon,.anim-live .shop-visual svg,.anim-live .shop-visual,.anim-live .shop-badge,.anim-live .sec-orb,.anim-live .about-photo-bg,.anim-live .emrg-photo,.anim-live .comm-avatar::after{animation-play-state:running;}
 @media (prefers-reduced-motion: reduce){.work-track,.sec-orb{animation:none!important;}}
 </style>
 
@@ -1085,7 +1081,6 @@ section>.container{position:relative;z-index:1;}
 /* ── Menos ruido en móvil ────────────────────────────────── */
 @media(max-width:768px){
   .svc-tags{display:none;}
-  .cl-sub{display:none;}
   .about-copy p:nth-of-type(2){display:none;}
   .work-sec .sub{display:none;}
   .hero-p{max-width:88%;}
@@ -1166,11 +1161,11 @@ section>.container{position:relative;z-index:1;}
   nav#navbar.scrolled{-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);}
   #app-nav{-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);}
   .nav-links,.hm,#to-top,.mini-modal,.toast{-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);}
-  .svc-card,.shop-card,.comm-card,.pillar,.work-card{contain:content;}
+  .svc-card,.shop-card,.comm-card,.work-card{contain:content;}
 }
 /* Pause purely-decorative infinite animations while the tab isn't visible,
    so the compositor isn't kept busy in the background on battery-saver iPhones */
-body.tab-hidden .ticker-track,body.tab-hidden .hero-h1 .grad,body.tab-hidden .h2 .glow,body.tab-hidden .hero-slide.active .hero-slide-bg{animation-play-state:paused!important;}
+body.tab-hidden .trust-track,body.tab-hidden .hero-h1 .grad,body.tab-hidden .h2 .glow,body.tab-hidden .hero-slide.active .hero-slide-bg{animation-play-state:paused!important;}
 </style>
 
 <style id="v15-viveza">
@@ -1219,9 +1214,6 @@ body.tab-hidden .ticker-track,body.tab-hidden .hero-h1 .grad,body.tab-hidden .h2
 /* ── Profundidad con acento de color en tarjetas (no solo negro) ── */
 .svc-card:hover,.svc-card.touch-active{box-shadow:0 32px 70px rgba(0,0,0,.55),0 0 52px rgba(245,101,0,.12),0 0 90px rgba(26,106,255,.045);}
 .shop-card:hover,.shop-card.touch-active{box-shadow:0 30px 64px rgba(0,0,0,.55),0 0 46px rgba(245,101,0,.13);}
-.pillar,.ami{transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s;}
-.pillar:hover,.pillar.touch-active{box-shadow:0 24px 50px rgba(0,0,0,.4),0 0 36px rgba(245,101,0,.09);}
-.ami:hover,.ami.touch-active{box-shadow:0 18px 38px rgba(0,0,0,.35),0 0 30px rgba(245,101,0,.1);}
 .work-card:hover{box-shadow:0 34px 78px rgba(0,0,0,.62),0 0 50px rgba(245,101,0,.18);}
 
 /* ── Botones: leve respiración y brillo al presionar en móvil ── */
@@ -1243,6 +1235,26 @@ body.tab-hidden .ticker-track,body.tab-hidden .hero-h1 .grad,body.tab-hidden .h2
 #chat-hello.show{opacity:1;transform:none;pointer-events:auto;}
 #chat-hello-close{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:#1a1f2b;border:1px solid rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;z-index:2;box-shadow:0 4px 10px rgba(0,0,0,.4);}
 #chat-hello-close:hover{background:#252b3a;transform:scale(1.1);}
+
+/* ── Asistente: íconos SVG + mensajes con estructura ── */
+.chat-hello-av svg{width:18px;height:18px;color:#fff;}
+.chat-hdr-bolt{width:20px;height:20px;color:#fff;position:relative;z-index:1;}
+.chat-row.bot .chat-av{color:var(--o-hi);}
+.chat-msg .cm-ic{width:15px;height:15px;vertical-align:-3px;margin-right:6px;color:var(--o-hi);flex-shrink:0;}
+.chat-msg strong{color:#fff;font-weight:600;}
+.cm-list{display:grid;gap:6px;margin:10px 0 4px;}
+.cm-li{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:11px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:12.5px;line-height:1.3;}
+.cm-li .cm-ic{margin:0;width:16px;height:16px;}
+.cm-li:nth-child(even) .cm-ic{color:var(--b-hi);}
+.chat-msg a.cm-cta{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:9px 14px;border-radius:12px;background:linear-gradient(135deg,#34E07A,#1DAE57);color:#04210F;font-weight:700;font-size:12.5px;text-decoration:none;box-shadow:0 6px 16px rgba(37,211,102,.28);}
+.chat-msg a.cm-cta svg{width:16px;height:16px;flex-shrink:0;}
+.chat-msg a.cm-cta:active{transform:scale(.96);}
+.chat-file-name .cm-ic{margin-right:7px;}
+@media(max-width:768px){
+  /* En móvil el panel es pantalla completa: el botón de cerrar pasa al encabezado para no tapar la conversación */
+  #chat-fab.open{top:calc(16px + env(safe-area-inset-top,0px));bottom:auto;right:14px;width:40px;height:40px;}
+  .chat-head{padding-right:64px;}
+}
 .chat-hello-row{display:flex;align-items:flex-end;gap:8px;}
 .chat-hello-av{width:34px;height:34px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;background:linear-gradient(150deg,#FF7A1E,var(--orange) 60%,#C24700);box-shadow:0 8px 20px rgba(245,101,0,.5),inset 0 1px 0 rgba(255,255,255,.28);}
 .chat-hello-bubble{position:relative;background:rgba(14,20,33,.86);-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.1);border-radius:16px;border-bottom-left-radius:5px;padding:11px 14px 12px;box-shadow:0 24px 56px rgba(0,0,0,.6),0 0 40px rgba(245,101,0,.1),inset 0 1px 0 rgba(255,255,255,.05);}
@@ -1301,6 +1313,24 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
     <button class="dxb-close" onclick="dismissPromo()" aria-label="Cerrar">✕</button>
   </div>
 </div>
+<script>
+/* El alto reservado para el anuncio se mide, no se supone: así nav y hero pegan siempre con la barra */
+(function(){
+  var pr=document.getElementById('impel-promo');
+  var bar=pr&&pr.querySelector('.dxb-bar');
+  if(!pr||!bar)return;
+  function sync(){
+    try{if(sessionStorage.getItem('impel_promo_off'))return;}catch(e){}
+    var h=Math.ceil(bar.getBoundingClientRect().height);
+    if(!h)return;
+    document.documentElement.style.setProperty('--promo-h',(h+16)+'px');
+  }
+  sync();
+  if(window.ResizeObserver)new ResizeObserver(sync).observe(bar);
+  window.addEventListener('resize',sync);
+  window.addEventListener('load',sync);
+})();
+</script>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -1352,20 +1382,6 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
   <div class="hero-slide"><div class="hero-slide-bg" style="background-image:url('images/reparacion.jpg');"></div></div>
   <div class="hero-slide"><div class="hero-slide-bg" style="background-image:url('images/reparando.jpg');"></div></div>
 
-  <div class="hero-volt" aria-hidden="true">
-    <svg viewBox="0 0 1200 150" preserveAspectRatio="none" fill="none">
-      <path class="v1" d="M0 100 L180 100 L215 100 L235 58 L258 128 L278 84 L295 100 L520 100 L555 100 L575 44 L600 134 L622 76 L640 100 L880 100 L915 100 L935 62 L958 124 L978 88 L995 100 L1200 100" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      <path class="v2" d="M0 118 L240 118 L270 118 L288 90 L306 138 L322 106 L336 118 L640 118 L670 118 L688 92 L706 140 L722 108 L736 118 L1200 118" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
-      <path class="v1-trace" d="M0 100 L180 100 L215 100 L235 58 L258 128 L278 84 L295 100 L520 100 L555 100 L575 44 L600 134 L622 76 L640 100 L880 100 L915 100 L935 62 L958 124 L978 88 L995 100 L1200 100" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-      <path class="v2-trace" d="M0 118 L240 118 L270 118 L288 90 L306 138 L322 106 L336 118 L640 118 L670 118 L688 92 L706 140 L722 108 L736 118 L1200 118" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-      <circle class="volt-blip" cx="235" cy="58" r="4" style="animation-delay:.05s"/>
-      <circle class="volt-blip" cx="575" cy="44" r="4" style="animation-delay:1.25s"/>
-      <circle class="volt-blip" cx="935" cy="62" r="4" style="animation-delay:2.45s"/>
-      <circle class="volt-blip volt-blip-b" cx="288" cy="90" r="3" style="animation-delay:.3s"/>
-      <circle class="volt-blip volt-blip-b" cx="706" cy="92" r="3" style="animation-delay:1.9s"/>
-    </svg>
-  </div>
-
   <div class="hero-body">
     <div class="hud-badge reveal">
       <div class="hud-badge-panel">
@@ -1404,26 +1420,65 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
 </section>
 
 
-<div class="sec-divider" aria-hidden="true"><span class="sd-line"></span><span class="sd-core"></span><span class="sd-line blue"></span></div>
-<!-- TICKER -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-track">
-    <div class="ticker-item"><div class="ticker-sep"></div>Motor de Arranque</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Alternadores</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Diagnóstico OBD</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Garantía Total</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Servicio a Domicilio</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Emergencias 24/7</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Aire Acondicionado</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>14 Años de Experiencia</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Motor de Arranque</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Alternadores</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Diagnóstico OBD</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Garantía Total</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Servicio a Domicilio</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Emergencias 24/7</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>Aire Acondicionado</div>
-    <div class="ticker-item"><div class="ticker-sep"></div>14 Años de Experiencia</div>
+<!-- EMPRESAS QUE CONFÍAN EN IMPEL -->
+<div class="trust" id="confianza" role="region" aria-label="Empresas que confían en IMPEL">
+  <div class="trust-inner reveal">
+    <div class="trust-head">
+      <span class="kicker">Nuestros clientes</span>
+      <p class="trust-title">Empresas que confían en <span>IMPEL</span></p>
+    </div>
+    <div class="trust-marquee">
+    <ul class="trust-track">
+      <li class="trust-card"><div class="trust-plate"><img src="img/cocacola.png?v=2" alt="Coca-Cola FEMSA" width="319" height="107" decoding="async"></div></li>
+      <li class="trust-card"><div class="trust-plate"><img src="img/ribs.png?v=2" alt="Riba Smith" width="374" height="69" decoding="async"></div></li>
+      <li class="trust-card"><div class="trust-plate"><img src="img/blue.png?v=2" alt="Estrella Azul" width="266" height="156" decoding="async"></div></li>
+      <li class="trust-card"><div class="trust-plate"><img src="img/dicarina.png?v=2" alt="Dicarina" width="268" height="55" decoding="async"></div></li>
+      <li class="trust-card"><div class="trust-plate"><img src="img/forza.png?v=2" alt="Forza Logistics" width="256" height="55" decoding="async"></div></li>
+      <li class="trust-card"><div class="trust-plate"><img src="img/felipe.png?v=2" alt="Felipe Motta" width="217" height="110" decoding="async"></div></li>
+      <li class="trust-card"><div class="trust-plate"><img src="img/llantero.png?v=2" alt="Llantero" width="414" height="133" decoding="async"></div></li>
+      <li class="trust-card"><div class="trust-plate"><img src="img/supro.png?v=2" alt="Supro" width="412" height="121" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/cocacola.png?v=2" alt="" width="319" height="107" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/ribs.png?v=2" alt="" width="374" height="69" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/blue.png?v=2" alt="" width="266" height="156" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/dicarina.png?v=2" alt="" width="268" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/forza.png?v=2" alt="" width="256" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/felipe.png?v=2" alt="" width="217" height="110" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/llantero.png?v=2" alt="" width="414" height="133" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/supro.png?v=2" alt="" width="412" height="121" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/cocacola.png?v=2" alt="" width="319" height="107" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/ribs.png?v=2" alt="" width="374" height="69" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/blue.png?v=2" alt="" width="266" height="156" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/dicarina.png?v=2" alt="" width="268" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/forza.png?v=2" alt="" width="256" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/felipe.png?v=2" alt="" width="217" height="110" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/llantero.png?v=2" alt="" width="414" height="133" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/supro.png?v=2" alt="" width="412" height="121" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/cocacola.png?v=2" alt="" width="319" height="107" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/ribs.png?v=2" alt="" width="374" height="69" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/blue.png?v=2" alt="" width="266" height="156" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/dicarina.png?v=2" alt="" width="268" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/forza.png?v=2" alt="" width="256" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/felipe.png?v=2" alt="" width="217" height="110" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/llantero.png?v=2" alt="" width="414" height="133" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/supro.png?v=2" alt="" width="412" height="121" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/cocacola.png?v=2" alt="" width="319" height="107" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/ribs.png?v=2" alt="" width="374" height="69" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/blue.png?v=2" alt="" width="266" height="156" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/dicarina.png?v=2" alt="" width="268" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/forza.png?v=2" alt="" width="256" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/felipe.png?v=2" alt="" width="217" height="110" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/llantero.png?v=2" alt="" width="414" height="133" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/supro.png?v=2" alt="" width="412" height="121" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/cocacola.png?v=2" alt="" width="319" height="107" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/ribs.png?v=2" alt="" width="374" height="69" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/blue.png?v=2" alt="" width="266" height="156" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/dicarina.png?v=2" alt="" width="268" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/forza.png?v=2" alt="" width="256" height="55" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/felipe.png?v=2" alt="" width="217" height="110" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/llantero.png?v=2" alt="" width="414" height="133" decoding="async"></div></li>
+      <li class="trust-card" aria-hidden="true"><div class="trust-plate"><img src="img/supro.png?v=2" alt="" width="412" height="121" decoding="async"></div></li>
+    </ul>
+    </div>
   </div>
 </div>
 
@@ -1431,47 +1486,22 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
 <div class="sec-divider" aria-hidden="true"><span class="sd-line blue"></span><span class="sd-core"></span><span class="sd-line"></span></div>
 <!-- NOSOTROS -->
 <section id="nosotros"><div class="sec-circuit" aria-hidden="true"><svg width="150" height="150" viewBox="0 0 150 150" fill="none"><path d="M10 75h35l15-15h30" stroke="rgba(245,101,0,.35)" stroke-width="1.5"/><path d="M10 95h25l20 20h45" stroke="rgba(26,106,255,.3)" stroke-width="1.5"/><circle cx="90" cy="60" r="4" stroke="rgba(245,101,0,.5)" stroke-width="1.5"/><circle cx="100" cy="115" r="4" stroke="rgba(26,106,255,.45)" stroke-width="1.5"/><circle cx="10" cy="75" r="2.5" fill="rgba(245,101,0,.5)"/><circle cx="10" cy="95" r="2.5" fill="rgba(26,106,255,.45)"/></svg></div><div class="sec-orb" aria-hidden="true"></div><div class="container">
-  <div class="about-wrap">
-    <div class="reveal-l">
-      <div class="about-num-panel">
-        <div class="about-photo-bg" style="background-image:url('images/reparando.jpg')"></div>
-        <div class="about-est-chip"><b>IMPEL</b><span class="about-est-chip-dot"></span>Especialistas desde 2012</div>
-        <div class="about-mini-grid">
-          <div class="ami">
-            <div class="ami-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5A2 2 0 018.4 5h7.2a2 2 0 011.9 1.5L19 11"/><rect x="2.5" y="11" width="19" height="6" rx="2"/><circle cx="7" cy="19.5" r="1.6"/><circle cx="17" cy="19.5" r="1.6"/></svg></div>
-            <div class="ami-n"><span class="count" data-to="12500">0</span>+</div>
-            <div class="ami-l">Vehículos atendidos</div>
-          </div>
-          <div class="ami">
-            <div class="ami-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-            <div class="ami-n"><span class="count" data-to="98">0</span>%</div>
-            <div class="ami-l">Satisfacción</div>
-          </div>
-          <div class="ami">
-            <div class="ami-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-            <div class="ami-n">24/7</div>
-            <div class="ami-l">Emergencias</div>
-          </div>
-          <div class="ami">
-            <div class="ami-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15c3.5 0 6-2.5 6-6a6 6 0 00-12 0c0 3.5 2.5 6 6 6z"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div>
-            <div class="ami-n"><span class="count" data-to="14">0</span>+</div>
-            <div class="ami-l">Años en Panamá</div>
-          </div>
-        </div>
-      </div>
+  <figure class="ab-banner reveal">
+    <img src="images/impel-banner.jpg?v=2" width="2000" height="668" loading="lazy" alt="IMPEL Electromecánica, especialistas en Panamá desde 2012" onerror="this.closest('.ab-banner').style.display='none'">
+  </figure>
+  <div class="ab-body">
+    <div class="about-copy reveal">
+      <div class="kicker">Sobre Nosotros</div>
+      <h2 class="h2">Expertos que <span class="glow">entienden</span> tu vehículo</h2>
+      <p>Taller electromecánico en Panamá especializado en reparación de alternadores, motor de arranque, baterías y sistema eléctrico automotriz. Desde 2012 hemos atendido <strong>más de 12,500 vehículos</strong>, con emergencias 24/7 en toda el área metropolitana.</p>
+      <p>Cada carro se revisa con equipos de diagnóstico OBD de última generación y técnicos certificados. También hacemos aire acondicionado automotriz y servicio a domicilio, siempre con garantía por escrito.</p>
     </div>
-    <div class="reveal-r about-copy">
-      <div class="kicker reveal">Sobre Nosotros</div>
-      <h2 class="h2 reveal">Expertos que <span class="glow">entienden</span> tu vehículo</h2>
-      <p>IMPEL Electromecánica es un taller electromecánico en Panamá especializado en diagnóstico, reparación de alternadores, motor de arranque y sistema eléctrico automotriz desde 2012. <strong>Más de 12,500 vehículos atendidos</strong> y emergencias 24/7 respaldan nuestra trayectoria.</p>
-      <p>Contamos con técnicos certificados, equipos de diagnóstico de última generación y un compromiso absoluto con la calidad del servicio.</p>
-      <div class="pillars">
-        <div class="pillar"><div class="pillar-title">Diagnóstico Preciso</div><div class="pillar-desc">Equipos OBD de última generación para identificar fallas con exactitud.</div></div>
-        <div class="pillar"><div class="pillar-title">Garantía Real</div><div class="pillar-desc">Todos nuestros servicios incluyen garantía documentada por escrito.</div></div>
-        <div class="pillar"><div class="pillar-title">Respuesta 24/7</div><div class="pillar-desc">Disponibles para emergencias en toda el área metropolitana.</div></div>
-        <div class="pillar"><div class="pillar-title">Técnicos Cert.</div><div class="pillar-desc">Personal con certificaciones y más de 10 años de experiencia.</div></div>
-      </div>
-    </div>
+    <ul class="ab-list">
+      <li class="ab-row reveal"><span class="ab-tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M7.5 11h2l1.2-2.5 1.6 5 1.2-2.5h1"/></svg></span><div><div class="ab-t">Diagnóstico preciso</div><div class="ab-d">Equipos OBD de última generación para identificar fallas con exactitud.</div></div></li>
+      <li class="ab-row reveal"><span class="ab-tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span><div><div class="ab-t">Garantía real</div><div class="ab-d">Todos nuestros servicios incluyen garantía documentada por escrito.</div></div></li>
+      <li class="ab-row reveal"><span class="ab-tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><div class="ab-t">Respuesta 24/7</div><div class="ab-d">Disponibles para emergencias en toda el área metropolitana.</div></div></li>
+      <li class="ab-row reveal"><span class="ab-tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15c3.5 0 6-2.5 6-6a6 6 0 00-12 0c0 3.5 2.5 6 6 6z"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></span><div><div class="ab-t">Técnicos certificados</div><div class="ab-d">Personal con certificaciones y más de 10 años de experiencia.</div></div></li>
+    </ul>
   </div>
 </div></section>
 
@@ -1615,7 +1645,7 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
   <div class="chat-hello-row">
-    <div class="chat-hello-av">⚡</div>
+    <div class="chat-hello-av"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4.5 14h6l-1.5 8L19 10h-6l1.5-8z"/></svg></div>
     <div class="chat-hello-bubble">
       <div class="chat-hello-name">Chispa <span class="chat-hello-tag">IA</span></div>
       <div class="chat-hello-typing" id="chat-hello-typing" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -1626,10 +1656,10 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
 
 <div id="chat-panel">
   <div class="chat-head">
-    <div class="chat-hdr-avatar"><img src="logo.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="chat-hdr-avatar-fb" style="display:none">⚡</span><span class="chat-hdr-avatar-ring"></span></div>
+    <div class="chat-hdr-avatar"><svg class="chat-hdr-bolt" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4.5 14h6l-1.5 8L19 10h-6l1.5-8z"/></svg><span class="chat-hdr-avatar-ring"></span></div>
     <div class="chat-hdr-info">
       <div class="chat-hdr-name">Chispa <span class="chat-hdr-badge">IA</span></div>
-      <div class="chat-hdr-status"><span class="chat-hdr-dot"></span><span class="chat-hdr-sub" id="chat-hdr-sub">En línea — responde al instante</span></div>
+      <div class="chat-hdr-status"><span class="chat-hdr-dot"></span><span class="chat-hdr-sub" id="chat-hdr-sub">Asistente automático</span></div>
     </div>
     <button class="chat-clear" onclick="clearChat()" title="Borrar conversación" aria-label="Borrar conversación">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg>
@@ -1746,35 +1776,6 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
 </div></section>
 
 
-<div class="sec-divider" aria-hidden="true"><span class="sd-line"></span><span class="sd-core"></span><span class="sd-line blue"></span></div>
-<!-- CLIENTES -->
-<section id="clientes"><div class="container">
-  <div class="cl-shell reveal">
-    <div class="cl-head">
-      <div class="kicker center" style="justify-content:center">Nuestros Clientes</div>
-      <h3 class="cl-title" style="margin-top:10px">Empresas que confían en <span>IMPEL</span></h3>
-      <p class="cl-sub">Marcas y flotas que trabajan con nosotros en diagnósticos, repuestos y soporte electromecánico.</p>
-    </div>
-    <div class="cl-marquee"><div class="cl-track">
-      <div class="cl-logo"><img src="img/cocacola.png" alt="Coca-Cola FEMSA" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/ribs.png" alt="Riba Smith" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/blue.png" alt="Estrella Azul" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/dicarina.png" alt="Dicarina" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/forza.png" alt="Forza Logistics" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/felipe.png" alt="Felipe Motta" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/llantero.png" alt="Llantero" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/supro.png" alt="Supro" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/cocacola.png" alt="Coca-Cola FEMSA" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/ribs.png" alt="Riba Smith" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/blue.png" alt="Estrella Azul" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/dicarina.png" alt="Dicarina" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/forza.png" alt="Forza Logistics" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/felipe.png" alt="Felipe Motta" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/llantero.png" alt="Llantero" loading="lazy" decoding="async"></div>
-      <div class="cl-logo"><img src="img/supro.png" alt="Supro" loading="lazy" decoding="async"></div>
-    </div></div>
-  </div>
-</div></section>
 
 
 <div class="sec-divider" aria-hidden="true"><span class="sd-line blue"></span><span class="sd-core"></span><span class="sd-line"></span></div>
@@ -2367,7 +2368,7 @@ function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||8);}catch(e){}}
   if(!('IntersectionObserver' in window))return;
   var spies=document.querySelectorAll('.anav[data-spy]');
   var navLinks=document.querySelectorAll('.nav-links a[href^="#"]');
-  var ids=['home','nosotros','proceso','servicios','emergencias','galeria','clientes','comentarios','contacto'];
+  var ids=['home','nosotros','proceso','servicios','emergencias','galeria','comentarios','contacto'];
   var current='home';
   var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
@@ -2376,7 +2377,7 @@ function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||8);}catch(e){}}
       spies.forEach(function(a){
         var match=a.dataset.spy===current||
           (a.dataset.spy==='servicios'&&(current==='proceso'||current==='emergencias'))||
-          (a.dataset.spy==='galeria'&&(current==='clientes'||current==='comentarios'))||
+          (a.dataset.spy==='galeria'&&current==='comentarios')||
           (a.dataset.spy==='home'&&current==='nosotros');
         a.classList.toggle('on',match);
       });
@@ -2461,7 +2462,7 @@ function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||8);}catch(e){}}
 
 /* ── Feedback táctil real en tarjetas y botones ──────────── */
 (function(){
-  var sel='.svc-card,.shop-card,.comm-card,.pillar,.cov-item,.ami,.btn,.btn-primary,.shop-add,.code-btn,.emrg-cta,.shop-filter,.anav,.mq-opt,#chat-fab,.chat-chip,.chat-send,.chat-clear';
+  var sel='.svc-card,.shop-card,.comm-card,.cov-item,.btn,.btn-primary,.shop-add,.code-btn,.emrg-cta,.shop-filter,.anav,.mq-opt,#chat-fab,.chat-chip,.chat-send,.chat-clear';
   document.addEventListener('touchstart',function(e){
     var t=e.target.closest(sel);
     if(t){t.classList.add('touch-active');}
@@ -2475,7 +2476,7 @@ function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||8);}catch(e){}}
 
 /* ── Stagger de entrada en grillas ───────────────────────── */
 (function(){
-  ['#svc-rail','#shop-grid','.pillars','.cov-grid','.about-mini-grid'].forEach(function(sel){
+  ['#svc-rail','#shop-grid','.ab-list','.cov-grid'].forEach(function(sel){
     var p=document.querySelector(sel);
     if(p)Array.prototype.forEach.call(p.children,function(c,i){c.style.setProperty('--stagger',i%8);});
   });
@@ -2496,17 +2497,13 @@ function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||8);}catch(e){}}
 /* Enciende animaciones ambientales solo cuando el bloque está visible */
 (function(){
   if(!('IntersectionObserver' in window)){
-    document.querySelectorAll('section,.ticker,.work-marquee,.sec-divider').forEach(function(s){s.classList.add('anim-live');});
+    document.querySelectorAll('section,.trust,.work-marquee,.sec-divider').forEach(function(s){s.classList.add('anim-live');});
     return;
   }
   var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){e.target.classList.toggle('anim-live',e.isIntersecting);});
   },{threshold:.05});
-  document.querySelectorAll('section,.ticker,.work-marquee,.sec-divider').forEach(function(s){obs.observe(s);});
-})();
-/* Stagger para ticker y galería */
-(function(){
-  document.querySelectorAll('.ticker-item').forEach(function(el,i){el.style.setProperty('--stagger',i%8);});
+  document.querySelectorAll('section,.trust,.work-marquee,.sec-divider').forEach(function(s){obs.observe(s);});
 })();
 })();
 </script>
@@ -2829,6 +2826,28 @@ function saveChat(arr){try{localStorage.setItem(CHAT_KEY(),JSON.stringify(arr.sl
 function fmtSize(b){if(b<1024)return b+' B';if(b<1048576)return (b/1024).toFixed(0)+' KB';return (b/1048576).toFixed(1)+' MB';}
 function fmtTime(sec){sec=Math.max(0,Math.floor(sec));var m=Math.floor(sec/60),s=sec%60;return m+':'+(s<10?'0':'')+s;}
 
+
+/* ── Íconos SVG del asistente (mismo trazo que el resto del sitio) ── */
+var ICONS={
+  bolt:'<path d="M13 2L4.5 14h6l-1.5 8L19 10h-6l1.5-8z"/>',
+  key:'<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.78 7.78 5.5 5.5 0 017.78-7.78zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>',
+  plug:'<path d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 01-4 4h-4a4 4 0 01-4-4V8z"/>',
+  pulse:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+  snow:'<line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><path d="M20 16l-4-4 4-4M4 8l4 4-4 4M16 4l-4 4-4-4M8 20l4-4 4 4"/>',
+  truck:'<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+  alert:'<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  pin:'<path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+  image:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>',
+  mic:'<path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3"/>',
+  clip:'<path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>'
+};
+function ic(n){return '<svg class="cm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>';}
+var BOT_AV='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'+ICONS.bolt+'</svg>';
+var WA_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
+function waCta(msg,label){return '<a class="cm-cta" href="https://wa.me/50762838021?text='+encodeURIComponent(msg)+'" target="_blank" rel="noopener">'+WA_SVG+label+'</a>';}
+function escHtml(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
 var QUICK_DEFAULT=['¿Qué servicios tienen?','Tengo una emergencia','¿Cuál es el horario?','No me arranca el carro'];
 
 var CHAT_ACTIONS={
@@ -2861,7 +2880,7 @@ function renderHistory(){
   body.innerHTML='';
   if(!hist.length){
     var name=null;
-    var welcome=name?('¡Hola '+name+'! 👋 Soy Chispa, el asistente de IMPEL. ¿En qué te puedo ayudar hoy?'):'¡Hola! 👋 Soy Chispa, el asistente de IMPEL. Contame qué le pasa a tu carro, mandame una foto o una nota de voz, o preguntame lo que necesites.';
+    var welcome=name?('Hola '+name+', soy Chispa, el asistente de IMPEL. ¿En qué te puedo ayudar hoy?'):'Hola, soy Chispa, el asistente de IMPEL. Contame qué le pasa a tu carro, mandame una foto o una nota de voz, o preguntame lo que necesites.';
     addMsg('bot',welcome,false);
     renderQuick(QUICK_DEFAULT);
   }else{
@@ -2879,7 +2898,7 @@ function addMsg(role,text,save,time){
   var t=time||new Date().toLocaleTimeString('es-PA',{hour:'2-digit',minute:'2-digit'});
   var row=document.createElement('div');
   row.className='chat-row '+role;
-  var av=role==='bot'?'⚡':'Tú';
+  var av=role==='bot'?BOT_AV:'Tú';
   var safe=role==='user'?text.replace(/</g,'&lt;'):text;
   row.innerHTML='<div class="chat-av">'+av+'</div><div class="chat-msg '+role+'">'+safe+'<div class="chat-msg-time">'+t+'</div></div>';
   body.appendChild(row);
@@ -2900,8 +2919,8 @@ function addAttachmentPlaceholder(role,kind,m,save){
   var t=m.time||'';
   var row=document.createElement('div');
   row.className='chat-row '+role;
-  var av=role==='bot'?'⚡':'Tú';
-  var label=kind==='image'?'🖼️ Imagen enviada':kind==='voice'?'🎤 Nota de voz · '+fmtTime(m.duration||0):'📎 '+(m.name||'Archivo');
+  var av=role==='bot'?BOT_AV:'Tú';
+  var label=kind==='image'?ic('image')+'Imagen enviada':kind==='voice'?ic('mic')+'Nota de voz · '+fmtTime(m.duration||0):ic('clip')+escHtml(m.name||'Archivo');
   row.innerHTML='<div class="chat-av">'+av+'</div><div class="chat-msg '+role+' file"><div class="chat-file-info"><div class="chat-file-name">'+label+'</div><div class="chat-msg-time" style="margin-top:2px">'+t+'</div></div></div>';
   body.appendChild(row);
 }
@@ -2911,7 +2930,7 @@ function addImageMsg(role,dataUrl,save,time){
   var t=time||new Date().toLocaleTimeString('es-PA',{hour:'2-digit',minute:'2-digit'});
   var row=document.createElement('div');
   row.className='chat-row '+role;
-  var av=role==='bot'?'⚡':'Tú';
+  var av=role==='bot'?BOT_AV:'Tú';
   row.innerHTML='<div class="chat-av">'+av+'</div><div class="chat-msg '+role+' img"><img class="chat-msg-img" src="'+dataUrl+'" onclick="openChatLightbox(this.src)" alt="Imagen enviada"><div class="chat-msg-img-cap chat-msg-time">'+t+'</div></div>';
   body.appendChild(row);
   body.scrollTop=body.scrollHeight;
@@ -2923,7 +2942,7 @@ function addFileMsg(role,name,size,save,time){
   var t=time||new Date().toLocaleTimeString('es-PA',{hour:'2-digit',minute:'2-digit'});
   var row=document.createElement('div');
   row.className='chat-row '+role;
-  var av=role==='bot'?'⚡':'Tú';
+  var av=role==='bot'?BOT_AV:'Tú';
   row.innerHTML='<div class="chat-av">'+av+'</div><div class="chat-msg '+role+' file"><div class="chat-file-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div><div class="chat-file-info"><div class="chat-file-name">'+name.replace(/</g,'&lt;')+'</div><div class="chat-file-size">'+fmtSize(size)+'</div><div class="chat-msg-time" style="margin-top:3px">'+t+'</div></div></div>';
   body.appendChild(row);
   body.scrollTop=body.scrollHeight;
@@ -2935,7 +2954,7 @@ function addVoiceMsg(role,objectUrl,duration,save,time){
   var t=time||new Date().toLocaleTimeString('es-PA',{hour:'2-digit',minute:'2-digit'});
   var row=document.createElement('div');
   row.className='chat-row '+role;
-  var av=role==='bot'?'⚡':'Tú';
+  var av=role==='bot'?BOT_AV:'Tú';
   var bars='';for(var i=0;i<18;i++){bars+='<span style="height:'+(6+Math.round(Math.sin(i*1.7)*7+7))+'px"></span>';}
   var uid='v'+Date.now()+Math.floor(Math.random()*999);
   row.innerHTML='<div class="chat-av">'+av+'</div><div class="chat-msg '+role+' voice" id="'+uid+'"><button class="chat-voice-play" onclick="toggleChatVoice(\''+uid+'\')"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg></button><div class="chat-voice-wave">'+bars+'</div><span class="chat-voice-time">'+fmtTime(duration)+'</span><audio src="'+objectUrl+'" preload="metadata"></audio></div>';
@@ -2981,6 +3000,7 @@ function hideTyping(){var t=document.getElementById('chat-typing-ind');if(t)t.re
 function renderQuick(arr){
   var q=document.getElementById('chat-quick');
   q.innerHTML=arr.map(function(t){return '<button class="chat-chip" onclick="sendChatMsg(\''+t.replace(/'/g,"\\'")+'\')">'+t+'</button>';}).join('');
+  var body=document.getElementById('chat-body');if(body)body.scrollTop=body.scrollHeight; /* las opciones rápidas reducen el alto: mantener visible el último mensaje */
 }
 
 /* ══════════ Composer: auto-grow + estado del botón enviar ══════════ */
@@ -3125,8 +3145,8 @@ window.stopVoiceRecord=function(){
     var blob=new Blob(audioChunks,{type:audioChunks[0].type||'audio/webm'});
     var url=URL.createObjectURL(blob);
     addVoiceMsg('user',url,durSec);
-    uploadAttachmentToDiscord(blob,'nota-de-voz.'+(blob.type.indexOf('mp4')>-1?'m4a':'webm'),'voice','Nota de voz de '+fmtTime(durSec)+' desde el chat web');
-    replyAfterAttachment('voice');
+    var voiceP=uploadAttachmentToDiscord(blob,'nota-de-voz.'+(blob.type.indexOf('mp4')>-1?'m4a':'webm'),'voice','Nota de voz de '+fmtTime(durSec)+' desde el chat web');
+    replyAfterAttachment('voice',voiceP);
   });
 };
 window.cancelVoiceRecord=function(){audioChunks=[];endRecording(function(){});};
@@ -3134,27 +3154,32 @@ window.cancelVoiceRecord=function(){audioChunks=[];endRecording(function(){});};
 /* ══════════ Envío a Discord (archivos/imágenes/audio reales) ══════════ */
 function uploadAttachmentToDiscord(blob,filename,kind,contextText){
   try{
-    var label=kind==='voice'?'🎤 Nota de voz':kind==='image'?'🖼️ Imagen':'📎 Archivo';
+    var label=kind==='voice'?'Nota de voz':kind==='image'?'Imagen':'Archivo';
     var fd=new FormData();
     fd.append('payload_json',JSON.stringify({
       username:'Chispa · Chat Web IMPEL',
       embeds:[{title:label+' recibido por el chat',description:contextText||'Adjunto enviado desde el widget de chat de impelpanama.com',color:0xF56500,timestamp:new Date().toISOString()}]
     }));
     fd.append('files[0]',blob,filename);
-    fetch(DISCORD_WH,{method:'POST',body:fd}).catch(function(){});
-  }catch(e){}
+    return fetch(DISCORD_WH,{method:'POST',body:fd}).then(function(r){return r.ok;}).catch(function(){return false;});
+  }catch(e){return Promise.resolve(false);}
 }
 
-function replyAfterAttachment(kind){
+function replyAfterAttachment(kind,sendP){
   showTyping();
-  setTimeout(function(){
+  var minWait=new Promise(function(r){setTimeout(r,600+Math.random()*500);});
+  Promise.all([minWait,sendP||Promise.resolve(false)]).then(function(res){
     hideTyping();
-    var txt=kind==='voice'?'🎤 Recibí tu nota de voz — ya se la compartí al equipo, en un momento te responden.':
-             kind==='image'?'📸 ¡Buena foto! Ya se la mandé al equipo para que la revisen y te digan qué puede ser.':
-             '📎 Recibí tu archivo, ya se lo compartí al equipo.';
-    addMsg('bot',txt);
-    renderQuick(['Tengo una emergencia','Hablar con un técnico']);
-  },600+Math.random()*500);
+    var ok=res[1];
+    var what=kind==='voice'?'tu nota de voz':kind==='image'?'tu foto':'tu archivo';
+    if(ok){
+      addMsg('bot','Recibí '+what+' y ya se la compartí al equipo. En un momento te responden.');
+      renderQuick(['Tengo una emergencia','Hablar con un técnico']);
+    }else{
+      addMsg('bot','No pude enviar '+what+' al equipo. Escribinos directo por WhatsApp y un técnico lo revisa.'+waCta('Hola IMPEL, quiero consultar por una falla','Escribir por WhatsApp'));
+      renderQuick(['Hablar con un técnico']);
+    }
+  });
 }
 
 window.sendChatMsg=function(preset){
@@ -3166,13 +3191,15 @@ window.sendChatMsg=function(preset){
 
   if(hasAttachments){
     var sent=pendingAttachments.slice();
+    var sendPs=[];
     pendingAttachments=[];
     renderAttachStrip();
     sent.forEach(function(a){
       if(a.kind==='image'&&a.previewUrl){addImageMsg('user',a.previewUrl);}
       else{addFileMsg('user',a.name,a.size);}
-      uploadAttachmentToDiscord(a.file,a.name,a.kind,text||('Adjunto enviado desde el chat web ('+a.name+')'));
+      sendPs.push(uploadAttachmentToDiscord(a.file,a.name,a.kind,text||('Adjunto enviado desde el chat web ('+a.name+')')));
     });
+    var allSent=Promise.all(sendPs).then(function(r){return r.every(Boolean);});
   }
   if(text){addMsg('user',text);}
   input.value='';input.style.height='auto';
@@ -3190,7 +3217,7 @@ window.sendChatMsg=function(preset){
       else renderQuick(QUICK_DEFAULT);
     },delay);
   }else if(hasAttachments){
-    replyAfterAttachment(sentKindOf(sent));
+    replyAfterAttachment(sentKindOf(sent),allSent);
   }
 };
 function sentKindOf(sent){return sent.length&&sent[0].kind==='image'?'image':'file';}
@@ -3210,70 +3237,72 @@ function getBotReply(raw){
   var s=norm(raw);
 
   function has(){for(var i=0;i<arguments.length;i++){if(s.indexOf(arguments[i])>-1)return true;}return false;}
+  function hasWord(){for(var i=0;i<arguments.length;i++){if(new RegExp('(^|[^a-z])'+arguments[i]+'([^a-z]|$)').test(s))return true;}return false;}
 
-  if(has('hola','buenas','buenos dias','buenas tardes','buenas noches','ey','hey')){
-    return {text:'¡Hola! 😊 ¿En qué te puedo ayudar? Puedo contarte sobre nuestros servicios, precios, horarios, o ayudarte a entender qué le pasa a tu carro.',quick:QUICK_DEFAULT};
+  if(hasWord('hola','hey','ey','buenas','buenos dias','buenas tardes','buenas noches')){
+    return {text:'Hola, ¿en qué te puedo ayudar? Puedo contarte sobre servicios, horarios y cobertura, o ayudarte a entender qué le pasa a tu carro.',quick:QUICK_DEFAULT};
   }
   if(has('gracias','genial','perfecto','excelente','buenisimo')){
-    return {text:'¡De nada! 🙌 Cualquier otra cosa que necesites, acá estoy. Y si querés algo más específico, siempre podés escribirle directo a un técnico por WhatsApp.',quick:['¿Qué servicios tienen?','Hablar con un técnico']};
+    return {text:'De nada. Si necesitás algo más, acá estoy. Y si preferís hablar con una persona, un técnico te atiende por WhatsApp.',quick:['¿Qué servicios tienen?','Hablar con un técnico']};
   }
   if(has('adios','chau','nos vemos','bye')){
-    return {text:'¡Chau! 👋 Cualquier cosa, volvé cuando quieras. ¡Que tengas buen viaje!',quick:[]};
+    return {text:'Hasta luego. Cuando necesités algo, volvé a escribirme. ¡Buen viaje!',quick:[]};
   }
   if(has('emergencia','urgente','urgencia','no arranca ahora','varado')){
-    return {text:'🚨 Entiendo, esto suena urgente. Tenemos atención de emergencia 24/7 en toda el área metropolitana. Te recomiendo escribirnos ya mismo por WhatsApp para que un técnico te ubique.<br><br><a href="https://wa.me/50762838021?text=EMERGENCIA:%20Necesito%20asistencia%20urgente" target="_blank" rel="noopener" style="color:#4ADE80;font-weight:600">→ Escribir emergencia por WhatsApp</a>',quick:['¿Cuánto tardan en llegar?','¿Qué zonas cubren?']};
+    return {text:ic('alert')+'<strong>Entiendo, es urgente.</strong> Atendemos emergencias 24/7 en toda el área metropolitana. Escribinos ya por WhatsApp para que un técnico te ubique.<br>'+waCta('EMERGENCIA: Necesito asistencia urgente','Escribir emergencia'),quick:['¿Qué zonas cubren?']};
   }
   if(has('no arranca','no enciende','no prende','no arranco')){
-    return {text:'Vamos a ver 🔧 Cuando girás la llave, ¿escuchás algún clic, o hay silencio total? Si es un clic sin encender, suele ser el motor de arranque o la batería. Si no pasa nada, probablemente sea la batería o el sistema eléctrico. ¿Querés que abramos el Diagnóstico Rápido para confirmarlo?',quick:['Abrir Diagnóstico Rápido','Hablar con un técnico']};
+    return {text:'Vamos a revisarlo. Cuando girás la llave, ¿escuchás un clic o hay silencio total? Un clic sin que encienda suele apuntar al motor de arranque o a la batería. Si no pasa nada, es probable la batería o el sistema eléctrico. El Diagnóstico Rápido te ayuda a confirmarlo.',quick:['Abrir Diagnóstico Rápido','Hablar con un técnico']};
   }
   if(has('bateria','pila')){
-    return {text:'Las baterías suelen dar señales antes de fallar: luces débiles al arrancar, o el carro cuesta más de lo normal para encender. Hacemos prueba de carga y, si hace falta, cambio de batería con garantía. ¿Te gustaría cotizar por WhatsApp?',quick:['Cotizar batería','No me arranca el carro']};
+    return {text:'Las baterías suelen avisar antes de fallar: luces débiles al arrancar o un motor que cuesta encender. Hacemos prueba de carga y, si hace falta, cambio de batería con garantía por escrito. ¿Querés cotizar por WhatsApp?',quick:['Cotizar batería','No me arranca el carro']};
   }
   if(has('alternador')){
-    return {text:'El alternador es el que carga la batería mientras el carro está prendido. Si notás las luces parpadeando o más débiles al usar el A/C o el radio, puede ser eso. Hacemos diagnóstico y reparación con garantía de 6 meses.',quick:['Cotizar alternador']};
+    return {text:'El alternador carga la batería mientras el carro está encendido. Si las luces parpadean o se debilitan al usar el A/C o la radio, puede ser eso. Hacemos diagnóstico y reparación con garantía documentada por escrito.',quick:['Cotizar alternador']};
   }
   if(has('aire acondicionado','a/c','aire frio','no enfria','clima')){
-    return {text:'Si el aire sale tibio en vez de frío, casi siempre es falta de refrigerante o una fuga en el sistema. Hacemos diagnóstico + recarga de A/C. ¿Querés que te pasemos precio por WhatsApp?',quick:['Cotizar servicio A/C']};
+    return {text:'Si el aire sale tibio en vez de frío, casi siempre es falta de refrigerante o una fuga en el sistema. Hacemos diagnóstico y recarga de A/C. ¿Querés precio por WhatsApp?',quick:['Cotizar servicio A/C']};
   }
   if(has('ruido')){
-    return {text:'Los ruidos raros pueden ser de varias cosas — depende de cuándo aparecen. ¿Es al arrancar el carro, o mientras manejás? Con esa info te puedo orientar mejor, o podés usar el Diagnóstico Rápido para ir paso a paso.',quick:['Abrir Diagnóstico Rápido']};
+    return {text:'Un ruido raro puede tener varias causas y depende de cuándo aparece. ¿Lo escuchás al arrancar o mientras manejás? Con eso te oriento mejor, o podés usar el Diagnóstico Rápido para ir paso a paso.',quick:['Abrir Diagnóstico Rápido']};
   }
   if(has('se apaga')){
-    return {text:'Que el carro se apague solo puede ser varias cosas: un sensor, la mezcla de aire/combustible, o el sistema eléctrico. Lo mejor es un diagnóstico OBD que identifica la causa exacta con precisión.',quick:['Cotizar diagnóstico OBD']};
+    return {text:'Que el carro se apague solo puede deberse a un sensor, a la mezcla de aire y combustible o al sistema eléctrico. Lo más certero es un diagnóstico OBD, que identifica la causa exacta.',quick:['Cotizar diagnóstico OBD']};
   }
   if(has('precio','costo','cuanto cuesta','cuanto vale','tarifa')){
-    return {text:'Los precios varían según el vehículo y la falla exacta, así que no tenemos una tarifa fija publicada — pero un técnico te puede dar una cotización real en minutos por WhatsApp, sin compromiso.',quick:['Pedir cotización por WhatsApp']};
+    return {text:'Los precios dependen del vehículo y de la falla exacta, por eso no hay una tarifa fija publicada. Un técnico te da una cotización real en minutos por WhatsApp, sin compromiso.',quick:['Pedir cotización por WhatsApp']};
   }
   if(has('horario','hora abren','hora cierran','abierto')){
-    return {text:'🕐 Atendemos de Lunes a Sábado en horario regular, y para emergencias estamos disponibles 24/7 todos los días del año.',quick:['Tengo una emergencia']};
+    return {text:ic('clock')+'Atendemos de lunes a sábado. Las emergencias se atienden 24/7.',quick:['Tengo una emergencia']};
   }
   if(has('donde estan','ubicacion','direccion','zona','cubren','cobertura')){
-    return {text:'📍 Cubrimos Ciudad de Panamá, Arraiján, La Chorrera, Chilibre, Tocumen y San Miguelito. Para servicio a domicilio, decinos tu zona por WhatsApp y confirmamos.',quick:['Servicio a domicilio']};
+    return {text:ic('pin')+'Cubrimos Ciudad de Panamá, Arraiján, La Chorrera, Chilibre, Tocumen y San Miguelito. Decinos tu zona por WhatsApp y te confirmamos.',quick:['Servicio a domicilio']};
   }
   if(has('servicio a domicilio','a domicilio','van a mi casa','me pueden atender')){
-    return {text:'¡Sí! Llevamos el taller hasta donde estés — diagnóstico y reparación en el lugar, disponible 24/7 en el área metropolitana.',quick:['¿Qué zonas cubren?']};
+    return {text:'Sí. Llevamos el taller hasta donde estés: diagnóstico y reparación en el lugar, 24/7 en el área metropolitana.',quick:['¿Qué zonas cubren?']};
   }
   if(has('garantia')){
-    return {text:'Todos nuestros servicios incluyen garantía documentada por escrito — normalmente 6 meses en reparaciones eléctricas. Cualquier detalle específico te lo confirma el técnico según el trabajo.',quick:[]};
+    return {text:'Todos nuestros servicios incluyen garantía documentada por escrito. Los repuestos remanufacturados de la tienda (alternador y motor de arranque) tienen 6 meses. Para otros trabajos, el técnico te confirma el plazo.',quick:[]};
   }
   if(has('servicio','servicios','que hacen','que ofrecen','en que me pueden ayudar')){
-    return {text:'Trabajamos: ⚡ Alternadores, 🔑 Motor de Arranque, 🔌 Sistema Eléctrico, 📟 Diagnóstico OBD, ❄️ Aire Acondicionado, y 🚐 Servicio a Domicilio 24/7. ¿Alguno de estos es lo que necesitás?',quick:['No me arranca el carro','A/C no enfría','Cotizar diagnóstico OBD']};
+    var li=function(i,t){return '<div class="cm-li">'+ic(i)+t+'</div>';};
+    return {text:'Trabajamos en:<div class="cm-list">'+li('bolt','Alternadores')+li('key','Motor de arranque')+li('plug','Sistema eléctrico')+li('pulse','Diagnóstico OBD')+li('snow','Aire acondicionado')+li('truck','Servicio a domicilio 24/7')+'</div>¿Cuál necesitás?',quick:['No me arranca el carro','A/C no enfría','Cotizar diagnóstico OBD']};
   }
   if(has('trivia','juego','jugar')){
-    return {text:'Por ahora no tenemos trivia — pero sí un diagnóstico rápido que te dice qué le pasa a tu carro en 30 segundos. Lo encontrás en la sección "IMPEL Interactivo".',quick:['Abrir Diagnóstico Rápido']};
+    return {text:'No tenemos trivia, pero sí un diagnóstico rápido que te orienta sobre la falla de tu carro en 30 segundos.',quick:['Abrir Diagnóstico Rápido']};
   }
   if(has('humano','tecnico','persona real','hablar con alguien')){
-    return {text:'Sin problema, te conecto directo. <br><br><a href="https://wa.me/50762838021?text=Hola%20IMPEL,%20quisiera%20hablar%20con%20un%20técnico" target="_blank" rel="noopener" style="color:#4ADE80;font-weight:600">→ Hablar con un técnico por WhatsApp</a>',quick:[]};
+    return {text:'Te conecto con un técnico.<br>'+waCta('Hola IMPEL, quisiera hablar con un técnico','Hablar con un técnico'),quick:[]};
   }
 
-  return {text:'Mmm, no estoy 100% seguro de eso 🤔 Pero no te preocupes — te conecto directo con un técnico real que te va a poder ayudar mejor.<br><br><a href="https://wa.me/50762838021?text=Hola%20IMPEL,%20tengo%20una%20consulta" target="_blank" rel="noopener" style="color:#4ADE80;font-weight:600">→ Escribir por WhatsApp</a>',quick:QUICK_DEFAULT};
+  return {text:'No tengo una respuesta segura para eso. Un técnico te puede ayudar mejor.<br>'+waCta('Hola IMPEL, tengo una consulta','Escribir por WhatsApp'),quick:QUICK_DEFAULT};
 }
 
 })();
 </script>
 <script id="v15-js">
 /* ── Burbuja de bienvenida del asistente: se escribe como mensaje real ── */
-var CHAT_HELLO_MSG='Asistente general de IMPEL 👋';
+var CHAT_HELLO_MSG='Contame qué le pasa a tu carro y te oriento.';
 var _helloTypeIv=null;
 function hideChatHello(){
   var b=document.getElementById('chat-hello');
@@ -3293,21 +3322,27 @@ function typeHelloMsg(){
     var cursor=document.createElement('span');
     cursor.className='chat-hello-cursor';
     txtEl.appendChild(cursor);
+    var chars=Array.from(CHAT_HELLO_MSG); /* por carácter real, nunca por unidad UTF-16 */
     var i=0;
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      cursor.insertAdjacentText('beforebegin',CHAT_HELLO_MSG);
+      cursor.remove();
+      return;
+    }
     _helloTypeIv=setInterval(function(){
-      if(i>=CHAT_HELLO_MSG.length){
+      if(i>=chars.length){
         clearInterval(_helloTypeIv);_helloTypeIv=null;
         window.setTimeout(function(){if(cursor.parentNode)cursor.remove();},1100);
         return;
       }
-      cursor.insertAdjacentText('beforebegin',CHAT_HELLO_MSG.charAt(i));
+      cursor.insertAdjacentText('beforebegin',chars[i]);
       i++;
     },27);
   },750);
 }
 (function(){
   window.setTimeout(function(){
-    if(typeof chatOpen!=='undefined'&&chatOpen)return;
+    var pnl=document.getElementById('chat-panel');if(pnl&&pnl.classList.contains('open'))return; /* no mostrar el aviso si el chat ya está abierto */
     var b=document.getElementById('chat-hello');
     if(!b)return;
     b.classList.add('show');
