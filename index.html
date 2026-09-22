@@ -327,12 +327,12 @@ nav#navbar.scrolled{background:rgba(10,24,48,.82);-webkit-backdrop-filter:blur(2
 .cli-wire{position:relative;height:2px;overflow:hidden;background:linear-gradient(90deg,transparent,rgba(111,161,255,.4) 25%,rgba(245,101,0,.4) 75%,transparent);}
 .cli-wire::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--o-hi),#fff) no-repeat 0 0/90px 100%;animation:cliSpark 4.2s linear infinite;animation-play-state:paused;}
 @keyframes cliSpark{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
-.cli-card{position:relative;flex:0 0 auto;width:152px;height:88px;margin-right:14px;padding:12px;display:flex;align-items:center;justify-content:center;
+.cli-card{position:relative;flex:0 0 auto;width:152px;height:88px;margin-right:14px;padding:7px;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(160deg,#fff,#EDF2FA);border:2.5px solid var(--bg);border-radius:18px;
   box-shadow:3px 4px 0 var(--bg),inset 0 1px 0 #fff;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;}
 .cli-card::before{content:'';position:absolute;top:7px;left:8px;width:5px;height:5px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 2px rgba(245,101,0,.18);}
 .cli-card:nth-child(even)::before{background:var(--blue);box-shadow:0 0 0 2px rgba(26,106,255,.16);}
-.cli-card img{display:block;width:calc(var(--k,.9)*100%);height:auto;max-height:100%;object-fit:contain;}
+.cli-card img{display:block;width:calc(var(--k,.97)*100%);height:auto;max-height:100%;object-fit:contain;}
 @media(hover:hover){
   .cli-row:hover .cli-track{animation-play-state:paused;}
   .cli-card:hover{transform:translateY(-3px);box-shadow:4px 7px 0 var(--bg),inset 0 1px 0 #fff;}
@@ -346,7 +346,7 @@ nav#navbar.scrolled{background:rgba(10,24,48,.82);-webkit-backdrop-filter:blur(2
   .cli-head{margin-bottom:46px;}
   .cli-clip{padding:38px 0 24px;}
   .cli-rows{gap:10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 60px,#000 calc(100% - 60px),transparent);mask-image:linear-gradient(90deg,transparent,#000 60px,#000 calc(100% - 60px),transparent);}
-  .cli-card{width:208px;height:108px;margin-right:18px;padding:14px;border-radius:20px;}
+  .cli-card{width:208px;height:108px;margin-right:18px;padding:9px;border-radius:20px;}
   .cli-card::before{top:9px;left:11px;width:6px;height:6px;}
   .cli-badge{right:34px;width:54px;height:54px;top:-26px;}
   .cli-badge svg{width:24px;height:24px;}
@@ -362,7 +362,7 @@ body.tab-hidden .cli-track,body.tab-hidden .cli-wire::after{animation-play-state
 @keyframes tick{to{transform:translateX(-50%);}}
 
 /* ══════════ NOSOTROS — banner (imagen completa, con profundidad) ══════════ */
-.ab-banner{position:relative;margin:0;border-radius:24px;overflow:hidden;aspect-ratio:2000/668;background:var(--bg2);
+.ab-banner{position:relative;width:100vw;margin:0 0 0 calc(50% - 50vw);border-radius:22px;overflow:hidden;aspect-ratio:2000/668;background:var(--bg2);
   border:1px solid rgba(255,255,255,.14);
   box-shadow:0 28px 60px rgba(0,0,0,.55),0 10px 26px rgba(0,0,0,.4),
              0 0 60px -14px rgba(245,101,0,.35),0 0 70px -18px rgba(26,106,255,.3),
@@ -1456,14 +1456,14 @@ body.tab-hidden #chat-fab-icon .fab-dot{animation-play-state:paused!important;}
         <div class="cli-rows">
           <div class="cli-row" id="cli-a">
             <ul class="cli-track" aria-label="Empresas que confían en IMPEL">
-        <li class="cli-card"><img src="img/cocacola.png?v=3" alt="Coca-Cola FEMSA" width="319" height="107" style="--k:0.92" decoding="async"></li>
-        <li class="cli-card"><img src="img/ribs.png?v=3" alt="Riba Smith" width="374" height="69" style="--k:1" decoding="async"></li>
-        <li class="cli-card"><img src="img/blue.png?v=3" alt="Estrella Azul" width="266" height="156" style="--k:0.66" decoding="async"></li>
-        <li class="cli-card"><img src="img/dicarina.png?v=3" alt="Dicarina" width="268" height="55" style="--k:0.95" decoding="async"></li>
-        <li class="cli-card"><img src="img/forza.png?v=3" alt="Forza Logistics" width="256" height="55" style="--k:0.92" decoding="async"></li>
-        <li class="cli-card"><img src="img/felipe.png?v=3" alt="Felipe Motta" width="217" height="110" style="--k:0.68" decoding="async"></li>
-        <li class="cli-card"><img src="img/llantero.png?v=3" alt="Llantero" width="414" height="133" style="--k:0.96" decoding="async"></li>
-        <li class="cli-card"><img src="img/supro.png?v=3" alt="Supro" width="412" height="121" style="--k:0.86" decoding="async"></li>
+        <li class="cli-card"><img src="img/cocacola.png?v=3" alt="Coca-Cola FEMSA" width="319" height="107" style="--k:.97" decoding="async"></li>
+        <li class="cli-card"><img src="img/ribs.png?v=3" alt="Riba Smith" width="374" height="69" style="--k:.97" decoding="async"></li>
+        <li class="cli-card"><img src="img/blue.png?v=3" alt="Estrella Azul" width="266" height="156" style="--k:.97" decoding="async"></li>
+        <li class="cli-card"><img src="img/dicarina.png?v=3" alt="Dicarina" width="268" height="55" style="--k:.97" decoding="async"></li>
+        <li class="cli-card"><img src="img/forza.png?v=3" alt="Forza Logistics" width="256" height="55" style="--k:.97" decoding="async"></li>
+        <li class="cli-card"><img src="img/felipe.png?v=3" alt="Felipe Motta" width="217" height="110" style="--k:.97" decoding="async"></li>
+        <li class="cli-card"><img src="img/llantero.png?v=3" alt="Llantero" width="414" height="133" style="--k:.97" decoding="async"></li>
+        <li class="cli-card"><img src="img/supro.png?v=3" alt="Supro" width="412" height="121" style="--k:.97" decoding="async"></li>
             </ul>
           </div>
           <div class="cli-wire" aria-hidden="true"></div>
